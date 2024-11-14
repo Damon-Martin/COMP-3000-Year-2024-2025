@@ -1,0 +1,33 @@
+{
+  "name": "auth-server",
+  "version": "1.0.0",
+  "description": "This is my dissertations authentification server using JWT Tokens. It will be able to check if the token is logged in or a fake. Users can Register here and it will link to the auth db",
+  "main": "./src/app/index.js",
+  "type": "module",
+  "scripts": {
+    "start": "node ./src/app/index.js",
+    "test:unit": "mocha ./src/test/unit/example.test.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Damon-Martin/COMP-3000-Year-2024-2025.git"
+  },
+  "keywords": [
+    "NodeJS",
+    "JWT",
+    "Express",
+    "PassportJS",
+    "Authentification"
+  ],
+  "author": "Damon Martin",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Damon-Martin/COMP-3000-Year-2024-2025/issues"
+  },
+  "homepage": "https://github.com/Damon-Martin/COMP-3000-Year-2024-2025#readme",
+  "dependencies": {
+    "chai": "^5.1.2",
+    "express": "^4.21.1",
+    "mocha": "^10.8.2"
+  }
+}
