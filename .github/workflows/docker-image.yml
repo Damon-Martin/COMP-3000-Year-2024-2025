@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  build:
+  docker-compose-works:
     runs-on: ubuntu-latest
 
     steps:
