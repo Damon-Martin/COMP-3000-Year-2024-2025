@@ -1,36 +1,25 @@
 import express from 'express'
+import CredentialChecker from '../business-logic/credential-checker.js';
 
 const AuthRouter = express.Router();
+const checker = new CredentialChecker();
 
 AuthRouter.get("/register", (req, res) => {
-    const username = req.body.username;
+    const uName = req.body.username;
     const pass = req.body.password;
 
-    if (!username && !pass) {
-        return(
-            res.status(400).json({
-                error: "You are missing the username & password"
-            })
-        );
-    }
-    if (!username) {
-        return(
-            res.status(400).json({
-                error: "You are missing the username"
-            })
-        )
-    }
-    if (!pass) {
-        return(
-            res.status(400).json({
-                error: "You are missing the password"
+    const checkerRes = checker.CheckRequestBody(uName, pass);
+
+    if (checkerRes.code != 200) {
+        return (
+            res.status(checkerRes.code).json({
+                error: checkerRes.error
             })
         )
     }
 
-    res.status(200).json({
-        msg: "Saved user to db"
-    })
+    // If there is a uName & pass (logic below)
+
 })
 
 export default AuthRouter;
