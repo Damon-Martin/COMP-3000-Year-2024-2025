@@ -1,0 +1,34 @@
+<mxfile host="Electron" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.0.4 Chrome/128.0.6613.186 Electron/32.2.5 Safari/537.36" version="26.0.4">
+  <diagram name="Page-1" id="xEPX-IIJ9iF96vnHHSES">
+    <mxGraphModel dx="941" dy="644" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="WUISdBz1MjYwtdFWB1Jv-1" value="Client" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.management_console;fillColor=#F58534;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="60" y="140" width="63" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="WUISdBz1MjYwtdFWB1Jv-2" value="Staff" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.management_console;fillColor=#F58534;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="60" y="300" width="63" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="WUISdBz1MjYwtdFWB1Jv-3" value="DB&lt;div&gt;(Parrallel)&lt;/div&gt;" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.generic_database;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="740" y="138.5" width="49.5" height="64.5" as="geometry" />
+        </mxCell>
+        <mxCell id="WUISdBz1MjYwtdFWB1Jv-4" value="DB&lt;div&gt;(Parrallel)&lt;/div&gt;" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.generic_database;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="740" y="280" width="49.5" height="64.5" as="geometry" />
+        </mxCell>
+        <mxCell id="WUISdBz1MjYwtdFWB1Jv-5" value="" style="sketch=0;aspect=fixed;pointerEvents=1;shadow=0;dashed=0;html=1;strokeColor=none;labelPosition=center;verticalLabelPosition=bottom;verticalAlign=top;align=center;fillColor=#00188D;shape=mxgraph.mscae.enterprise.web_server" vertex="1" parent="1">
+          <mxGeometry x="240" y="460" width="38" height="50" as="geometry" />
+        </mxCell>
+        <mxCell id="WUISdBz1MjYwtdFWB1Jv-6" value="Backend&lt;div&gt;(Parrallel)&lt;/div&gt;" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.traditional_server;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="470" y="138.5" width="46.5" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="WUISdBz1MjYwtdFWB1Jv-7" value="Backend&lt;div&gt;(Parrallel)&lt;/div&gt;" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.traditional_server;fillColor=#7D7C7C;gradientColor=none;" vertex="1" parent="1">
+          <mxGeometry x="470" y="280" width="46.5" height="63" as="geometry" />
+        </mxCell>
+        <mxCell id="WUISdBz1MjYwtdFWB1Jv-8" value="Auth Server" style="outlineConnect=0;dashed=0;verticalLabelPosition=bottom;verticalAlign=top;align=center;html=1;shape=mxgraph.aws3.traditional_server;fillColor=#fa6800;fontColor=#000000;strokeColor=#C73500;" vertex="1" parent="1">
+          <mxGeometry x="280" y="40" width="46.5" height="63" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
