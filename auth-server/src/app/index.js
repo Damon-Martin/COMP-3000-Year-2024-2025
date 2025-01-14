@@ -1,11 +1,14 @@
 import express from 'express'
+import AuthRouter from './routes/auth-routes.js';
 
 const app = express();
 const port = 3000
 
-app.get('/', (req, res) => {
-    res.send('Hello World!')
-})
+// Global Middlewares
+app.use(express.json());
+
+// Routing
+app.use("/v1", AuthRouter)
 
 app.listen(port, () => {
     console.log(`Example app listening on port ${port}`)
