@@ -3,11 +3,11 @@ class AuthController {
         this.AuthModel = AuthModel;
     }
 
-    login() {}
+    login(username, password) {}
 
-    register() {}
+    register(username, password) {}
 
-    validateJWT() {}
+    validateJWT(token) {}
 
     removeAllSessions(username) {}
 }
