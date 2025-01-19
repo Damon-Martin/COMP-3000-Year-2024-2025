@@ -6,7 +6,14 @@ services:
     ports:
       - '4000:3000'
 
-  auth-db:
+  back-end:
+    build:
+      context: ./back-end
+      dockerfile: .dockerfile
+    ports:
+      - '5000:3000'
+
+  db:
     image: mongo
     restart: always
     environment:
