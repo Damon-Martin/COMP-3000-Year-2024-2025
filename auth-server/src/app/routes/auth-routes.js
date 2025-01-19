@@ -1,25 +1,17 @@
 import express from 'express'
-import CredentialChecker from '../business-logic/credential-checker.js';
+import AuthController from '../controllers/auth-controller.js';
+import authModel from '../models/auth-model.js';
 
 const AuthRouter = express.Router();
-const checker = new CredentialChecker();
+
+const authController = new AuthController();
 
 AuthRouter.get("/register", (req, res) => {
     const uName = req.body.username;
     const pass = req.body.password;
-
-    const checkerRes = checker.CheckRequestBody(uName, pass);
-
-    if (checkerRes.code != 200) {
-        return (
-            res.status(checkerRes.code).json({
-                error: checkerRes.error
-            })
-        )
-    }
-
     // If there is a uName & pass (logic below)
 
+    res.send(uName);
 })
 
 export default AuthRouter;
