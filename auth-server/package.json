@@ -29,5 +29,8 @@
     "chai": "^5.1.2",
     "express": "^4.21.1",
     "mocha": "^10.8.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0"
   }
 }
