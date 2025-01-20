@@ -39,7 +39,27 @@ class AuthController {
         }
     }
 
-    register(username, password) {}
+    async register(username, password) {
+        try{
+            const user = new this.AuthModel({
+                username: username,
+                password: password
+            })
+            await user.save();
+
+            return {
+                code: 200,
+                msg: "Customer Registered Successfully"
+            }
+        }
+        catch(e) {
+            console.error(e);
+            return {
+                code: 500,
+                error: "Completly failed saving to the DB"
+            }
+        }
+    }
 
     validateJWT(token) {}
 

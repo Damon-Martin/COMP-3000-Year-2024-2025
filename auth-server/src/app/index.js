@@ -4,7 +4,7 @@ import AuthRouter from './routes/auth-routes.js';
 
 const app = express();
 const port = 3000;
-const connectionStr = "mongodb://root:example@db:27017/?authSource=admin";
+const connectionStr = "mongodb://root:example@db:27017/database?authSource=admin";
 
 // Mongoose Settings
 let retryCount = 0;
