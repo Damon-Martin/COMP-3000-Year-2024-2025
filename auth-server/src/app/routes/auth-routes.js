@@ -56,7 +56,8 @@ AuthRouter.get("/register", async (req, res) => {
     if (result.code == 200) {
         res.status(result.code).json({
             token: result.token,
-            msg: result.msg
+            msg: result.msg,
+            admin: false
         })
     }
     else {

@@ -13,7 +13,6 @@ class AuthController {
 
     // Returns JWT and Makes new Session
     login(username, password) {
-
     }
 
     // Returns JWT and Registers UName & Pass to DB
