@@ -4,10 +4,12 @@ import bcrypt from 'bcryptjs';
 import CredentialChecker from '../business-logic/credential-checker.js';
 
 class AuthController {
-    constructor(AuthModel, SessionModel, UserDetailsModel) {
+    constructor(AuthModel, SessionModel, UserDetailsModel, AdminDetailsModel) {
         this.AuthModel = AuthModel;
         this.SessionModel = SessionModel;
+        this.AdminDetailsModel = AdminDetailsModel;
         this.UserDetailsModel = UserDetailsModel;
+
         this.checker = new CredentialChecker();
     }
 
@@ -52,6 +54,93 @@ class AuthController {
                 tel: userDetails.tel,
                 address: userDetails.address,
                 postcode: userDetails.postcode
+            })
+
+            try {
+                // Saving User
+                await user.save();
+                await currentDetails.save();
+
+                let token = jwt.sign({ userId: user._id }, 'Example-Secret-Key', {
+                    expiresIn: '1h',
+                });
+
+                try {
+                    const sessionModel = new this.SessionModel({
+                        userId: user._id,
+                        token: token,
+                        expiresAt: Date.now() + 3600 * 1000, // Token Expiration (1 hour)
+                    });
+    
+                    sessionModel.save();
+    
+                    return {
+                        code: 200,
+                        token: token,
+                        msg: "Customer Registered Successfully"
+                    }
+                }
+                catch(e) {
+                    return {
+                        code: 500,
+                        error: `Username + Encrypted Password saved to db but failed creating a new session: ${e}`
+                    }
+                }
+
+            }
+            // User Already Exists
+            catch(e) {
+                return {
+                    code: 409,
+                    error: "User already Exists, try a new username"
+                }
+            }
+            
+        }
+        catch(e) {
+            console.error(e);
+            return {
+                code: 500,
+                error: "Completly failed saving to the DB"
+            }
+        }
+    }
+
+    async registerAdmin(username, password, adminDetails) {
+        try{
+            const checkerRes = this.checker.CheckRequestBody(username, password);
+
+            // Error handling
+            if (checkerRes.code != 200) {
+                return {
+                    code: 401,
+                    error: "Username or Password is Missing"
+                }
+            }
+
+            if (adminDetails.fName == null || adminDetails.lName == null || adminDetails.NiNumber == null || adminDetails.tel == null || adminDetails.address == null || adminDetails.postcode == null) {
+                return {
+                    code: 401,
+                    error: "Invalid User Details Provided"
+                }
+            }
+
+            let encryptPass = await bcrypt.hash(password, 10)
+
+            // Make New User
+            const user = new this.AuthModel({
+                username: username,
+                password: encryptPass
+            })
+
+            const currentDetails =  new this.AdminDetailsModel({
+                username: username,
+                fName: adminDetails.fName,
+                lName: adminDetails.lName,
+                tel: adminDetails.tel,
+                NiNumber: adminDetails.NiNumber,
+                address: adminDetails.address,
+                postcode: adminDetails.postcode
             })
 
             try {
