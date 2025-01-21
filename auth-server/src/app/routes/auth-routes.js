@@ -47,7 +47,7 @@ const authController = new AuthController(AuthModel, SessionModel, UserDetailMod
  *       500:
  *         description: Server error
  */
-AuthRouter.get("/register", async (req, res) => {
+AuthRouter.post("/register", async (req, res) => {
     const uName = req.body.username;
     const pass = req.body.password;
     const userDetails = req.body.userDetails;
@@ -68,7 +68,7 @@ AuthRouter.get("/register", async (req, res) => {
     }
 })
 
-AuthRouter.get("/registerAdmin", async (req, res) => {
+AuthRouter.post("/registerAdmin", async (req, res) => {
     const uName = req.body.username;
     const pass = req.body.password;
     const adminDetails = req.body.adminDetails;
@@ -80,6 +80,26 @@ AuthRouter.get("/registerAdmin", async (req, res) => {
             token: result.token,
             msg: result.msg,
             admin: true
+        })
+    }
+    else {
+        res.status(result.code).json({
+            error: result.error
+        })
+    }
+})
+
+AuthRouter.post("/login", async (req, res) => {
+    const uName = req.body.username;
+    const pass = req.body.password;
+
+    const result = await authController.login(uName, pass);
+
+    if (result.code == 200) {
+        res.status(result.code).json({
+            token: result.token,
+            msg: result.msg,
+            admin: result.admin
         })
     }
     else {

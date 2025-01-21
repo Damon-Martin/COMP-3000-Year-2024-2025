@@ -14,8 +14,79 @@ class AuthController {
     }
 
     // Returns JWT and Makes new Session
-    login(username, password) {
+    async login(username, password) {
+        try {
+            // Validate input
+            const checkerRes = this.checker.CheckRequestBody(username, password);
+            if (checkerRes.code !== 200) {
+                return {
+                    code: 401,
+                    error: "Username or Password is Missing",
+                };
+            }
+    
+            // Retrieve user from database
+            const user = await this.AuthModel.findOne({ username: username });
+            
+            if (!user) {
+                return {
+                    code: 404,
+                    error: "User does not Exist",
+                };
+            }
+    
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+
+            if (isPasswordValid) {
+
+                let token = jwt.sign({ userId: user._id }, 'Example-Secret-Key', {
+                    expiresIn: '1h',
+                });
+
+                // Save Session to DB
+                const sessionModel = new this.SessionModel({
+                    userId: user._id,
+                    token: token,
+                    expiresAt: Date.now() + 3600 * 1000, // Token Expiration (1 hour)
+                });
+
+                sessionModel.save();
+
+                // Check if the user is an admin
+                const admin = await this.AdminDetailsModel.findOne({ username: username });
+
+                if (!admin) {
+                    return {
+                        code: 200,
+                        token: token,
+                        msg: "Login Successful",
+                        admin: false
+                    };
+                }
+                return {
+                    code: 200,
+                    token: token,
+                    msg: "Login Successful",
+                    admin: true
+                };
+
+            } 
+            else {
+                return {
+                    code: 401,
+                    error: "Username or Password is Incorrect",
+                };
+            }
+        } 
+        catch (e) {
+            console.error("Error during login:", e);
+            return {
+                code: 500,
+                error: "An internal server error occurred",
+            };
+        }
     }
+    
 
     // Returns JWT and Registers UName & Pass to DB
     // Checks if details is secure
