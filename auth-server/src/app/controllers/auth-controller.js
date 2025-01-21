@@ -85,6 +85,7 @@ class AuthController {
         }
     }
 
+    // Checking the Token and it's corresponding Session is Valid
     validateJWT(token) {}
 
     removeAllSessions(username) {}
