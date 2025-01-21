@@ -7,9 +7,13 @@ class AuthController {
     }
 
     login(username, password) {
-        try {
+    }
+
+    async registerCustomer(username, password) {
+        try{
             const checkerRes = this.checker.CheckRequestBody(username, password);
 
+            // Error handling
             if (checkerRes.code != 200) {
                 return {
                     code: 401,
@@ -17,40 +21,29 @@ class AuthController {
                 }
             }
 
-            const user = this.AuthModel.findOne(username);
-
-
-            if (user.password == password) {
-                return {
-                    code: 200,
-                }
-            }
-            return {
-                code: 401,
-                error: "Username or Password Incorrect"
-            }
-        }
-        catch {
-            // Account does not exist
-            return {
-                code: 404,
-                error: "Username or Password Incorrect"
-            }
-        }
-    }
-
-    async register(username, password) {
-        try{
+            // Make New User
             const user = new this.AuthModel({
                 username: username,
                 password: password
             })
-            await user.save();
 
-            return {
-                code: 200,
-                msg: "Customer Registered Successfully"
+            try {
+                // Saving User
+                await user.save();
+
+                return {
+                    code: 200,
+                    msg: "Customer Registered Successfully"
+                }
             }
+            // User Already Exists
+            catch(e) {
+                return {
+                    code: 409,
+                    error: "User already Exists, try a new username"
+                }
+            }
+            
         }
         catch(e) {
             console.error(e);
@@ -60,6 +53,8 @@ class AuthController {
             }
         }
     }
+
+    async registerAdmin(username, password) {}
 
     validateJWT(token) {}
 
