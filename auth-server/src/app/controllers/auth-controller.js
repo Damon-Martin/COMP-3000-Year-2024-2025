@@ -4,19 +4,22 @@ import bcrypt from 'bcryptjs';
 import CredentialChecker from '../business-logic/credential-checker.js';
 
 class AuthController {
-    constructor(AuthModel, SessionModel) {
+    constructor(AuthModel, SessionModel, UserDetailsModel) {
         this.AuthModel = AuthModel;
         this.SessionModel = SessionModel;
+        this.UserDetailsModel = UserDetailsModel;
         this.checker = new CredentialChecker();
     }
 
     // Returns JWT and Makes new Session
     login(username, password) {
+
     }
 
     // Returns JWT and Registers UName & Pass to DB
+    // Checks if details is secure
     // For Customers Specifically
-    async register(username, password) {
+    async registerCustomer(username, password, userDetails) {
         try{
             const checkerRes = this.checker.CheckRequestBody(username, password);
 
@@ -28,6 +31,13 @@ class AuthController {
                 }
             }
 
+            if (userDetails.fName == null || userDetails.lName == null || userDetails.tel == null || userDetails.address == null || userDetails.postcode == null) {
+                return {
+                    code: 401,
+                    error: "Invalid User Details Provided"
+                }
+            }
+
             let encryptPass = await bcrypt.hash(password, 10)
 
             // Make New User
@@ -36,9 +46,19 @@ class AuthController {
                 password: encryptPass
             })
 
+            const currentDetails =  new this.UserDetailsModel({
+                username: username,
+                fName: userDetails.fName,
+                lName: userDetails.lName,
+                tel: userDetails.tel,
+                address: userDetails.address,
+                postcode: userDetails.postcode
+            })
+
             try {
                 // Saving User
                 await user.save();
+                await currentDetails.save();
 
                 let token = jwt.sign({ userId: user._id }, 'Example-Secret-Key', {
                     expiresIn: '1h',

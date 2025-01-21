@@ -4,10 +4,11 @@ import AuthController from '../controllers/auth-controller.js';
 // DB Models
 import AuthModel from '../models/auth-model.js';
 import SessionModel from '../models/session-model.js'
+import UserDetailModel from '../models/customer-detail-model.js';
 
 const AuthRouter = express.Router();
 
-const authController = new AuthController(AuthModel, SessionModel);
+const authController = new AuthController(AuthModel, SessionModel, UserDetailModel);
 
 
 /**
@@ -48,8 +49,9 @@ const authController = new AuthController(AuthModel, SessionModel);
 AuthRouter.get("/register", async (req, res) => {
     const uName = req.body.username;
     const pass = req.body.password;
+    const userDetails = req.body.userDetails;
 
-    const result = await authController.register(uName, pass);
+    const result = await authController.registerCustomer(uName, pass, userDetails);
 
     if (result.code == 200) {
         res.status(result.code).json({
