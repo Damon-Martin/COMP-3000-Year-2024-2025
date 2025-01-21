@@ -265,7 +265,53 @@ class AuthController {
     }
 
     // Checking the Token and it's corresponding Session is Valid
-    validateJWT(token) {}
+    async validateJWT(token) {
+        try {
+            const tokenInstance = await this.SessionModel.findOne({ token: token })
+
+            if (!tokenInstance) {
+                return {
+                    code: 401,
+                    error: "Token either does not exist or is expired"
+                }
+            }
+
+            // get username
+            const authInstance = await this.AuthModel.findOne({ _id: tokenInstance.userId })
+            const uName = authInstance.username;
+
+            // Check if admin
+            const admin = await this.AdminDetailsModel.findOne({ username: uName });
+
+            if (!admin){
+                // Send username and admin status
+                return {
+                    code: 200,
+                    msg: "Token has a session that is valid",
+                    username: uName,
+                    admin: false
+                }
+            }
+            else {
+                // Send username and admin status
+                return {
+                    code: 200,
+                    msg: "Token has a session that is valid",
+                    username: uName,
+                    admin: true
+                }
+            }
+            
+        }
+        catch(e) {
+            console.error(e)
+            return {
+                code: 500,
+                error: `Failed to connect to the DB, ${e}`
+            }
+            
+        }
+    }
 
     removeAllSessions(username) {}
 }

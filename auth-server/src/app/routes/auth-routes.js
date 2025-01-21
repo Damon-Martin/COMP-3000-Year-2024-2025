@@ -109,4 +109,24 @@ AuthRouter.post("/login", async (req, res) => {
     }
 })
 
+AuthRouter.post("/validateJWT", async (req, res) => {
+    const token = req.body.token;
+
+    const result = await authController.validateJWT(token);
+
+    if (result.code == 200) {
+        res.status(result.code).json({
+            token: result.token,
+            username: result.username,
+            admin: result.admin,
+            msg: result.msg,
+        })
+    }
+    else {
+        res.status(result.code).json({
+            error: result.error
+        })
+    }
+})
+
 export default AuthRouter;
