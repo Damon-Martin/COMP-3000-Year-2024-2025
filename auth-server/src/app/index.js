@@ -5,6 +5,7 @@ import mongoose from 'mongoose';
 import { specs, swaggerUI } from './config/swagger-config.js';
 
 import AuthRouter from './routes/auth-routes.js';
+import AuthMiddleware from './middlewares/auth-middleware.js';
 
 const app = express();
 const port = 3000;
@@ -16,6 +17,7 @@ const maxRetries = 10;
 
 // Global Middlewares
 app.use(express.json());
+app.use(AuthMiddleware.restrictEndpointWithoutDB); // If DB Down block all endpoints
 app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 // Retries connection until max retries reached until connection is established
