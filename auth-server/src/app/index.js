@@ -1,5 +1,9 @@
 import express from 'express';
 import mongoose from 'mongoose';
+
+// Swagger Config
+import { specs, swaggerUI } from './config/swagger-config.js';
+
 import AuthRouter from './routes/auth-routes.js';
 
 const app = express();
@@ -12,6 +16,7 @@ const maxRetries = 10;
 
 // Global Middlewares
 app.use(express.json());
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 // Retries connection until max retries reached until connection is established
 async function initMongo() {
