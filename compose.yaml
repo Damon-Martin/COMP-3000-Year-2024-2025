@@ -14,6 +14,9 @@ services:
     container_name: back-end
     ports:
       - '5000:3000'
+    env_file:
+      - path: .env
+        required: true
 
   front-end:
     build:
