@@ -17,7 +17,7 @@ const authController = new AuthController(AuthModel, SessionModel, UserDetailMod
  * /v1/register:
  *   post:
  *     summary: Registers a Customer and sends a JWT to the User
- *     description: This will save a user login details to the database then return a JWT to the client. Passwords are salted and hashed.
+ *     description: This will save a user login details to the database, along with user details, then return a JWT to the client. Passwords are salted and hashed.
  *     tags:
  *       - AuthController
  *     requestBody:
@@ -29,10 +29,29 @@ const authController = new AuthController(AuthModel, SessionModel, UserDetailMod
  *             properties:
  *               username:
  *                 type: string
- *                 description: Unique Username for the user
+ *                 description: Unique Username for the customer
  *               password:
  *                 type: string
- *                 description: User's password (will be hashed before storing)
+ *                 description: Customer's password (will be hashed before storing)
+ *               userDetails:
+ *                 type: object
+ *                 description: This is another CRUD entity for user details nested in the request
+ *                 properties:
+ *                   fName:
+ *                     type: string
+ *                     description: First name of the customer
+ *                   lName:
+ *                     type: string
+ *                     description: Last name of the customer
+ *                   tel:
+ *                     type: string
+ *                     description: Telephone number of the customer
+ *                   address:
+ *                     type: string
+ *                     description: Address of the customer
+ *                   postcode:
+ *                     type: string
+ *                     description: Postcode of the customer's address
  *     responses:
  *       200:
  *         description: User registered successfully and JWT issued to client
@@ -132,7 +151,7 @@ AuthRouter.post("/login", async (req, res) => {
  * /v1/registerAdmin:
  *   post:
  *     summary: Registers an Admin and sends a JWT to the Admin
- *     description: This will save a user login details to the database then return a JWT to the client. Passwords are salted and hashed.
+ *     description: This will save an admin’s login details to the database, along with admin details, then return a JWT to the client. Passwords are salted and hashed.
  *     tags:
  *       - AuthController
  *     requestBody:
@@ -144,13 +163,35 @@ AuthRouter.post("/login", async (req, res) => {
  *             properties:
  *               username:
  *                 type: string
- *                 description: Unique Username for the user
+ *                 description: Unique Username for the admin
  *               password:
  *                 type: string
- *                 description: User's password (will be hashed before storing)
+ *                 description: Admin's password (will be hashed before storing)
+ *               adminDetails:
+ *                 type: object
+ *                 description: Additional details for the admin
+ *                 properties:
+ *                   fName:
+ *                     type: string
+ *                     description: First name of the admin
+ *                   lName:
+ *                     type: string
+ *                     description: Last name of the admin
+ *                   tel:
+ *                     type: string
+ *                     description: Telephone number of the admin
+ *                   NiNumber:
+ *                     type: string
+ *                     description: National Insurance number of the admin
+ *                   address:
+ *                     type: string
+ *                     description: Address of the admin
+ *                   postcode:
+ *                     type: string
+ *                     description: Postcode of the admin's address
  *     responses:
  *       200:
- *         description: User registered successfully and JWT issued to client
+ *         description: Admin registered successfully and JWT issued to client
  *         content:
  *           application/json:
  *             schema:
