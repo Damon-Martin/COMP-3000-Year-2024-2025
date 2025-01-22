@@ -15,6 +15,14 @@ services:
     ports:
       - '5000:3000'
 
+  front-end:
+    build:
+      context: ./front-end
+      dockerfile: .dockerfile
+    container_name: front-end
+    ports:
+      - '3000:3000'
+
   db:
     image: mongo
     container_name: MongoDB
