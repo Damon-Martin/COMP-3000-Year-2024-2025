@@ -3,6 +3,7 @@ services:
     build:
       context: ./auth-server
       dockerfile: .dockerfile
+    container_name: auth-server
     ports:
       - '4000:3000'
 
@@ -10,11 +11,13 @@ services:
     build:
       context: ./back-end
       dockerfile: .dockerfile
+    container_name: back-end
     ports:
       - '5000:3000'
 
   db:
     image: mongo
+    container_name: MongoDB
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
