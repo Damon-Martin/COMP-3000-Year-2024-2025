@@ -1,7 +1,8 @@
 {
   "name": "back-end",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "./src/app/index.js",
+  "type": "module",
   "scripts": {
     "start": "node ./src/app/index.js",
     "test": "echo \"Error: no test specified\" && exit 1"

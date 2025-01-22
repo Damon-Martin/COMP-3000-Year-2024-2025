@@ -68,6 +68,61 @@ AuthRouter.post("/register", async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /v1/login:
+ *   post:
+ *     summary: Login a user and send user a JWT
+ *     description: Authenticates the user and provides a JWT upon successful login.
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               username:
+ *                 type: string
+ *                 description: User's username.
+ *               password:
+ *                 type: string
+ *                 description: User's password.
+ *     responses:
+ *       200:
+ *         description: Login successful and JWT issued.
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 jwt:
+ *                   type: string
+ *                   description: JSON Web Token for authentication.
+ *       401:
+ *         description: Invalid credentials.
+ *       500:
+ *         description: Server error.
+ */
+AuthRouter.post("/login", async (req, res) => {
+    const uName = req.body.username;
+    const pass = req.body.password;
+
+    const result = await authController.login(uName, pass);
+
+    if (result.code == 200) {
+        res.status(result.code).json({
+            token: result.token,
+            msg: result.msg,
+            admin: result.admin
+        })
+    }
+    else {
+        res.status(result.code).json({
+            error: result.error
+        })
+    }
+})
+
 AuthRouter.post("/registerAdmin", async (req, res) => {
     const uName = req.body.username;
     const pass = req.body.password;
@@ -80,26 +135,6 @@ AuthRouter.post("/registerAdmin", async (req, res) => {
             token: result.token,
             msg: result.msg,
             admin: true
-        })
-    }
-    else {
-        res.status(result.code).json({
-            error: result.error
-        })
-    }
-})
-
-AuthRouter.post("/login", async (req, res) => {
-    const uName = req.body.username;
-    const pass = req.body.password;
-
-    const result = await authController.login(uName, pass);
-
-    if (result.code == 200) {
-        res.status(result.code).json({
-            token: result.token,
-            msg: result.msg,
-            admin: result.admin
         })
     }
     else {
