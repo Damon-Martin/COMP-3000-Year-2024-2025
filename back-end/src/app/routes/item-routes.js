@@ -2,8 +2,19 @@
     Both, Customers LoggedOut and LoggedIn can see items
 */
 import express from "express";
+import AuthMiddleware from "../middleware/auth-middleware.js";
 
 const ItemRouter = express.Router();
+
+/**
+ * @swagger
+ * components:
+ *   securitySchemes:
+ *     bearerAuth:
+ *       type: http
+ *       scheme: bearer
+ *       bearerFormat: JWT
+ */
 
 /**
  * @swagger
@@ -30,5 +41,28 @@ ItemRouter.get('/all-categories', (req, res) => {
 ItemRouter.get('/all-items-by-category', (req, res) => {
     res.send('Hello World!')
 })
+
+
+/**
+ * @swagger
+ * /v1/items/create-category:
+ *   post:
+ *     summary: Creates a new item category
+ *     description: Creates a new category for items in the database. Requires JWT authentication.
+ *     tags:
+ *       - ItemController
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: Category created successfully
+ *       401:
+ *         description: Unauthorized - Invalid or missing token
+ *       500:
+ *         description: Internal server error
+ */
+ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res) => {
+    res.send('Hello World!');
+});
 
 export default ItemRouter;
