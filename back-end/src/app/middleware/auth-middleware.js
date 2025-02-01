@@ -37,7 +37,7 @@ class AuthMiddleware {
                 return res.status(response.status).json({
                     error: "Failed to authenticate with Auth Server",
                     status: response.status,
-                    message: await response.text()  // Return exact response message
+                    message: await response.error
                 });
             }
 
@@ -56,7 +56,9 @@ class AuthMiddleware {
         catch (e) {
             return res.status(500).json({
                 error: "Failed to check JWT with Auth Server",
-                exactError: e.message
+                exactError: e.message,
+                uri: `${AuthURI}/v1/validateJWT`,
+                token: token
             });
         }
     }
