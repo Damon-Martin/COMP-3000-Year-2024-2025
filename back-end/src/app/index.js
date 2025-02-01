@@ -44,8 +44,7 @@ async function main() {
       await initMongo(); // Recursively attempts a connection
 
       app.use(AuthMiddleware.restrictEndpointWithoutDB);
-      app.use("/v1", ItemRouter);
-
+      app.use("/v1/items", ItemRouter);
 
       app.listen(port, () => {
         console.log(`Example app listening on port ${port} & Production is ${isProduction}`)
