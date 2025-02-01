@@ -38,3 +38,13 @@ services:
       MONGO_INITDB_ROOT_PASSWORD: example
     ports:
       - 27017:27017
+
+  nginx-front-end:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/front-end.conf:/etc/nginx/nginx.conf
+      - ./comp3000-el-comercio.xyz-ssl-bundle:/etc/nginx/ssl:ro  # Attatch PorkBun SLL Bundle
+    ports:
+      - "443:443"  # Expose HTTPS to the outside world
+    depends_on:
+      - front-end
