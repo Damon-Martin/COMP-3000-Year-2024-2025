@@ -31,4 +31,9 @@ ItemRouter.get('/all-items-by-category', (req, res) => {
     res.send('Hello World!')
 })
 
+
+ItemRouter.post("/create-category", async (req, res) => {
+    res.send('Hello World!');
+});
+
 export default ItemRouter;

@@ -6,6 +6,9 @@ services:
     container_name: auth-server
     ports:
       - '4000:3000'
+    env_file:
+      - path: .env
+        required: true
 
   back-end:
     build:

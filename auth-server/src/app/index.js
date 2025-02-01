@@ -9,7 +9,7 @@ import AuthMiddleware from './middlewares/auth-middleware.js';
 
 const app = express();
 const port = 3000;
-const connectionStr = "mongodb://root:example@db:27017/database?authSource=admin";
+const connectionStr = String(process.env.DBConnectionStr);
 
 // Mongoose Settings
 let retryCount = 0;
