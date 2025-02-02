@@ -14,7 +14,7 @@ const options = {
                 url: "https://localhost:4000/",
             },
             {
-                url: "https://comp3000-el-comercio.xyz/:4000/",
+                url: "https://comp3000-el-comercio.xyz:4000/",
             },
         ],
     },
