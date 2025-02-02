@@ -4,8 +4,6 @@ services:
       context: ./auth-server
       dockerfile: .dockerfile
     container_name: auth-server
-    ports:
-      - '4000:3000'
     env_file:
       - path: .env
         required: true
@@ -26,8 +24,6 @@ services:
       context: ./front-end
       dockerfile: .dockerfile
     container_name: front-end
-    ports:
-      - '3000:3000'
 
   db:
     image: mongo
@@ -46,5 +42,15 @@ services:
       - ./comp3000-el-comercio.xyz-ssl-bundle:/etc/nginx/ssl:ro  # Attatch PorkBun SLL Bundle
     ports:
       - "443:443"  # Expose HTTPS to the outside world
+    depends_on:
+      - front-end
+
+  nginx-auth:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/auth-server.conf:/etc/nginx/nginx.conf
+      - ./comp3000-el-comercio.xyz-ssl-bundle:/etc/nginx/ssl:ro  # Attatch PorkBun SLL Bundle
+    ports:
+      - "4000:4000" # Expose HTTPS to the outside world
     depends_on:
       - front-end
