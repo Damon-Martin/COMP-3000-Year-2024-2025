@@ -12,7 +12,8 @@ const connectionStr = String(process.env.DBConnectionStr);
 
 // Display swagger if in development
 if (!isProduction) {
-  app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
+    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+    app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 }
 
 // Mongoose Settings

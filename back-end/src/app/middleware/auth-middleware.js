@@ -25,7 +25,7 @@ class AuthMiddleware {
         }
 
         try {
-            const response = await fetch(`${AuthURI}/v1/validateJWT`, {
+            const response = await fetch(`https://nginx-auth:4000/v1/validateJWT`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -33,27 +33,20 @@ class AuthMiddleware {
                 body: JSON.stringify({ "token": token })
             });
 
-            if (!response.ok) {
-                return res.status(response.status).json({
-                    error: "Failed to authenticate with Auth Server",
-                    status: response.status,
-                    message: await response.error
-                });
-            }
-
             const data = await response.json();
 
-            // Assuming Auth Server returns { admin: true/false }
-            if (data.admin == false) {
-                return res.status(403).json({
-                    error: "Unauthorized: You are not an admin. You don't have the right to this endpoint."
+            if (response.status != 200) {
+                return res.status(response.status).json({
+                    error: data.error
                 });
             }
-            else {
-                next();
-            }
+
+            // Now check if admin
+            console.log(data);
+            next();
         } 
         catch (e) {
+            console.error(e)
             return res.status(500).json({
                 error: "Failed to check JWT with Auth Server",
                 exactError: e.message,
