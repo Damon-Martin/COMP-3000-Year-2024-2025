@@ -25,7 +25,7 @@ class AuthMiddleware {
         }
 
         try {
-            const response = await fetch(`https://nginx-auth:4000/v1/validateJWT`, {
+            const response = await fetch(`${AuthURI}/v1/validateJWT`, {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -41,9 +41,16 @@ class AuthMiddleware {
                 });
             }
 
-            // Now check if admin
-            console.log(data);
-            next();
+            // Checking /checkJWT response to see if admin
+            if (data.admin) {
+                next();
+            }
+            else {
+                return res.status(401).json({
+                    error: "The JWT which is valid is NOT an Admin"
+                });
+            }
+            
         } 
         catch (e) {
             console.error(e)
