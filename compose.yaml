@@ -24,8 +24,6 @@ services:
       context: ./front-end
       dockerfile: .dockerfile
     container_name: front-end
-    ports:
-      - '3000:3000'
 
   db:
     image: mongo
