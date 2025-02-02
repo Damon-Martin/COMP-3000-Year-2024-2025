@@ -13,8 +13,6 @@ services:
       context: ./back-end
       dockerfile: .dockerfile
     container_name: back-end
-    ports:
-      - '5000:3000'
     env_file:
       - path: .env
         required: true
@@ -53,4 +51,14 @@ services:
     ports:
       - "4000:4000"  # Expose HTTPS to the outside world
     depends_on:
-      - front-end
+      - auth-server
+  
+  nginx-back-end:
+    image: nginx:alpine
+    volumes:
+      - ./nginx/back-end.conf:/etc/nginx/nginx.conf
+      - ./comp3000-el-comercio.xyz-ssl-bundle:/etc/nginx/ssl:ro  # Attatch PorkBun SLL Bundle
+    ports:
+      - "5000:5000"  # Expose HTTPS to the outside world
+    depends_on:
+      - back-end

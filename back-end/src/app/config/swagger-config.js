@@ -11,7 +11,10 @@ const options = {
         },
         servers: [
             {
-                url: "http://localhost:5000/",
+                url: "https://localhost:5000/",
+            },
+            {
+                url: "https://comp3000-el-comercio.xyz:5000/",
             },
         ],
     },
