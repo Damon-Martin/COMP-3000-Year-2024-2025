@@ -51,6 +51,6 @@ services:
       - ./nginx/auth-server.conf:/etc/nginx/nginx.conf
       - ./comp3000-el-comercio.xyz-ssl-bundle:/etc/nginx/ssl:ro  # Attatch PorkBun SLL Bundle
     ports:
-      - "4000:4000" # Expose HTTPS to the outside world
+      - "4000:4000"  # Expose HTTPS to the outside world
     depends_on:
       - front-end
