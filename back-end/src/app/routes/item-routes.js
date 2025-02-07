@@ -3,10 +3,11 @@
 */
 import express from "express";
 import AuthMiddleware from "../middleware/auth-middleware.js";
+import CategoriesModel from "../models/categories.js";
 import ItemCategoriesController from "../controllers/ItemCategoriesController.js";
 
 const ItemRouter = express.Router();
-const itemCategoriesController = new ItemCategoriesController();
+const itemCategoriesController = new ItemCategoriesController(CategoriesModel);
 
 /**
  * @swagger
@@ -81,7 +82,7 @@ ItemRouter.get('/all-items-by-category', (req, res) => {
 ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res) => {
     try {
         const newCategory = req.body.category;
-        const response = itemCategoriesController.addNewCategory(newCategory);
+        const response = await itemCategoriesController.addNewCategory(newCategory);
 
         if (response.code == 200) {
             return res.status(response.code).json({
