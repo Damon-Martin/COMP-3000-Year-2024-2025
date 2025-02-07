@@ -86,7 +86,7 @@ ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res
         }
     
         return res.status(200).json({
-            msg: `You are authenticated ${newCategory}`
+            msg: `Added new category successfully: ${newCategory}`
         });
     }
     catch (e) {
