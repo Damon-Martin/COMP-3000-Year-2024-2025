@@ -44,7 +44,11 @@ async function main() {
   try {
       await initMongo(); // Recursively attempts a connection
 
+      // Middlewares
       app.use(AuthMiddleware.restrictEndpointWithoutDB);
+      app.use(express.json());
+      app.use(express.urlencoded({ extended: true }));
+
       app.use("/v1/items", ItemRouter);
 
       app.listen(port, () => {

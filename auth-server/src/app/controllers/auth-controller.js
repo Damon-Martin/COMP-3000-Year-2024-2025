@@ -235,7 +235,7 @@ class AuthController {
                     return {
                         code: 200,
                         token: token,
-                        msg: "Customer Registered Successfully"
+                        msg: "Admin Registered Successfully"
                     }
                 }
                 catch(e) {
