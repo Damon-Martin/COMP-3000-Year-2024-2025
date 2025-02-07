@@ -3,8 +3,10 @@
 */
 import express from "express";
 import AuthMiddleware from "../middleware/auth-middleware.js";
+import ItemCategoriesController from "../controllers/ItemCategoriesController.js";
 
 const ItemRouter = express.Router();
+const itemCategoriesController = new ItemCategoriesController();
 
 /**
  * @swagger
@@ -79,21 +81,18 @@ ItemRouter.get('/all-items-by-category', (req, res) => {
 ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res) => {
     try {
         const newCategory = req.body.category;
-        if (newCategory == null) {
-            return res.status(400).json({
-                error: "Missing Category in the req body to make a new category"
-            });
-        }
+        const response = itemCategoriesController.addNewCategory(newCategory);
 
-        if (newCategory == "") {
-            return res.status(400).json({
-                error: "New Categories can't be empty and need a length greater than 0"
-            });
+        if (response.code == 200) {
+            return res.status(response.code).json({
+                msg: response.msg
+            })
         }
-    
-        return res.status(200).json({
-            msg: `Added new category successfully: ${newCategory}`
-        });
+        else {
+            return res.status(response.code).json({
+                error: response.error
+            })
+        }
     }
     catch (e) {
         return res.status(500).json({
