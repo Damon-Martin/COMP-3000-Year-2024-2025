@@ -81,7 +81,13 @@ ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res
         const newCategory = req.body.category;
         if (newCategory == null) {
             return res.status(400).json({
-                error: "This endpoint requires a new category using category in the req body"
+                error: "Missing Category in the req body to make a new category"
+            });
+        }
+
+        if (newCategory == "") {
+            return res.status(400).json({
+                error: "New Categories can't be empty and need a length greater than 0"
             });
         }
     
