@@ -103,4 +103,30 @@ ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res
     }
 });
 
+
+
+/**
+ * @swagger
+ * /v1/items/:
+ *   post:
+ *     summary: Adds a new Item and places it in a category
+ *     description: User sends a the item description and price and a new item is made
+ *     tags:
+ *       - ItemController 
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: New Item created successfully
+ *       400:
+ *         description: Bad Request - Missing Item Details in request body
+ *       401:
+ *         description: Unauthorized - Invalid or missing token
+ *       500:
+ *         description: Internal server error
+ */
+ItemRouter.post('/', AuthMiddleware.checkIfAdmin, (req, res) => {
+    res.send('Hello World!')
+})
+
 export default ItemRouter;

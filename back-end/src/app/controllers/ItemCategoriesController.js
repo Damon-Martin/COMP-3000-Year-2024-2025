@@ -41,7 +41,11 @@ class ItemCategoriesController {
 
     getItemsByCategory(category) {}
 
-    addNewItem(itemDetails, category) {}
+    addNewItem(itemDetails, category) {
+        // Check if category Exists
+
+        // Add Item
+    }
 
     searchForItemsByText() {}
 }
