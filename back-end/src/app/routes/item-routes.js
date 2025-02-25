@@ -23,8 +23,8 @@ const itemCategoriesController = new ItemCategoriesController(CategoriesModel);
  * @swagger
  * /v1/items/all-categories:
  *   get:
- *     summary: Retrieves all categories
- *     description: Returns a list of all categories
+ *     summary: Returns all category details (Not Items in the category)
+ *     description: Retrieves a list of all category names and their images
  *     tags:
  *       - ItemController 
  */
