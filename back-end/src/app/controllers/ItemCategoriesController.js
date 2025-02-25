@@ -53,13 +53,28 @@ class ItemCategoriesController {
     }
     
 
-    getListOfCategories(category) {}
+    async getListOfCategories() {
+        try {
+            return {
+                code: 200,
+                msg: "Successfully retrieved list of Categories",
+                categories: []
+            };
+        } catch (e) {
+            console.error("Error in getListOfCategories:", e);  // Loggin the error for debugging
+            return {
+                code: 500,
+                error: "Internal Server Error"
+            };
+        }
+    }
+    
 
-    getItemsByCategory(category) {}
+    async getItemsByCategory(category) {}
 
-    addNewItem(itemDetails, category) {}
+    async addNewItem(itemDetails, category) {}
 
-    searchForItemsByText() {}
+    async searchForItemsByText() {}
 }
 
 export default ItemCategoriesController;

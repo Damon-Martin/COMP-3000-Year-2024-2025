@@ -27,9 +27,38 @@ const itemCategoriesController = new ItemCategoriesController(CategoriesModel);
  *     description: Retrieves a list of all category names and their images
  *     tags:
  *       - ItemController 
+ *     responses:
+ *       200:
+ *         description: List of all Category Retrieved successfully
+ *       500:
+ *         description: Internal server error
  */
-ItemRouter.get('/all-categories', (req, res) => {
-    res.send('Hello World!')
+ItemRouter.get('/all-categories', async (req, res) => {
+    try {
+        const response = await itemCategoriesController.getListOfCategories();
+        
+        if (response.code == 200) {
+            return res.status(response.code).json({
+                msg: response.msg,
+                categories: response.categories
+            })
+        }
+        else if (response.code) {
+            return res.status(response.code).json({
+                error: response.error
+            })
+        }
+        else {
+            return res.status(500).json({
+                error: "Missing a response code from getListOfCategries but it ran"
+            });
+        }
+    }
+    catch (e) {
+        return res.status(500).json({
+            error: "Failed Completely to run any logic for /all-categories and is at final catch block"
+        })
+    }
 })
 
 /**
@@ -40,6 +69,11 @@ ItemRouter.get('/all-categories', (req, res) => {
  *     description: Requests a JSON obj of all items based on requested categories by querieing the DB
  *     tags:
  *       - ItemController 
+ *     responses:
+ *       200:
+ *         description: List of all Item ID's by category
+ *       500:
+ *         description: Internal server error
  */
 ItemRouter.get('/all-items-by-category', (req, res) => {
     res.send('Hello World!')
