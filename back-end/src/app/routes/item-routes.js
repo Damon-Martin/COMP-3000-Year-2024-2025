@@ -78,7 +78,7 @@ ItemRouter.get('/all-items-by-category', (req, res) => {
  *                 itemID:
  *                   type: string
  *                   format: uuid
- *                 description: List of item IDs that belong to this category (Items need to exist first)
+ *                 description: List of item IDs that belong to this category (Needs valid UUID)
  *                 example: ["67bd14d7e13b0d81ae113f85", "67bd152ce13b0d81ae113f88"]
  *     responses:
  *       200:
