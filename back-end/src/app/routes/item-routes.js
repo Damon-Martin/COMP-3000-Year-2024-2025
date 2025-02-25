@@ -56,24 +56,35 @@ ItemRouter.get('/all-items-by-category', (req, res) => {
  *       - ItemController
  *     security:
  *       - bearerAuth: []
-*     requestBody:
+ *     requestBody:
  *       required: true
  *       content:
  *         application/json:
  *           schema:
  *             type: object
  *             required:
- *               - category
+ *               - categoryName
  *             properties:
- *               category:
+ *               categoryName:
  *                 type: string
- *                 description: The name of the new category to be created.
+ *                 description: The name of the category to be created.
  *                 example: "Men's T-Shirts"
+ *               imageURL:
+ *                 type: string
+ *                 description: URL of an image to be displayed for this category
+ *                 example: "https://cdn.pixabay.com/photo/2014/08/26/21/49/jackets-428622_1280.jpg"
+ *               items:
+ *                 type: array
+ *                 itemID:
+ *                   type: string
+ *                   format: uuid
+ *                 description: List of item IDs that belong to this category (Items need to exist first)
+ *                 example: ["67bd14d7e13b0d81ae113f85", "67bd152ce13b0d81ae113f88"]
  *     responses:
  *       200:
  *         description: Category created successfully
  *       400:
- *         description: Bad Request - Missing category in request body
+ *         description: Bad Request - Invalid input
  *       401:
  *         description: Unauthorized - Invalid or missing token
  *       500:
@@ -81,8 +92,10 @@ ItemRouter.get('/all-items-by-category', (req, res) => {
  */
 ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res) => {
     try {
-        const newCategory = req.body.category;
-        const response = await itemCategoriesController.addNewCategory(newCategory);
+        const categoryName = req.body.categoryName;
+        const itemsList = req.body.items;
+        const imageURL = req.body.imageURL;
+        const response = await itemCategoriesController.addNewCategory(categoryName, imageURL, itemsList);
 
         if (response.code == 200) {
             return res.status(response.code).json({

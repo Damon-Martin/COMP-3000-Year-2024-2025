@@ -5,8 +5,9 @@ const categoriesSchema = new mongoose.Schema(
     {
         // Category Name
         categoryName: { type: String, required: true, unique: true },
+        imageURL: { type: String, required: false },
         // List of items that is in this category
-        items: { type: [ itemSchema ], default: [] }
+        items: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }]
     }
 );
 
