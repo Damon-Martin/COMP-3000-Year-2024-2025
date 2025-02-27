@@ -55,12 +55,16 @@ class ItemCategoriesController {
 
     async getListOfCategories() {
         try {
+            // specify fields wanted using 1 and omit id
+            const categories = await this.categoriesModel.find({}, { categoryName: 1, imageURL: 1, _id: 0 });
+
             return {
                 code: 200,
                 msg: "Successfully retrieved list of Categories",
-                categories: []
+                categories: categories
             };
-        } catch (e) {
+        } 
+        catch (e) {
             console.error("Error in getListOfCategories:", e);  // Loggin the error for debugging
             return {
                 code: 500,
@@ -69,6 +73,8 @@ class ItemCategoriesController {
         }
     }
     
+    // N is the number of items to return
+    async listOfItemsByNumberSold(n) {}
 
     async getItemsByCategory(category) {}
 
