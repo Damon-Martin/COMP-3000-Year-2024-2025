@@ -56,7 +56,7 @@ class ItemCategoriesController {
     async getListOfCategories() {
         try {
             // specify fields wanted using 1 and omit id
-            const categories = await this.categoriesModel.find({}, { categoryName: 1, imageURL: 1, _id: 0 });
+            const categories = await this.categoriesModel.find({}, { categoryName: 1, imageURL: 1 });
 
             return {
                 code: 200,
@@ -76,9 +76,54 @@ class ItemCategoriesController {
     // N is the number of items to return
     async listOfItemsByNumberSold(n) {}
 
-    async getItemsByCategory(category) {}
+    async getItemsByCategoryID(categoryID) {
+        try {
+            // Validate categoryID
+            if (!categoryID || categoryID.trim() === "") {
+                return {
+                    code: 400,
+                    error: "Missing CategoryID in the request body"
+                };
+            }
 
-    async addNewItem(itemDetails, category) {}
+            if (!mongoose.Types.ObjectId.isValid(categoryID)) {
+                return {
+                    code: 400,
+                    error: "categoryID needs to be a valid Mongoose ObjectID"
+                };
+            }
+            
+            // Retrieve category document that contains item IDs
+            const category = await this.categoriesModel.findOne({ _id: categoryID });
+            
+            // If category doesn't exist, return 404
+            if (!category) {
+                return {
+                    code: 404,
+                    error: "Category not found so no item ids returned"
+                };
+            }
+    
+            // Extracting item IDs from the category
+            const items = category.items || []; // Ensuring it's an array
+
+            return {
+                code: 200,
+                msg: "Successfully retrieved list of Item IDs",
+                items: items
+            };
+        } 
+        catch (e) {
+            console.error("Error in getItemsByCategoryID:", e); // Proper error logging
+            return {
+                code: 500,
+                error: "Internal Server Error"
+            };
+        }
+    }
+    
+
+    async addNewItem(itemDetails, categoryID) {}
 
     async searchForItemsByText() {}
 }

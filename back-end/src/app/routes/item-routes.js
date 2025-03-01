@@ -63,20 +63,76 @@ ItemRouter.get('/all-categories', async (req, res) => {
 
 /**
  * @swagger
- * /v1/items/all-items-by-category:
+ * /v1/items/all-items-by-categoryID:
  *   get:
- *     summary: Retrieves all items based on requested categories
- *     description: Requests a JSON obj of all items based on requested categories by querieing the DB
+ *     summary: Retrieves all items based on requested category
+ *     description: Returns a JSON object of all items filtered by categoryID
  *     tags:
  *       - ItemController 
+ *     parameters:
+ *       - in: query
+ *         name: categoryID
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: The ID of the category to fetch items for
  *     responses:
  *       200:
- *         description: List of all Item ID's by category
+ *         description: List of all items for the given category
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: array
+ *               items:
+ *                 type: object
+ *                 properties:
+ *                   _id:
+ *                     type: string
+ *                     description: Unique identifier for the item
+ *                   name:
+ *                     type: string
+ *                     description: Name of the item
+ *                   image_url:
+ *                     type: string
+ *                     description: Name of the item
+ *                   price:
+ *                     type: string
+ *                     description: Name of the item
+ *                   description:
+ *                     type: string
+ *                     description: Name of the item
+ *       400:
+ *         description: Bad request (e.g., missing categoryID)
  *       500:
  *         description: Internal server error
  */
-ItemRouter.get('/all-items-by-category', (req, res) => {
-    res.send('Hello World!')
+ItemRouter.get('/all-items-by-categoryID', async (req, res) => {
+    try {
+        const categoryID = req.query.categoryID;
+        const response = await itemCategoriesController.getItemsByCategoryID(categoryID);
+        
+        if (response.code == 200) {
+            return res.status(response.code).json({
+                msg: response.msg,
+                categories: response.items
+            })
+        }
+        else if (response.code) {
+            return res.status(response.code).json({
+                error: response.error
+            })
+        }
+        else {
+            return res.status(500).json({
+                error: "Missing a response code from getListOfCategries but it ran"
+            });
+        }
+    }
+    catch (e) {
+        return res.status(500).json({
+            error: "Failed Completely to run any logic for /all-categories and is at final catch block"
+        })
+    }
 })
 
 
