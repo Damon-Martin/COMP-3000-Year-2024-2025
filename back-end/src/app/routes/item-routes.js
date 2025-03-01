@@ -163,6 +163,10 @@ ItemRouter.get('/all-items-by-categoryID', async (req, res) => {
  *                 type: string
  *                 description: URL of an image to be displayed for this category
  *                 example: "https://cdn.pixabay.com/photo/2014/08/26/21/49/jackets-428622_1280.jpg"
+ *               altImgTxt:
+ *                 type: string
+ *                 description: Alt Text for image for screen reader compatibility
+ *                 example: Image of a Jacket
  *               items:
  *                 type: array
  *                 itemID:
@@ -184,8 +188,9 @@ ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res
     try {
         const categoryName = req.body.categoryName;
         const itemsList = req.body.items;
-        const imageURL = req.body.imageURL;
-        const response = await itemCategoriesController.addNewCategory(categoryName, imageURL, itemsList);
+        const imageURL = req.body.imageURL; // Optional
+        const altImgTxt = req.body.altImgTxt; // Optional
+        const response = await itemCategoriesController.addNewCategory(categoryName, imageURL, altImgTxt, itemsList);
 
         if (response.code == 200) {
             return res.status(response.code).json({

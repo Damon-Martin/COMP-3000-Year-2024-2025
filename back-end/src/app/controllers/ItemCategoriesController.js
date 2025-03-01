@@ -5,7 +5,7 @@ class ItemCategoriesController {
         this.categoriesModel = categoriesModel;
     }
     
-    async addNewCategory(categoryName, imageURL, itemsList) {
+    async addNewCategory(categoryName, imageURL, altImgTxt, itemsList ) {
         if (!categoryName) {
             return {
                 code: 400,
@@ -35,6 +35,7 @@ class ItemCategoriesController {
             const newCategoryInst = new this.categoriesModel({
                 categoryName: categoryName,
                 imageURL: imageURL,
+                altImgTxt: altImgTxt,
                 items: uniqueItems.length > 0 ? uniqueItems : undefined // If no items the category exists
             });
     
@@ -123,7 +124,24 @@ class ItemCategoriesController {
     }
     
 
-    async addNewItem(itemDetails, categoryID) {}
+    async addNewItem(itemDetails, categoryID) {
+        // Validate categoryID
+        if (!categoryID || categoryID.trim() === "") {
+            return {
+                code: 400,
+                error: "Missing CategoryID in the request body"
+            };
+        }
+
+        // Check if valid mongoose id
+        if (!mongoose.Types.ObjectId.isValid(categoryID)) {
+            return {
+                code: 400,
+                error: "categoryID needs to be a valid Mongoose ObjectID"
+            };
+        }
+
+    }
 
     async searchForItemsByText() {}
 }
