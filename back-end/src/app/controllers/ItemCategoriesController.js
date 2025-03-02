@@ -141,6 +141,10 @@ class ItemCategoriesController {
             };
         }
 
+        return {
+            code: 200,
+            msg: "Item Added Successfully"
+        }
     }
 
     async searchForItemsByText() {}

@@ -211,4 +211,88 @@ ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res
     }
 });
 
+
+/**
+ * @swagger
+ * /v1/items/:
+ *   post:
+ *     summary: Creates a new item
+ *     description: Using Items Details and a category to insert it into the database. Requires JWT authentication.
+ *     tags:
+ *       - ItemController
+ *     security:
+ *       - bearerAuth: []
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - categoryName
+ *             properties:
+ *               categoryID:
+ *                 type: uuid
+ *                 description: The ID of the category to which the item belongs.
+ *                 example: "67bd14d7e13b0d81ae113f85"
+ *               itemDetails:
+ *                 type: object
+ *                 properties:
+ *                   itemName:
+ *                     type: string
+ *                     description: Name of the item.
+ *                     example: "Leather Jacket"
+ *                   imageURL:
+ *                     type: string
+ *                     description: URL of an image to be displayed for this item.
+ *                     example: "https://cdn.pixabay.com/photo/2014/08/26/21/49/jackets-428622_1280.jpg"
+ *                   altImgTxt:
+ *                     type: string
+ *                     description: Alt text for image for screen reader compatibility.
+ *                     example: "Image of a leather jacket"
+ *                   itemDescription:
+ *                     type: string
+ *                     description: A detailed description of the item.
+ *                     example: "A stylish leather jacket perfect for all seasons."
+ *     responses:
+ *       200:
+ *         description: Item created successfully
+ *       400:
+ *         description: Bad Request - Invalid input
+ *       401:
+ *         description: Unauthorized - Invalid or missing token
+ *       500:
+ *         description: Internal server error
+ */
+ItemRouter.post("/", AuthMiddleware.checkIfAdmin, async (req, res) => {
+    try{
+        const itemDetails = req.body.itemDetails;
+        const categoryID = req.body.categoryID;
+    
+        const response = await itemCategoriesController.addNewItem(itemDetails, categoryID);
+
+        if (response.code == 200) {
+            return res.status(response.code).json({
+                msg: response.msg
+            })
+        }
+        else if (response.code) {
+            return res.status(response.code).json({
+                error: response.error
+            })
+        }
+        else {
+            return res.status(500).json({
+                error: "Missing Response from itemCategoryController.addNewItem()"
+            })
+        }
+    }
+    catch (e) {
+        return res.status(500).json({
+            error: "Server completely failed to create a new item",
+            rawError: `${e}`,
+        });
+    }
+});
+
 export default ItemRouter;
