@@ -9,8 +9,8 @@ export default function DesktopNavBar() {
 
             {/* Right-aligned Links */}
             <div className="ml-auto flex items-center">
-                <Link href="/" className="mr-3 hover:text-[#FF4D00]">Account</Link>
-                <Link href="/" className="mr-3 hover:text-[#FF4D00]">Settings</Link>
+                <Link href="/account" className="mr-3 hover:text-[#FF4D00]">Account</Link>
+                <Link href="/settings" className="mr-3 hover:text-[#FF4D00]">Settings</Link>
                 <Link href="/" className="mr-3 hover:text-[#FF4D00]">Basket</Link>
             </div>
         </div>
