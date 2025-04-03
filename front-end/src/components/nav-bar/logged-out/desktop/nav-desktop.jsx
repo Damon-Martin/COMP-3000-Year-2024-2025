@@ -7,6 +7,7 @@ export default function DesktopLoggedOutNavBar() {
             {/* Right-aligned Links */}
             <div className="ml-auto flex items-center">
                 <Link href="/login" className="mr-3 hover:text-[#FF4D00]">Login</Link>
+                <Link href="/" className="mr-3 hover:text-[#FF4D00]">Home</Link>
                 <Link href="/settings" className="mr-3 hover:text-[#FF4D00]">Settings</Link>
                 <Link href="/" className="mr-3 hover:text-[#FF4D00]">Basket</Link>
             </div>
