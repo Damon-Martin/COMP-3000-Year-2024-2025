@@ -7,7 +7,7 @@ import SettingButton from "@/components/settings/setting-btn/setting-btn";
 
 import { useState, useEffect } from "react";
 
-export default function SettingsPage() {
+export default function AccessibilitySettingsPage() {
   const [isLoggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -26,9 +26,9 @@ export default function SettingsPage() {
       <HeaderBar />
       {isLoggedIn ? <DesktopNavBar /> : <DesktopLoggedOutNavBar />}
       <div>
-        <h1 tabIndex={0} className="text-3xl">Settings</h1>
+        <h1 tabIndex={0} className="text-3xl">Accessibility</h1>
         <main className="flex flex-col">
-          <SettingButton redirectUrl={"/settings/accessibility"} title={"Accessibility Settings"} description={"Eg Dyslexic Font, Larger Text Options..."}/>
+          
         </main>
       </div>
     </div>
