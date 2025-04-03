@@ -29,7 +29,7 @@ export default function Home() {
         <div id="Best Selling">
           <p>asdfsdafasd</p>
         </div>
-        <div>
+        <div className="ml-auto">
           <CategorySideBar />
         </div>
       </main>

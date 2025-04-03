@@ -28,7 +28,7 @@ export default function SettingsPage() {
       <div>
         <h1 tabIndex={0} className="text-3xl">Settings</h1>
         <main className="flex flex-col">
-          <SettingButton redirectUrl={"/"} title={"Accessibility Settings"} description={"Eg Dyslexic Font, Larger Text Options..."}/>
+          <SettingButton redirectUrl={"/settings/accessibility"} title={"Accessibility Settings"} description={"Eg Dyslexic Font, Larger Text Options..."}/>
         </main>
       </div>
     </div>
