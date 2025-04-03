@@ -1,13 +1,13 @@
 "use client"
 
 import HeaderBar from "@/components/all-pages/header-bar/header-bar";
-import CategorySideBar from "@/components/home-page/side-bar/category-side-bar";
 import DesktopNavBar from "@/components/nav-bar/logged-in/desktop/nav-desktop";
 import DesktopLoggedOutNavBar from "@/components/nav-bar/logged-out/desktop/nav-desktop";
+import SettingButton from "@/components/settings/setting-btn/setting-btn";
 
 import { useState, useEffect } from "react";
 
-export default function Home() {
+export default function SettingsPage() {
   const [isLoggedIn, setLoggedIn] = useState(false);
 
   useEffect(() => {
@@ -25,14 +25,12 @@ export default function Home() {
     <div>
       <HeaderBar />
       {isLoggedIn ? <DesktopNavBar /> : <DesktopLoggedOutNavBar />}
-      <main className="flex flex-row">
-        <div id="Best Selling">
-          <p>asdfsdafasd</p>
-        </div>
-        <div>
-          <CategorySideBar />
-        </div>
-      </main>
+      <div>
+        <h1 tabIndex={0} className="text-3xl">Settings</h1>
+        <main className="flex flex-col">
+          <SettingButton redirectUrl={"/"} title={"Accessibility Settings"} description={"Eg Dyslexic Font, Larger Text Options..."}/>
+        </main>
+      </div>
     </div>
   );
 }
