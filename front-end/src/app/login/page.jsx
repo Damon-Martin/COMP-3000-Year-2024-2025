@@ -1,5 +1,5 @@
-import HeaderBar from "@/components/all-pages/header-bar/header-bar";
-import DesktopNavBar from "@/components/nav-bar/logged-in/desktop/nav-desktop";
+import HeaderBar from "@/components/regular-components/all-pages/header-bar/header-bar";
+import DesktopNavBar from "@/components/regular-components/nav-bar/logged-in/desktop/nav-desktop";
 
 export default function LoginPage() {
   return (
