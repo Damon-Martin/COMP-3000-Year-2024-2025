@@ -1,9 +1,9 @@
 "use client"
 
-import HeaderBar from "@/components/all-pages/header-bar/header-bar";
-import DesktopNavBar from "@/components/nav-bar/logged-in/desktop/nav-desktop";
-import DesktopLoggedOutNavBar from "@/components/nav-bar/logged-out/desktop/nav-desktop";
-import SettingButton from "@/components/settings/setting-btn/setting-btn";
+import HeaderBar from "@/components/regular-components/all-pages/header-bar/header-bar";
+import DesktopNavBar from "@/components/regular-components/nav-bar/logged-in/desktop/nav-desktop";
+import DesktopLoggedOutNavBar from "@/components/regular-components/nav-bar/logged-out/desktop/nav-desktop";
+import SettingButton from "@/components/regular-components/settings/setting-btn/setting-btn";
 
 import { useState, useEffect } from "react";
 
