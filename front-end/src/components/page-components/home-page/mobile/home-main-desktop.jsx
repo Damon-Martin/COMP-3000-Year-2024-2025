@@ -1,1 +1,0 @@
-// Mobile Variant of the Page
