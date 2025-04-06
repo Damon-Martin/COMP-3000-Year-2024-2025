@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import HomeDesktop from "@/components/page-components/home-page/desktop/home-main-desktop";
-import HomeMobile from "@/components/page-components/home-page/mobile/home-main-mobile";
+import HomeDesktop from "@/components/page-components/home-page/desktop/home-desktop";
+import HomeMobile from "@/components/page-components/home-page/mobile/home-mobile";
 
 export default function Home() {
   const [isLoggedIn, setLoggedIn] = useState(false);

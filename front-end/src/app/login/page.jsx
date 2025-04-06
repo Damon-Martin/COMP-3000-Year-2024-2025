@@ -1,14 +1,7 @@
-import HeaderBar from "@/components/regular-components/all-pages/header-bar/header-bar";
-import DesktopNavBar from "@/components/regular-components/nav-bar/logged-in/desktop/nav-desktop";
+import LoginDesktop from "@/components/page-components/login-page/desktop/login-desktop";
 
 export default function LoginPage() {
   return (
-    <div>
-        <HeaderBar/>
-        <DesktopNavBar/>
-        <main className="flex flex-row">
-            <h1>Login</h1>
-        </main>
-    </div>
+    <LoginDesktop />
   );
 }
