@@ -8,7 +8,7 @@ export default function AccountPage() {
         <HeaderBar/>
         <DesktopNavBar/>
         <main className="flex flex-row">
-            <h1>Settings</h1>
+            <h1>Accounts</h1>
         </main>
     </div>
   );

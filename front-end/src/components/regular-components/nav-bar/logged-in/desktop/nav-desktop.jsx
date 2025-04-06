@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import NavBtn from '../../buttons/nav-btn';
 
 export default function DesktopNavBar() {
     // Desktop Varient
