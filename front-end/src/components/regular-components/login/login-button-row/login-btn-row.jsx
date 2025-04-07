@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-
 export default function LoginBtnRow() {
     const [hovered, setHovered] = useState({
         register: false,
@@ -50,6 +49,7 @@ export default function LoginBtnRow() {
                 style={loginStyle}
                 onMouseEnter={() => setHovered({ ...hovered, login: true })}
                 onMouseLeave={() => setHovered({ ...hovered, login: false })}
+                type="submit"
             >
                 Login
             </button>

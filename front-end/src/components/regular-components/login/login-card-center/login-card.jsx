@@ -13,10 +13,18 @@ export default function LoginCard({
     marginTop = "mt-10"
 }) {
 
+
+    const submitDetails = async (e) => {
+        e.preventDefault();
+        alert("button pressed")
+    };
+
+
     return (
         <form 
+            onSubmit={submitDetails}
             className={`text-black ${width} ${minWidth} ${maxWidth} ${height} ${minHeight} ${maxHeight} ${marginTop} md:${marginSides} flex items-center justify-center p-5 rounded-lg shadow-lg`}
-            style={{ backgroundColor: color }}  
+            style={{ backgroundColor: color }}
         >
             <div className="text-center space-y-4">
                 <p className="text-2xl font-semibold">Login</p>
