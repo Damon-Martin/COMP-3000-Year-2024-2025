@@ -10,17 +10,26 @@ export default function LoginCard({
     minHeight = "min-h-80",
     maxHeight = "max-h-[800px]",
     marginSides = "mx-10",  
-    marginTop = "mt-10"}) {
+    marginTop = "mt-10"
+}) {
 
     return (
         <form 
-            className={`text-black ${width} ${minWidth} ${maxWidth} ${height} ${minHeight} ${maxHeight} ${marginTop} md:${marginSides} flex items-center justify-center`}
+            className={`text-black ${width} ${minWidth} ${maxWidth} ${height} ${minHeight} ${maxHeight} ${marginTop} md:${marginSides} flex items-center justify-center p-5 rounded-lg shadow-lg`}
             style={{ backgroundColor: color }}  
         >
-            <div className="text-center">  {/* Added this div to center text inside the form */}
-                <p>Login</p>
-                <input type="text" placeholder="username" className="m-1"></input> <br/>
-                <input type="password" placeholder="password" className="m-1"></input>
+            <div className="text-center space-y-4">
+                <p className="text-2xl font-semibold">Login</p>
+                <input 
+                    type="text" 
+                    placeholder="Username" 
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
+                />
+                <input 
+                    type="password" 
+                    placeholder="Password" 
+                    className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
+                />
                 <LoginBtnRow />
             </div>
         </form>
