@@ -7,47 +7,60 @@ import DesktopNavBar from "@/components/regular-components/nav-bar/logged-in/des
 import DesktopLoggedOutNavBar from "@/components/regular-components/nav-bar/logged-out/desktop/nav-desktop";
 import { useEffect, useState } from "react";
 
-
 // Desktop variant: Page is more horizontal
 export default function HomeDesktop({ isLoggedIn }) {
-    const [fontSizeMultiplier, setFontSizeMultiplier] = useState(1)
-    const [isDyslexicFont, setIsDyslexicFont] = useState(false)
+    const [fontSizeMultiplier, setFontSizeMultiplier] = useState(1);
+    const [isDyslexicFont, setIsDyslexicFont] = useState(false);
 
-    // Custom fontSizeMultiplier
+    // Desktop variant: Page is more horizontal
     useEffect(() => {
-        const sizeMultiplier = localStorage.getItem("font-size-multiplier")
-        
-        // Check if the parsed value is a valid number
-        const parsedSizeMultiplier = Number(sizeMultiplier)
-        if (!isNaN(parsedSizeMultiplier)) {
-            setFontSizeMultiplier(parsedSizeMultiplier)
+        let sizeMultiplier = localStorage.getItem("font-size-multiplier");
+    
+        // If there is no multiplier, setting it to 1
+        if (sizeMultiplier === null) {
+            sizeMultiplier = "1";
+            localStorage.setItem("font-size-multiplier", sizeMultiplier);
         }
-    }, [])
+    
+        // Parsing and setting the multiplier
+        const parsedSizeMultiplier = Number(sizeMultiplier);
+        if (!isNaN(parsedSizeMultiplier)) {
+            setFontSizeMultiplier(parsedSizeMultiplier);
+        }
+    }, []);
     
     // Dyslexic Font Changer (if enabled)
     useEffect(() => {
-        const isDyslexicFont =  JSON.parse(localStorage.getItem("dyslexic-font"))
-
+        const isDyslexicFont =  JSON.parse(localStorage.getItem("dyslexic-font"));
         if (isDyslexicFont === true) {
-            setIsDyslexicFont(true)
+            setIsDyslexicFont(true);
         }
-    }, [])
-
+    }, []);
 
     // Defining Fonts
     const dyslexicFont = "Open-Dyslexic";
     const defaultFont = "Arial, sans-serif";
 
+    // Set the root font size based on the fontSizeMultiplier
+    const rootFontSize = `${16 * fontSizeMultiplier}px`;
+
+    const styleSettings = { 
+        fontFamily: isDyslexicFont ? dyslexicFont : defaultFont,
+    };
+
+
+    // using calc rem * multiplier, to scale a large font
     return (
-        <div style={{ fontFamily: isDyslexicFont ? dyslexicFont : defaultFont }}>
+        <div style={styleSettings}>
             <HeaderBar />
             {isLoggedIn ? <DesktopNavBar /> : <DesktopLoggedOutNavBar />}
             <main className="flex flex-row">
                 <div id="Best Selling">
-                    <p>Best Selling</p>
+                    <p style={{ fontSize: `calc(1.25rem * ${fontSizeMultiplier})` }}>Best Selling</p>
+                    <p style={{fontSize: rootFontSize}}>Standard font size here</p>
                 </div>
                 <div className="ml-auto">
-                    <CategorySideBar />
+                    <CategorySideBar fontSizeMultiplier={fontSizeMultiplier} />
                 </div>
             </main>
             <SupportButton />
