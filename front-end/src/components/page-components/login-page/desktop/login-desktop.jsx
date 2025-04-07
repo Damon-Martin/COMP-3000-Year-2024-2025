@@ -49,13 +49,7 @@ export default function LoginDesktop() {
             <HeaderBar />
             <DesktopLoggedOutNavBar />
             <main className="flex flex-row justify-center items-center">
-                <LoginCard 
-                    color="#D9D9D9"
-                    width="30rem"  
-                    height="30rem"  
-                    marginTop="mt-2"  
-                    marginSides="md:mx-2"
-                />
+                <LoginCard />
             </main>
         </div>
     );
