@@ -1,3 +1,5 @@
+/* styles/globals.css */
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -20,4 +22,47 @@ body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+
+
+
+
+/*********************************** Fonts *********************************************
+
+
+/* Regular */
+@font-face {
+  font-family: 'Open-Dyslexic';
+  src: url('/fonts/OpenDyslexic-Regular.woff2') format('woff2'),
+       url('/fonts/OpenDyslexic-Regular.woff') format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
+
+/* Italic */
+@font-face {
+  font-family: 'Open-Dyslexic';
+  src: url('/fonts/OpenDyslexic-Italic.woff2') format('woff2'),
+       url('/fonts/OpenDyslexic-Italic.woff') format('woff');
+  font-weight: normal;
+  font-style: italic;
+}
+
+/* Bold */
+@font-face {
+  font-family: 'Open-Dyslexic';
+  src: url('/fonts/OpenDyslexic-Bold.woff2') format('woff2'),
+       url('/fonts/OpenDyslexic-Bold.woff') format('woff');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Bold Italic */
+@font-face {
+  font-family: 'Open-Dyslexic';
+  src: url('/fonts/OpenDyslexic-Bold-Italic.woff2') format('woff2'),
+       url('/fonts/OpenDyslexic-Bold-Italic.woff') format('woff');
+  font-weight: bold;
+  font-style: italic;
 }
