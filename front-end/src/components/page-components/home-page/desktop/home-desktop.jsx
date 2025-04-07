@@ -35,7 +35,7 @@ export default function HomeDesktop({ isLoggedIn }) {
 
 
     // Defining Fonts
-    const dyslexicFont = "fantasy";
+    const dyslexicFont = "Open-Dyslexic";
     const defaultFont = "Arial, sans-serif";
 
     return (
