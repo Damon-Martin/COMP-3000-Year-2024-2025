@@ -14,9 +14,26 @@ export default function LoginCard({
 }) {
 
 
+    /*********************** Login Related Functionality************************* */
+    const missingDetails = () => {
+        alert("Missing Username or Password")
+    }
+
     const submitDetails = async (e) => {
         e.preventDefault();
-        alert("button pressed")
+
+        const uName = document.getElementById("uName").value;
+        const pass = document.getElementById("pass").value;
+
+        // Perform Fetch
+        if (uName && pass) {
+            
+            const apiRes = await fetch('');
+
+        }
+        else {
+            missingDetails();
+        }
     };
 
 
@@ -30,11 +47,13 @@ export default function LoginCard({
                 <p className="text-2xl font-semibold">Login</p>
                 <input 
                     type="text" 
+                    id="uName"
                     placeholder="Username" 
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
                 />
                 <input 
                     type="password" 
+                    id="pass"
                     placeholder="Password" 
                     className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all" 
                 />

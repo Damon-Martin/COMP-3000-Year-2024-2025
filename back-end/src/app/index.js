@@ -6,15 +6,13 @@ import AuthMiddleware from './middleware/auth-middleware.js';
 import { specs, swaggerUI } from './config/swagger-config.js';
 
 const app = express()
-const isProduction = process.env.PRODUCTION === 'true'; // Using Logic to determine if true or false based on env string
+const isProduction = process.env.REACT_APP_PRODUCTION === 'true'; // Using Logic to determine if true or false based on env string
 const port = 3000
 const connectionStr = String(process.env.DBConnectionStr);
 
-// Display swagger if in development
-if (!isProduction) {
-    process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
-    app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
-}
+// Display swagger
+process.env.NODE_TLS_REJECT_UNAUTHORIZED = "0";
+app.use("/api-docs", swaggerUI.serve, swaggerUI.setup(specs));
 
 // Mongoose Settings
 let retryCount = 0;
