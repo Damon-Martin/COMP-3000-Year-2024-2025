@@ -1,5 +1,6 @@
 import LoginBtnRow from "../login-button-row/login-btn-row";
 
+const AuthURI = process.env.NEXT_PUBLIC_AUTH_URI_FRONT_END_PROD;
 // Mobile no margin sides but desktop does
 export default function LoginCard({ 
     color = "#D9D9D9",  
@@ -28,7 +29,7 @@ export default function LoginCard({
         // Perform Fetch
         if (uName && pass) {
             
-            const apiRes = await fetch('');
+            console.log(`${AuthURI}`)
 
         }
         else {
