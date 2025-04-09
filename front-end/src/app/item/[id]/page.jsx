@@ -6,7 +6,7 @@ import { useEffect, useState } from 'react';
 import ItemPageMobile from '@/components/page-components/item-page/mobile/item-page-mobile';
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
-const AuthURI = isProd 
+const BackendURI = isProd 
     ? process.env.NEXT_PUBLIC_BACKEND_URI_FRONT_END_PROD 
     : process.env.NEXT_PUBLIC_BACKEND_URI_FRONT_END;
 
@@ -32,7 +32,7 @@ export default function ItemPage() {
     useEffect(() => {
         const fetchItemData = async () => {
             try {
-                const res = await fetch(`${AuthURI}/v1/items?ItemID=${ItemID}`);
+                const res = await fetch(`${BackendURI}/v1/items?ItemID=${ItemID}`);
                 if (!res.ok) throw new Error("Failed to fetch item");
                 const data = await res.json();
                 setItem(data.item);
