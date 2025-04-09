@@ -22,6 +22,58 @@ const itemCategoriesController = new ItemCategoriesController(CategoriesModel, I
 
 /**
  * @swagger
+ * /v1/items:
+ *   get:
+ *     summary: Returns Item based by ID
+ *     description: Retrieves an item from the item collection by using Mongoose
+ *     tags:
+ *       - ItemController
+ *     parameters:
+ *       - name: ItemID
+ *         in: query
+ *         description: ID of the item to filter the categories
+ *         required: false
+ *         schema:
+ *           type: string
+ *           example: 67f6a1b7c02fe16921544ca8
+ *     responses:
+ *       200:
+ *         description: List of all Category Retrieved successfully
+ *       500:
+ *         description: Internal server error
+ */
+ItemRouter.get('/', async (req, res) => {
+    try {
+        const { ItemID } = req.query;
+
+        const response = await itemCategoriesController.getItemByID(ItemID);
+        
+        if (response.code == 200) {
+            return res.status(response.code).json({
+                item: response.item
+            })
+        }
+        else if (response.code) {
+            return res.status(response.code).json({
+                error: response.error
+            })
+        }
+        else {
+            return res.status(500).json({
+                error: "Missing a response code from getItemByID but it ran"
+            });
+        }
+    }
+    catch (e) {
+        return res.status(500).json({
+            error: "Failed Completely to run any logic for getItemByID and is at final catch block"
+        })
+    }
+})
+
+
+/**
+ * @swagger
  * /v1/items/all-categories:
  *   get:
  *     summary: Returns all category details (Not Items in the category)

@@ -183,6 +183,39 @@ class ItemCategoriesController {
         }
     }
 
+    async getItemByID(ItemID) {
+        if (!ItemID) {
+            return {
+                code: 400,
+                error: "Missing ItemID"
+            }
+        }
+
+        try {
+            // Retrieve category document that contains item IDs
+            const item = await this.itemsModel.findOne({ _id: ItemID });
+                
+            // If category doesn't exist, return 404
+            if (!item) {
+                return {
+                    code: 404,
+                    error: "Item not found"
+                };
+            }
+
+            return {
+                code: 200,
+                item: item
+            }
+        }
+        catch (e) {
+            return {
+                code: 500,
+                error: e
+            }
+        }
+    }
+
     async searchForItemsByText() {}
 }
 
