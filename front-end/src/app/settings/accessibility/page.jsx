@@ -8,23 +8,8 @@ import SettingButton from "@/components/regular-components/settings/setting-btn/
 import { useState, useEffect } from "react";
 
 export default function AccessibilitySettingsPage() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
-
-  useEffect(() => {
-    let token = localStorage.getItem("token");
-
-    if (token) {
-      setLoggedIn(true);
-    } 
-    else {
-      setLoggedIn(false);
-    }
-  }, []);
 
   return (
-    <div>
-      <HeaderBar />
-      {isLoggedIn ? <DesktopNavBar /> : <DesktopLoggedOutNavBar />}
       <div>
         <h1 tabIndex={0} className="text-3xl">Accessibility</h1>
         <main className="flex flex-col">
@@ -67,6 +52,5 @@ export default function AccessibilitySettingsPage() {
         </form>
         </main>
       </div>
-    </div>
   );
 }

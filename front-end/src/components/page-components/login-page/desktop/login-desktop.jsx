@@ -7,12 +7,8 @@ import DesktopLoggedOutNavBar from "@/components/regular-components/nav-bar/logg
 // Desktop variant: Page is more horizontal
 export default function LoginDesktop() {
     return (
-        <div>
-            <HeaderBar />
-            <DesktopLoggedOutNavBar />
-            <main className="flex flex-row justify-center items-center">
-                <LoginCard />
-            </main>
-        </div>
+        <main className="flex flex-row justify-center items-center">
+            <LoginCard />
+        </main>
     );
 }
