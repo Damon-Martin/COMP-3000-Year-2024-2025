@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const AuthURI = String(process.env.REACT_APP_AUTH_SERVER_URI);
+const AuthURI = String(process.env.NEXT_PUBLIC_AUTH_SERVER_URI);
 
 class AuthMiddleware {
 

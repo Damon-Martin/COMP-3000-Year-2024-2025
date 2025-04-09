@@ -6,7 +6,7 @@ import AuthMiddleware from './middleware/auth-middleware.js';
 import { specs, swaggerUI } from './config/swagger-config.js';
 
 const app = express()
-const isProduction = process.env.REACT_APP_PRODUCTION === 'true'; // Using Logic to determine if true or false based on env string
+const isProduction = process.env.NEXT_PUBLIC_PRODUCTION === 'true'; // Using Logic to determine if true or false based on env string
 const port = 3000
 const connectionStr = String(process.env.DBConnectionStr);
 
