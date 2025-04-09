@@ -24,7 +24,7 @@ db.items.insertMany([
         "description": "A rain coat which is designed to withstand the British Weather and Climate during storms",
         "price": 99.99,
         "totalSold": 0,
-        "imageUrl": "https://cdn.pixabay.com/photo/2014/08/26/21/49/jackets-428622_1280.jpg",
+        "imageUrl": "https://cdn.pixabay.com/photo/2014/08/26/21/49/jackets-428622_1280.jpghttps://c.pxhere.com/photos/4d/92/coat_daylight_girl_guard_rail_horizon_landscape_mountains_ocean-1495585.jpg!d",
         "altImgTxt": "Image of a Rain Coat",
         "createdAt": {
           "$date": "2025-04-09T16:13:47.296Z"
