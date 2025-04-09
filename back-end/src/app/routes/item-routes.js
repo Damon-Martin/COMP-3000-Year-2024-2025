@@ -4,10 +4,11 @@
 import express from "express";
 import AuthMiddleware from "../middleware/auth-middleware.js";
 import CategoriesModel from "../models/categories.js";
+import ItemsModel from "../models/items.js";
 import ItemCategoriesController from "../controllers/ItemCategoriesController.js";
 
 const ItemRouter = express.Router();
-const itemCategoriesController = new ItemCategoriesController(CategoriesModel);
+const itemCategoriesController = new ItemCategoriesController(CategoriesModel, ItemsModel);
 
 /**
  * @swagger
@@ -254,6 +255,11 @@ ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res
  *                     type: string
  *                     description: A detailed description of the item.
  *                     example: "A stylish leather jacket perfect for all seasons."
+ *                   price:
+ *                     type: number
+ *                     format: float
+ *                     description: Price of the item.
+ *                     example: 99.99
  *     responses:
  *       200:
  *         description: Item created successfully
