@@ -3,6 +3,7 @@
 import { useParams } from 'next/navigation';
 import ItemPageDesktop from "@/components/page-components/item-page/desktop/item-page";
 import { useEffect, useState } from 'react';
+import ItemPageMobile from '@/components/page-components/item-page/mobile/item-page-mobile';
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
 const AuthURI = isProd 
@@ -12,8 +13,21 @@ const AuthURI = isProd
 export default function ItemPage() {
     const params = useParams();
     const ItemID = params.id;
+    const [isMobile, setIsMobile] = useState(false);
     const [item, setItem] = useState(null);
     const [error, setError] = useState(null);
+
+    // Determines to render desktop or mobile components
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 600);
+    };
+
+    handleResize(); // Checking the initial screen size
+    window.addEventListener("resize", handleResize);
+
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
     useEffect(() => {
         const fetchItemData = async () => {
@@ -42,13 +56,6 @@ export default function ItemPage() {
         return <p>Loading...</p>;
     }
 
-    return (
-        <ItemPageDesktop 
-            name={item.name} 
-            price={item.price} 
-            description={item.description} 
-            imageUrl={item.imageUrl} 
-            altImgTxt={item.altImgTxt} 
-        />
-    );
+
+    return isMobile ? <ItemPageMobile name={item.name} price={item.price} description={item.description} imageUrl={item.imageUrl} altImgTxt={item.altImgTxt}/> : <ItemPageDesktop name={item.name} price={item.price} description={item.description} imageUrl={item.imageUrl} altImgTxt={item.altImgTxt} />
 }
