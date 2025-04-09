@@ -1,4 +1,5 @@
 import HeaderBar from '@/components/regular-components/all-pages/header-bar/header-bar';
+import PurchaseButton from '@/components/regular-components/item-page/buttons/purchase-btn';
 import DesktopLoggedOutNavBar from '@/components/regular-components/nav-bar/logged-out/desktop/nav-desktop';
 import Image from 'next/image';
 
@@ -16,10 +17,12 @@ export default function ItemPageDesktop({ name, price, description, imageUrl, al
                     height={360} 
                     className="rounded-lg shadow-lg"
                 />
-                <div className="max-w-md">
-                    <p className="text-2xl font-semibold">{name}</p>
-                    <p className="mt-2">£{price}</p>
-                    <p className="mt-2">{description}</p>
+                <div className="min-w-[400px] max-w-[600px]"> {/* Added min-width and adjusted max-width */}
+                    <p className="text-2xl font-bold">{name}</p>
+                    <p className="mt-1">£{price}</p>
+                    <p className="mt-1">{description}</p>
+                    <PurchaseButton text={"Buy Now"} bgColor={"#FF4D00"} color={"white"} width={"full"} height={40} />
+                    <PurchaseButton text={"Add to Cart"} bgColor={"#D9D9D9"} color={"black"} width={"full"} height={40} />
                 </div>
             </main>
         </div>
