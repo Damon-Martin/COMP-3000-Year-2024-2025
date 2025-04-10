@@ -1,8 +1,9 @@
 import mongoose from 'mongoose';
 
 class ItemCategoriesController {
-    constructor(categoriesModel) {
+    constructor(categoriesModel, itemsModel) {
         this.categoriesModel = categoriesModel;
+        this.itemsModel = itemsModel;
     }
     
     async addNewCategory(categoryName, imageURL, altImgTxt, itemsList ) {
@@ -57,7 +58,7 @@ class ItemCategoriesController {
     async getListOfCategories() {
         try {
             // specify fields wanted using 1 and omit id
-            const categories = await this.categoriesModel.find({}, { categoryName: 1, imageURL: 1 });
+            const categories = await this.categoriesModel.find({}, { categoryName: 1, imageURL: 1, altImgTxt: 1 });
 
             return {
                 code: 200,
@@ -123,30 +124,119 @@ class ItemCategoriesController {
         }
     }
     
-
+    // Items do not have a category id however this item is added to a categories item
+    // Deals with 2 entities ItemsCollection & CategoryCollection (products attribute)
     async addNewItem(itemDetails, categoryID) {
-        // Validate categoryID
-        if (!categoryID || categoryID.trim() === "") {
-            return {
-                code: 400,
-                error: "Missing CategoryID in the request body"
-            };
-        }
+        try {
+            // Validate categoryID exists
+            if (!categoryID || categoryID.trim() === "") {
+                return {
+                    code: 400,
+                    error: "Missing CategoryID in the request body"
+                };
+            }
 
-        // Check if valid mongoose id
-        if (!mongoose.Types.ObjectId.isValid(categoryID)) {
-            return {
-                code: 400,
-                error: "categoryID needs to be a valid Mongoose ObjectID"
-            };
-        }
+            // Retrieve category document that contains item IDs
+            const category = await this.categoriesModel.findOne({ _id: categoryID });
+                
+            // If category doesn't exist, return 404
+            if (!category) {
+                return {
+                    code: 400,
+                    error: "Category does not exist"
+                };
+            }
 
-        return {
-            code: 200,
-            msg: "Item Added Successfully"
+            // Validate itemDetails expected values are not null
+            if (!itemDetails.itemName || !itemDetails.price || !itemDetails.imageURL || !itemDetails.altImgTxt || !itemDetails.itemDescription) {
+                return {
+                    code: 400,
+                    error: "Missing ItemDetails needs all attributes"
+                };
+            }
+
+            // Creates new item
+            const newItemInst = new this.itemsModel({
+                name: itemDetails.itemName,
+                description: itemDetails.itemDescription,
+                price: itemDetails.price,
+                imageUrl: itemDetails.imageURL,
+                altImgTxt: itemDetails.altImgTxt
+            });
+
+            const dbInst = await newItemInst.save();
+    
+            // adds item to category
+            category.items.push(dbInst._id);
+            category.save();
+
+            return {
+                code: 200,
+                msg: "Item Saved"
+            }
+        }
+        catch(e) {
+            return {
+                code: 500,
+                error: e
+            }
         }
     }
 
+    async getItemByID(ItemID) {
+        if (!ItemID) {
+            return {
+                code: 400,
+                error: "Missing ItemID"
+            }
+        }
+
+        try {
+            // Retrieve category document that contains item IDs
+            const item = await this.itemsModel.findOne({ _id: ItemID });
+                
+            // If category doesn't exist, return 404
+            if (!item) {
+                return {
+                    code: 404,
+                    error: "Item not found"
+                };
+            }
+
+            return {
+                code: 200,
+                item: item
+            }
+        }
+        catch (e) {
+            return {
+                code: 500,
+                error: e
+            }
+        }
+    }
+
+    async getAllItemsByPopularity() {
+        try {
+            // Getting all items them by sort by price
+            // 1 for ascending order, -1 for descending order
+            const items = await this.itemsModel.find({}).sort({ price: 1 }); 
+    
+            return {
+                code: 200,
+                msg: "Successfully retrieved all items ordered by Amount Sold",
+                items: items
+            };
+        }
+        catch (e) {
+            console.error("Error in getAllItemsByPopularity:", e);
+            return {
+                code: 500,
+                error: "Internal Server Error"
+            };
+        }
+    }
+    
     async searchForItemsByText() {}
 }
 

@@ -1,16 +1,21 @@
 'use client'
 
-import { useEffect, useState } from "react";
-import { redirect } from 'next/navigation'
-import LoginDesktop from "@/components/page-components/login-page/desktop/login-desktop";
+import { useState, useEffect } from "react";
+import DesktopNavBar from "../logged-in/desktop/nav-desktop";
+import DesktopLoggedOutNavBar from "../logged-out/desktop/nav-desktop";
 
-export default function LoginPage() {
+const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
+const AuthURI = isProd
+    ? process.env.NEXT_PUBLIC_AUTH_URI_FRONT_END_PROD
+    : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
+
+export default function NavBarSwitcher() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
-  
+
     useEffect(() => {
         const isUserLoggedIn = async () => {
-        const token = localStorage.getItem("token");
-
+            const token = localStorage.getItem("token");
+    
             try {
                 if (token) {
                     const res = await fetch(`${AuthURI}/v1/validateJWT`, {
@@ -41,14 +46,15 @@ export default function LoginPage() {
         };
 
         isUserLoggedIn();
-
     }, [loginStatus]);
 
-    if (loginStatus != "loggedOut") {
-        redirect("/");
+    if (loginStatus == "admin") {
+        return <DesktopNavBar />
     }
-
-    return (
-      <LoginDesktop />
-    );
+    else if (loginStatus == "loggedIn") {
+        return <DesktopNavBar />
+    }
+    else {
+        return <DesktopLoggedOutNavBar />
+    }
 }

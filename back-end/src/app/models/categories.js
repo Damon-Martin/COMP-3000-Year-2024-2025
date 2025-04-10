@@ -1,5 +1,5 @@
 import mongoose from 'mongoose';
-import itemSchema from './itemSchema.js';
+import itemSchema from './items.js';
 
 const categoriesSchema = new mongoose.Schema(
     {

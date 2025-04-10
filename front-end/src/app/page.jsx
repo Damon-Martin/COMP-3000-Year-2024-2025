@@ -5,14 +5,7 @@ import HomeDesktop from "@/components/page-components/home-page/desktop/home-des
 import HomeMobile from "@/components/page-components/home-page/mobile/home-mobile";
 
 export default function Home() {
-  const [isLoggedIn, setLoggedIn] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
-
-  // On Mount: Check if Logged In
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-    setLoggedIn(!!token);
-  }, []);
 
   // Determines to render desktop or mobile components
   useEffect(() => {
@@ -26,5 +19,5 @@ export default function Home() {
     return () => window.removeEventListener("resize", handleResize);
   }, []);
 
-  return isMobile ? <HomeMobile /> : <HomeDesktop isLoggedIn={isLoggedIn} />;
+  return isMobile ? <HomeMobile /> : <HomeDesktop />;
 }

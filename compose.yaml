@@ -5,7 +5,7 @@ services:
       dockerfile: .dockerfile
     container_name: auth-server
     env_file:
-      - path: .env
+      - path: ./front-end/.env.local
         required: true
 
   back-end:
@@ -14,7 +14,7 @@ services:
       dockerfile: .dockerfile
     container_name: back-end
     env_file:
-      - path: .env
+      - path: ./front-end/.env.local
         required: true
 
   front-end:
@@ -30,6 +30,8 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - ./mongo-db:/docker-entrypoint-initdb.d
     ports:
       - 27017:27017
 

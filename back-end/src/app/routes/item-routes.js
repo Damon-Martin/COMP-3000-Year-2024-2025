@@ -4,10 +4,11 @@
 import express from "express";
 import AuthMiddleware from "../middleware/auth-middleware.js";
 import CategoriesModel from "../models/categories.js";
+import ItemsModel from "../models/items.js";
 import ItemCategoriesController from "../controllers/ItemCategoriesController.js";
 
 const ItemRouter = express.Router();
-const itemCategoriesController = new ItemCategoriesController(CategoriesModel);
+const itemCategoriesController = new ItemCategoriesController(CategoriesModel, ItemsModel);
 
 /**
  * @swagger
@@ -18,6 +19,98 @@ const itemCategoriesController = new ItemCategoriesController(CategoriesModel);
  *       scheme: bearer
  *       bearerFormat: JWT
  */
+
+/**
+ * @swagger
+ * /v1/items:
+ *   get:
+ *     summary: Returns Item based by ID
+ *     description: Retrieves an item from the item collection by using Mongoose
+ *     tags:
+ *       - ItemController
+ *     parameters:
+ *       - name: ItemID
+ *         in: query
+ *         description: ID of the item to filter the categories
+ *         required: false
+ *         schema:
+ *           type: string
+ *           example: 67f6a1b7c02fe16921544ca8
+ *     responses:
+ *       200:
+ *         description: List of all Category Retrieved successfully
+ *       500:
+ *         description: Internal server error
+ */
+ItemRouter.get('/', async (req, res) => {
+    try {
+        const { ItemID } = req.query;
+
+        const response = await itemCategoriesController.getItemByID(ItemID);
+        
+        if (response.code == 200) {
+            return res.status(response.code).json({
+                item: response.item
+            })
+        }
+        else if (response.code) {
+            return res.status(response.code).json({
+                error: response.error
+            })
+        }
+        else {
+            return res.status(500).json({
+                error: "Missing a response code from getItemByID but it ran"
+            });
+        }
+    }
+    catch (e) {
+        return res.status(500).json({
+            error: "Failed Completely to run any logic for getItemByID and is at final catch block"
+        })
+    }
+})
+
+/**
+ * @swagger
+ * /v1/items/sorted-by-popularity:
+ *   get:
+ *     summary: Returns all Items sorted by popularity
+ *     description: Retrieves all Items from the database and orders them by items sold in decending order.
+ *     tags:
+ *       - ItemController
+ *     responses:
+ *       200:
+ *         description: List of all Items sorted by popularity or Empty if no items are available
+ *       500:
+ *         description: Internal server error
+ */
+ItemRouter.get('/sorted-by-popularity', async (req, res) => {
+    try {
+        const response = await itemCategoriesController.getAllItemsByPopularity();
+
+        if (response.code == 200) {
+            return res.status(response.code).json({
+                items: response.items
+            })
+        } 
+        else if (response.code) {
+            return res.status(response.code).json({
+                error: response.error
+            })
+        } 
+        else {
+            return res.status(500).json({
+                error: "Missing a response code from getAllItemsOrderedByPrice"
+            });
+        }
+    } catch (e) {
+        return res.status(500).json({
+            error: "Failed completely to run any logic for getAllItemsOrderedByPrice"
+        });
+    }
+});
+
 
 /**
  * @swagger
@@ -254,6 +347,11 @@ ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res
  *                     type: string
  *                     description: A detailed description of the item.
  *                     example: "A stylish leather jacket perfect for all seasons."
+ *                   price:
+ *                     type: number
+ *                     format: float
+ *                     description: Price of the item.
+ *                     example: 99.99
  *     responses:
  *       200:
  *         description: Item created successfully
