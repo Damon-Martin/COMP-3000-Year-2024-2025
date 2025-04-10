@@ -1,7 +1,54 @@
+'use client'
+
+import { useEffect, useState } from "react";
+import { redirect } from 'next/navigation'
 import LoginDesktop from "@/components/page-components/login-page/desktop/login-desktop";
 
 export default function LoginPage() {
-  return (
-    <LoginDesktop />
-  );
+    const [loginStatus, setLoginStatus] = useState("loggedOut");
+  
+    useEffect(() => {
+        const isUserLoggedIn = async () => {
+        const token = localStorage.getItem("token");
+
+            try {
+                if (token) {
+                    const res = await fetch(`${AuthURI}/v1/validateJWT`, {
+                        method: "POST",
+                        headers: {
+                        "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ token: token }),
+                    });
+            
+                    const data = await res.json();
+                    
+                    if (data.admin == "admin") {
+                        setLoginStatus("admin")
+                    }
+                    else if (res.status == 200) {
+                        setLoginStatus("loggedIn");
+                    }
+                    else {
+                        localStorage.removeItem("token");
+                        setLoginStatus("loggedOut");
+                    }
+                }
+            } 
+            catch (e) {
+                console.error("JWT Checker Fetch Failed: ", e);
+            }
+        };
+
+        isUserLoggedIn();
+
+    }, [loginStatus]);
+
+    if (loginStatus != "loggedOut") {
+        redirect("/");
+    }
+
+    return (
+      <LoginDesktop />
+    );
 }

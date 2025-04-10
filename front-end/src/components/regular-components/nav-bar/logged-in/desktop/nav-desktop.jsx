@@ -4,7 +4,7 @@ import NavBtn from '../../buttons/nav-btn';
 export default function DesktopNavBar() {
     // Desktop Varient
     return (
-        <div className="bg-[#D9D9D9] text-black m-1 w-full flex items-center justify-between">
+        <div className="bg-[#D9D9D9] text-black p-1 w-full flex items-center justify-between">
             {/* Right-aligned Links */}
             <div className="ml-auto flex items-center">
                 <NavBtn size={35} redirectURL="/" altTxt="Home Page" svgLocation="/images/shop-icon/shop-icon.svg" activeSvgLocation="/images/shop-icon/shop-active.svg"  />
