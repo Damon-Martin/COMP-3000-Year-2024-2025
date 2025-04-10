@@ -40,7 +40,7 @@ db.items.insertMany([
       "description": "Standard generic trousers at an affordable price",
       "price": 15.99,
       "totalSold": 90,
-      "imageUrl": "https://c.pxhere.com/photos/4d/92/coat_daylight_girl_guard_rail_horizon_landscape_mountains_ocean-1495585.jpg!d",
+      "imageUrl": "https://media.istockphoto.com/id/532278616/photo/perfect-match.jpg?s=612x612&w=0&k=20&c=mdMGXG-gb2ByZV2O0zMhI4C6oDGGkIOmKk_cvTCvDZI=",
       "altImgTxt": "Image of Normal Trousers",
       "createdAt": {
         "$date": "2025-04-09T16:13:47.296Z"
