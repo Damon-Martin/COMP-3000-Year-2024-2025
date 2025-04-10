@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
-export default function SearchBar({ widthDVW }) {
+export default function SearchBar({ widthvw }) {
     const [query, setQuery] = useState(''); // Contains text from form
     const router = useRouter();
 
@@ -21,7 +21,7 @@ export default function SearchBar({ widthDVW }) {
     return (
         <div 
             className="flex m-1 border rounded-lg overflow-hidden shadow-sm"
-            style={{ width: `${widthDVW}dvw` }}
+            style={{ width: `${widthvw}vw` }}
         >
             <input 
                 type="text" 

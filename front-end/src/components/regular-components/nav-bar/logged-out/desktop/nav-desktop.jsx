@@ -8,7 +8,7 @@ export default function DesktopLoggedOutNavBar() {
     // Desktop Varient
     return (
         <div className="bg-[#D9D9D9] text-black p-1 w-full flex items-center justify-between">
-            <SearchBar widthDVW={93} />
+            <SearchBar widthvw={93} />
             {/* Right-aligned Links */}
             <div className="ml-auto flex items-center">
                 <NavBtn size={28} redirectURL="/login" altTxt="Login Page" svgLocation="/images/login-icon/login-icon.svg" activeSvgLocation="/images/login-icon/login-active.svg"  />

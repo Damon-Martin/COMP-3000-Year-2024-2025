@@ -2,11 +2,24 @@
 
 import { useEffect, useState } from "react";
 import { redirect } from 'next/navigation'
-import LoginDesktop from "@/components/page-components/login-page/desktop/login-desktop";
+import RegistrationMobilePage from "@/components/page-components/registration-page/mobile/reg-mobile";
+import RegistrationDesktopPage from "@/components/page-components/registration-page/desktop/reg-desktop";
 
 export default function RegistrationPage() {
     const [isMobile, setIsMobile] = useState(false);
     const [loginStatus, setLoginStatus] = useState("loggedOut");
+
+    // Determines to render desktop or mobile components
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 600);
+        };
+
+        handleResize(); // Checking the initial screen size
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
   
     useEffect(() => {
         const isUserLoggedIn = async () => {
@@ -49,23 +62,11 @@ export default function RegistrationPage() {
         redirect("/");
     }
 
-    // Determines to render desktop or mobile components
-    useEffect(() => {
-        const handleResize = () => {
-        setIsMobile(window.innerWidth < 600);
-        };
-
-        handleResize(); // Checking the initial screen size
-        window.addEventListener("resize", handleResize);
-
-        return () => window.removeEventListener("resize", handleResize);
-    }, []);
-
     // 2 Variants of Registration Page for mobile and dekstop
     if (isMobile) {
-        <p>Mobile reg page</p>
+        return <RegistrationMobilePage />
     }
-    return (
-        <p>Desktop reg page</p>
-    );
+    else {
+        return <RegistrationDesktopPage />
+    }
 }
