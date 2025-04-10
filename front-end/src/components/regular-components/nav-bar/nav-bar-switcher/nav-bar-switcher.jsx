@@ -3,6 +3,7 @@
 import { useState, useEffect } from "react";
 import DesktopNavBar from "../logged-in/desktop/nav-desktop";
 import DesktopLoggedOutNavBar from "../logged-out/desktop/nav-desktop";
+import MobileLoggedOutNavBar from "../logged-out/mobile/nav-mobile";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const AuthURI = isProd
@@ -11,6 +12,19 @@ const AuthURI = isProd
 
 export default function NavBarSwitcher() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
+    const [isMobile, setIsMobile] = useState(false);
+
+    // Determines to render desktop or mobile components
+    useEffect(() => {
+        const handleResize = () => {
+        setIsMobile(window.innerWidth < 600);
+        };
+
+        handleResize(); // Checking the initial screen size
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
 
     useEffect(() => {
         const isUserLoggedIn = async () => {
@@ -48,13 +62,10 @@ export default function NavBarSwitcher() {
         isUserLoggedIn();
     }, [loginStatus]);
 
-    if (loginStatus == "admin") {
-        return <DesktopNavBar />
-    }
-    else if (loginStatus == "loggedIn") {
-        return <DesktopNavBar />
-    }
+    if (loginStatus === "admin" || loginStatus === "loggedIn") {
+        return isMobile ? <DesktopNavBar /> : <DesktopNavBar />;
+    } 
     else {
-        return <DesktopLoggedOutNavBar />
+        return isMobile ? <MobileLoggedOutNavBar /> : <DesktopLoggedOutNavBar />;
     }
 }

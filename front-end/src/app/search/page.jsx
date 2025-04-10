@@ -15,7 +15,6 @@ export default function SearchPage({ searchParams }) {
     return (
         <div>
             <NavBarSwitcher />
-            <SearchBar query={query} setQuery={setQuery} />
             <main className="flex bg-white min-h-[67dvh]">
                 <p>query: {query}</p>
             </main>
