@@ -53,7 +53,6 @@ export default function RootLayout({ children }) {
       </head>
       <body style={styleSettings}>
         <HeaderBar />
-        <DesktopLoggedOutNavBar />
         {children}
       </body>
     </html>
