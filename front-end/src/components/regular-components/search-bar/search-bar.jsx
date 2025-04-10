@@ -6,7 +6,11 @@ export default function SearchBar() {
     const router = useRouter();
 
     const handleSearch = () => {
-        router.push(`/search?query=${query}`)
+        // Requires a query to redirect
+        if (query) {
+            router.push(`/search?query=${query}`)
+        }
+        // No Query dont do anything
     };
 
     return (
