@@ -51,7 +51,7 @@ export default function RootLayout({ children }) {
         <meta name="description" content={metadata.description} />
         <title>{metadata.title}</title>
       </head>
-      <body style={styleSettings}>
+      <body style={styleSettings} className="overflow-auto min-w-screen min-h-screen min-h-screen max-h-screen">
         <HeaderBar />
         {children}
       </body>
