@@ -7,7 +7,7 @@ db.items.insertMany([
         "name": "Leather Jacket",
         "description": "A stylish leather jacket perfect for all seasons.",
         "price": 29.99,
-        "totalSold": 0,
+        "totalSold": 30,
         "imageUrl": "https://cdn.pixabay.com/photo/2014/08/26/21/49/jackets-428622_1280.jpg",
         "altImgTxt": "Image of a leather jacket",
         "createdAt": {
@@ -33,5 +33,21 @@ db.items.insertMany([
           "$date": "2025-04-09T16:13:47.296Z"
         },
         "__v": 0
-    }
+    },
+    {
+      "_id": ObjectId('67f6a1b7c02fe16921544ca6'),
+      "name": "Trousers",
+      "description": "Standard generic trousers at an affordable price",
+      "price": 15.99,
+      "totalSold": 90,
+      "imageUrl": "https://c.pxhere.com/photos/4d/92/coat_daylight_girl_guard_rail_horizon_landscape_mountains_ocean-1495585.jpg!d",
+      "altImgTxt": "Image of Normal Trousers",
+      "createdAt": {
+        "$date": "2025-04-09T16:13:47.296Z"
+      },
+      "updatedAt": {
+        "$date": "2025-04-09T16:13:47.296Z"
+      },
+      "__v": 0
+  }
 ]);

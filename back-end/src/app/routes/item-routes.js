@@ -71,6 +71,46 @@ ItemRouter.get('/', async (req, res) => {
     }
 })
 
+/**
+ * @swagger
+ * /v1/items/sorted-by-popularity:
+ *   get:
+ *     summary: Returns all Items sorted by popularity
+ *     description: Retrieves all Items from the database and orders them by items sold in decending order.
+ *     tags:
+ *       - ItemController
+ *     responses:
+ *       200:
+ *         description: List of all Items sorted by popularity or Empty if no items are available
+ *       500:
+ *         description: Internal server error
+ */
+ItemRouter.get('/sorted-by-popularity', async (req, res) => {
+    try {
+        const response = await itemCategoriesController.getAllItemsByPopularity();
+
+        if (response.code == 200) {
+            return res.status(response.code).json({
+                items: response.items
+            })
+        } 
+        else if (response.code) {
+            return res.status(response.code).json({
+                error: response.error
+            })
+        } 
+        else {
+            return res.status(500).json({
+                error: "Missing a response code from getAllItemsOrderedByPrice"
+            });
+        }
+    } catch (e) {
+        return res.status(500).json({
+            error: "Failed completely to run any logic for getAllItemsOrderedByPrice"
+        });
+    }
+});
+
 
 /**
  * @swagger

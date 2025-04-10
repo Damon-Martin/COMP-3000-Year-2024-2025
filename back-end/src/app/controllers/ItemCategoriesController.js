@@ -216,6 +216,27 @@ class ItemCategoriesController {
         }
     }
 
+    async getAllItemsByPopularity() {
+        try {
+            // Getting all items them by sort by price
+            // 1 for ascending order, -1 for descending order
+            const items = await this.itemsModel.find({}).sort({ price: 1 }); 
+    
+            return {
+                code: 200,
+                msg: "Successfully retrieved all items ordered by Amount Sold",
+                items: items
+            };
+        }
+        catch (e) {
+            console.error("Error in getAllItemsByPopularity:", e);
+            return {
+                code: 500,
+                error: "Internal Server Error"
+            };
+        }
+    }
+    
     async searchForItemsByText() {}
 }
 
