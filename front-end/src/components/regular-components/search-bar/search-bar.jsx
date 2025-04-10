@@ -7,10 +7,15 @@ export default function SearchBar() {
 
     const handleSearch = () => {
         // Requires a query to redirect
-        if (query) {
-            router.push(`/search?query=${query}`)
+        if (query.trim()) {
+            router.push(`/search?query=${query.trim()}`);
         }
-        // No Query dont do anything
+    };
+
+    const handleKeyDown = (e) => {
+        if (e.key === 'Enter') {
+            handleSearch();
+        }
     };
 
     return (
@@ -19,10 +24,11 @@ export default function SearchBar() {
                 type="text" 
                 value={query} 
                 onChange={(e) => setQuery(e.target.value)} 
+                onKeyDown={handleKeyDown}
                 className="text-black flex-grow p-2 outline-none" 
                 placeholder="Search..." 
             />
-            <button onClick={handleSearch} className="bg-[#FF4D00] hover:bg-[#c21300] px-4 py-2 text-white ">
+            <button onClick={handleSearch} className="bg-[#FF4D00] hover:bg-[#c21300] px-4 py-2 text-white">
                 Search
             </button>
         </div>
