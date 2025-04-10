@@ -5,6 +5,8 @@ import DesktopNavBar from "../logged-in/desktop/nav-desktop";
 import DesktopLoggedOutNavBar from "../logged-out/desktop/nav-desktop";
 import MobileLoggedOutNavBar from "../logged-out/mobile/nav-mobile";
 import MobileLoggedInNavBar from "../logged-in/mobile/nav-mobile";
+import MobileAdminNavBar from "../admin/mobile/nav-admin-mobile";
+import DesktopAdminNavBar from "../admin/desktop/nav-admin";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const AuthURI = isProd
@@ -63,9 +65,12 @@ export default function NavBarSwitcher() {
         isUserLoggedIn();
     }, [loginStatus]);
 
-    if (loginStatus === "admin" || loginStatus === "loggedIn") {
+    if (loginStatus === "loggedIn") {
         return isMobile ? <MobileLoggedInNavBar /> : <DesktopNavBar />;
     } 
+    else if (loginStatus === "admin" ) {
+        return isMobile ? <MobileAdminNavBar /> : <DesktopAdminNavBar />;
+    }
     else {
         return isMobile ? <MobileLoggedOutNavBar /> : <DesktopLoggedOutNavBar />;
     }
