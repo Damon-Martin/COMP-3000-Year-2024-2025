@@ -1,3 +1,5 @@
+"use client"
+
 import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import RegistrationCard from "@/components/regular-components/registration/registration-card/registration-card";
 

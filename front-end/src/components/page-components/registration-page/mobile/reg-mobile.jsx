@@ -1,6 +1,7 @@
-'use client'
+"use client"
 
 import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
+import RegistrationCard from "@/components/regular-components/registration/registration-card/registration-card";
 
 // Desktop variant: Page is more horizontal
 export default function RegistrationMobilePage() {
@@ -8,7 +9,7 @@ export default function RegistrationMobilePage() {
         <div>
             <NavBarSwitcher />
             <main className="flex flex-row justify-center items-center">
-                <p>Registration Mobile</p>
+                <RegistrationCard width="90vw" />
             </main>
         </div>
     );
