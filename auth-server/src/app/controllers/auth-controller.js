@@ -14,10 +14,10 @@ class AuthController {
     }
 
     // Returns JWT and Makes new Session
-    async login(username, password) {
+    async login(email, password) {
         try {
             // Validate input
-            const checkerRes = this.checker.CheckRequestBody(username, password);
+            const checkerRes = this.checker.CheckRequestBody(email, password);
             if (checkerRes.code !== 200) {
                 return {
                     code: 401,
@@ -26,7 +26,7 @@ class AuthController {
             }
     
             // Retrieve user from database
-            const user = await this.AuthModel.findOne({ username: username });
+            const user = await this.AuthModel.findOne({ email: email });
             
             if (!user) {
                 return {
@@ -53,7 +53,7 @@ class AuthController {
                 sessionModel.save();
 
                 // Check if the user is an admin
-                const admin = await this.AdminDetailsModel.findOne({ username: username });
+                const admin = await this.AdminDetailsModel.findOne({ email: email });
 
                 if (!admin) {
                     return {
@@ -91,9 +91,9 @@ class AuthController {
     // Returns JWT and Registers UName & Pass to DB
     // Checks if details is secure
     // For Customers Specifically
-    async registerCustomer(username, password, userDetails) {
+    async registerCustomer(email, password, userDetails) {
         try{
-            const checkerRes = this.checker.CheckRequestBody(username, password);
+            const checkerRes = this.checker.CheckRequestBody(email, password);
 
             // Error handling
             if (checkerRes.code != 200) {
@@ -114,12 +114,12 @@ class AuthController {
 
             // Make New User
             const user = new this.AuthModel({
-                username: username,
+                email: email,
                 password: encryptPass
             })
 
             const currentDetails =  new this.UserDetailsModel({
-                username: username,
+                email: email,
                 fName: userDetails.fName,
                 lName: userDetails.lName,
                 tel: userDetails.tel,
@@ -163,7 +163,7 @@ class AuthController {
             catch(e) {
                 return {
                     code: 409,
-                    error: "User already Exists, try a new username"
+                    error: "User already Exists, try a new email"
                 }
             }
             
@@ -177,9 +177,9 @@ class AuthController {
         }
     }
 
-    async registerAdmin(username, password, adminDetails) {
+    async registerAdmin(email, password, adminDetails) {
         try{
-            const checkerRes = this.checker.CheckRequestBody(username, password);
+            const checkerRes = this.checker.CheckRequestBody(email, password);
 
             // Error handling
             if (checkerRes.code != 200) {
@@ -200,12 +200,12 @@ class AuthController {
 
             // Make New User
             const user = new this.AuthModel({
-                username: username,
+                email: email,
                 password: encryptPass
             })
 
             const currentDetails =  new this.AdminDetailsModel({
-                username: username,
+                email: email,
                 fName: adminDetails.fName,
                 lName: adminDetails.lName,
                 tel: adminDetails.tel,
@@ -250,7 +250,7 @@ class AuthController {
             catch(e) {
                 return {
                     code: 409,
-                    error: "User already Exists, try a new username"
+                    error: "User already Exists, try a new email"
                 }
             }
             
@@ -276,28 +276,28 @@ class AuthController {
                 }
             }
 
-            // get username
+            // get email
             const authInstance = await this.AuthModel.findOne({ _id: tokenInstance.userId })
-            const uName = authInstance.username;
+            const uName = authInstance.email;
 
             // Check if admin
-            const admin = await this.AdminDetailsModel.findOne({ username: uName });
+            const admin = await this.AdminDetailsModel.findOne({ email: uName });
 
             if (!admin){
-                // Send username and admin status
+                // Send email and admin status
                 return {
                     code: 200,
                     msg: "Token has a session that is valid",
-                    username: uName,
+                    email: uName,
                     admin: false
                 }
             }
             else {
-                // Send username and admin status
+                // Send email and admin status
                 return {
                     code: 200,
                     msg: "Token has a session that is valid",
-                    username: uName,
+                    email: uName,
                     admin: true
                 }
             }
@@ -313,7 +313,7 @@ class AuthController {
         }
     }
 
-    removeAllSessions(username) {}
+    removeAllSessions(email) {}
 }
 
 export default AuthController;

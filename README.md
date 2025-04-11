@@ -7,4 +7,4 @@ How to Run:
 
 2. Then type in terminal 'docker-compose up -d --build'
 
-Initial Admin Account (only for dev environment): username = admin, password = password
+Initial Admin Account (only for dev environment): email = admin, password = password

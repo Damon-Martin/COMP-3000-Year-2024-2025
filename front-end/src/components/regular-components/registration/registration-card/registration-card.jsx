@@ -9,7 +9,7 @@ const AuthURI = isProd
 export default function RegistrationCard({ width = "60vw", height = "auto", margin = "20px" }) {
     const [submitClicked, setSubmitClicked] = useState(false);
     const [formData, setFormData] = useState({
-        username: "",
+        email: "",
         password: "",
         firstName: "",
         lastName: "",
@@ -23,7 +23,7 @@ export default function RegistrationCard({ width = "60vw", height = "auto", marg
         // Effect triggered when submit is clicked
         if (submitClicked) {
             const reqBody = {
-                username: formData.username,
+                email: formData.email,
                 password: formData.password,
                 userDetails: {
                     fName: formData.firstName,
@@ -98,7 +98,7 @@ export default function RegistrationCard({ width = "60vw", height = "auto", marg
             <h2 className="text-2xl font-semibold m-1 text-center">Registration</h2>
 
             {/* Input Fields */}
-            {["username", "password", "firstName", "lastName", "telephone", "address", "postCode"].map((field, idx) => (
+            {["email", "password", "firstName", "lastName", "telephone", "address", "postCode"].map((field, idx) => (
                 <input
                     key={idx}
                     type="text"
