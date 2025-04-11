@@ -11,8 +11,7 @@ import { useState, useEffect } from "react";
 
 // Mobile Variant of the Page
 // Content is more vertical
-export default function HomeMobile({ isLoggedIn }) {
-
+export default function HomeMobile({ ItemList }) {
 
     return (
         <div>
