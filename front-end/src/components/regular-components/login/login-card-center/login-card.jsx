@@ -66,7 +66,7 @@ export default function LoginCard({color = "#D9D9D9", width = "w-full", minWidth
             required="true"
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            className="w-full px-4 py-2 hover:bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
         />
         <input
             type="password"
@@ -74,7 +74,7 @@ export default function LoginCard({color = "#D9D9D9", width = "w-full", minWidth
             required="true"
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
-            className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
+            className="w-full px-4 py-2 hover:bg-gray-100 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
         />
         <LoginBtnRow />
       </div>
