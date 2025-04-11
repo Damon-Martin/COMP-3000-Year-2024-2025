@@ -7,8 +7,8 @@ import ItemPageMobile from '@/components/page-components/item-page/mobile/item-p
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
 const BackendURI = isProd 
-    ? process.env.NEXT_PUBLIC_BACKEND_URI_FRONT_END_PROD 
-    : process.env.NEXT_PUBLIC_BACKEND_URI_FRONT_END;
+    ? process.env.NEXT_PUBLIC_BACKEND_URI_PROD 
+    : process.env.NEXT_PUBLIC_BACKEND_URI;
 
 export default function ItemPage() {
     const params = useParams();

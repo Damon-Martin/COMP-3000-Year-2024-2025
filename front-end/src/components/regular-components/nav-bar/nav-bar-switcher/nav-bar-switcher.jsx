@@ -10,7 +10,7 @@ import DesktopAdminNavBar from "../admin/desktop/nav-admin";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const AuthURI = isProd
-    ? process.env.NEXT_PUBLIC_AUTH_URI_FRONT_END_PROD
+    ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
     : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
 
 export default function NavBarSwitcher() {
