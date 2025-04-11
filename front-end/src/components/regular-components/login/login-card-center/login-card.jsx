@@ -41,8 +41,9 @@ export default function LoginCard({color = "#D9D9D9", width = "w-full", minWidth
 
             if (rawRes.status === 200) {
                 localStorage.setItem("token", data.token);
-                router.push("/"); // ✅ Correct client-side redirection
-            } else {
+                router.push("/"); // We are logged in and don't need to be here
+            } 
+            else {
                 alert("Incorrect Login Details");
             }
         } 
@@ -60,8 +61,9 @@ export default function LoginCard({color = "#D9D9D9", width = "w-full", minWidth
       <div className="text-center space-y-4">
         <p className="text-2xl font-semibold">Login</p>
         <input
-            type="text"
+            type="email"
             value={email}
+            required="true"
             onChange={(e) => setUsername(e.target.value)}
             placeholder="Username"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"
@@ -69,6 +71,7 @@ export default function LoginCard({color = "#D9D9D9", width = "w-full", minWidth
         <input
             type="password"
             value={password}
+            required="true"
             onChange={(e) => setPassword(e.target.value)}
             placeholder="Password"
             className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 transition-all"

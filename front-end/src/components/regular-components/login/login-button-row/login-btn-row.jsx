@@ -1,4 +1,7 @@
-import React, { useState } from 'react';
+"use client"
+
+import { useState } from 'react';
+import { useRouter } from "next/navigation";
 
 export default function LoginBtnRow() {
     const [hovered, setHovered] = useState({
@@ -6,26 +9,26 @@ export default function LoginBtnRow() {
         login: false
     });
 
+    const router = useRouter()
+
     const buttonStyle = {
-        padding: '10px 20px',
-        margin: '5px',
+        flex: 1, // Makes both buttons take equal width
+        padding: '15px',
         border: 'none',
         borderRadius: '5px',
         color: 'white',
         cursor: 'pointer',
         fontSize: '16px',
         transition: 'background-color 0.3s ease',
+        textAlign: 'center',
     };
 
-    // Base colors for the buttons
-    const registerBaseColor = '#FFA500'; // Register login
-    const loginBaseColor = '#FF4D00'; // Darker Orange for Login
+    const registerBaseColor = '#FFA500';
+    const loginBaseColor = '#FF4D00';
 
-    // Hover colors
     const registerHoverColor = '#FF7F00';
-    const loginHoverColor = '#FF3B00';
+    const loginHoverColor = '#c21300';
 
-    // Conditional styles based on hover state
     const registerStyle = {
         ...buttonStyle,
         backgroundColor: hovered.register ? registerHoverColor : registerBaseColor,
@@ -37,11 +40,13 @@ export default function LoginBtnRow() {
     };
 
     return (
-        <div>
+        <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
             <button
                 style={registerStyle}
                 onMouseEnter={() => setHovered({ ...hovered, register: true })}
                 onMouseLeave={() => setHovered({ ...hovered, register: false })}
+                type="button"
+                onClick={() => router.push("/registration")}
             >
                 Register
             </button>

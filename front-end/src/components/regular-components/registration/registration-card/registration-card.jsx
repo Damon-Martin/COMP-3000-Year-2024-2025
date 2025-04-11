@@ -97,13 +97,21 @@ export default function RegistrationCard({ width = "60vw", height = "auto", marg
             <h2 className="text-2xl font-semibold m-1 text-center">Registration</h2>
 
             {/* Input Fields */}
-            {["email", "password", "firstName", "lastName", "telephone", "address", "postCode"].map((field, idx) => (
+            {[
+                { name: "email", type: "email", placeholder: "Enter your email" },
+                { name: "password", type: "password", placeholder: "Create a password" },
+                { name: "firstName", type: "text", placeholder: "First Name" },
+                { name: "lastName", type: "text", placeholder: "Last Name" },
+                { name: "telephone", type: "tel", placeholder: "Phone Number" },
+                { name: "address", type: "text", placeholder: "Address" },
+                { name: "postCode", type: "text", placeholder: "Post Code" }
+            ].map((field, idx) => (
                 <input
                     key={idx}
-                    type="text"
-                    name={field}
-                    placeholder={field.charAt(0).toUpperCase() + field.slice(1)}
-                    value={formData[field]}
+                    type={field.type}
+                    name={field.name}
+                    placeholder={field.placeholder}
+                    value={formData[field.name]}
                     onChange={handleChange}
                     required
                     className="w-full py-2 px-3 border border-gray-300 rounded-md focus:outline-none focus:ring-2 hover:bg-gray-100 focus:ring-orange-600 mb-2"
