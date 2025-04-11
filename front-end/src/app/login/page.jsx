@@ -4,6 +4,12 @@ import { useEffect, useState } from "react";
 import { redirect } from 'next/navigation'
 import LoginDesktop from "@/components/page-components/login-page/desktop/login-desktop";
 
+
+const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
+const AuthURI = isProd
+    ? process.env.NEXT_PUBLIC_AUTH_URI_FRONT_END_PROD
+    : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
+
 export default function LoginPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
   

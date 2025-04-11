@@ -1,9 +1,14 @@
-'use client'
+"use client"
 
 import { useEffect, useState } from "react";
 import { redirect } from 'next/navigation'
 import RegistrationMobilePage from "@/components/page-components/registration-page/mobile/reg-mobile";
 import RegistrationDesktopPage from "@/components/page-components/registration-page/desktop/reg-desktop";
+
+const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
+const AuthURI = isProd
+    ? process.env.NEXT_PUBLIC_AUTH_URI_FRONT_END_PROD
+    : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
 
 export default function RegistrationPage() {
     const [isMobile, setIsMobile] = useState(false);
@@ -58,15 +63,16 @@ export default function RegistrationPage() {
 
     }, [loginStatus]);
 
+    /* Forces to run on the client side */
     if (loginStatus != "loggedOut") {
         redirect("/");
     }
 
     // 2 Variants of Registration Page for mobile and dekstop
     if (isMobile) {
-        return <RegistrationMobilePage />
+        return <RegistrationMobilePage AuthURI={AuthURI}/>
     }
     else {
-        return <RegistrationDesktopPage />
+        return <RegistrationDesktopPage AuthURI={AuthURI}/>
     }
 }

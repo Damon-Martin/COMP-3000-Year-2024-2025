@@ -1,12 +1,9 @@
+"use client"
+
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/router';
+import { useRouter } from 'next/navigation';
 
-const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
-const AuthURI = isProd
-    ? process.env.NEXT_PUBLIC_AUTH_URI_FRONT_END_PROD
-    : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
-
-export default function RegistrationCard({ width = "60vw", height = "auto", margin = "20px" }) {
+export default function RegistrationCard({ width = "60vw", height = "auto", margin = "20px", AuthURI}) {
     const [submitClicked, setSubmitClicked] = useState(false);
     const [formData, setFormData] = useState({
         email: "",
@@ -17,9 +14,10 @@ export default function RegistrationCard({ width = "60vw", height = "auto", marg
         address: "",
         postCode: "",
     });
-    
-    useEffect(() => {
 
+    const router = useRouter();
+
+    useEffect(() => {
         // Effect triggered when submit is clicked
         if (submitClicked) {
             const reqBody = {
@@ -51,6 +49,7 @@ export default function RegistrationCard({ width = "60vw", height = "auto", marg
                         localStorage.setItem("token", data.token);
                         console.log("User Registered Correctly")
                         // Redirect Here after successful registration
+                        router.push("/");
                     } 
                     else {
                         alert(data.error);

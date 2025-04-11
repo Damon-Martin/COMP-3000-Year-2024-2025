@@ -4,12 +4,12 @@ import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-swit
 import RegistrationCard from "@/components/regular-components/registration/registration-card/registration-card";
 
 // Desktop variant: Page is more horizontal
-export default function RegistrationDesktopPage() {
+export default function RegistrationDesktopPage({ AuthURI }) {
     return (
         <div>
             <NavBarSwitcher />
             <main className="flex flex-row justify-center items-center">
-                <RegistrationCard width={"60vw"} height={"66vh"} margin={"40px"} />
+                <RegistrationCard width={"60vw"} height={"66vh"} margin={"40px"} AuthURI={AuthURI}/>
             </main>
         </div>
     );
