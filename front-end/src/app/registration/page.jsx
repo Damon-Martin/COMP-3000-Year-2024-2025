@@ -1,26 +1,23 @@
-'use client'
+"use client"
 
-import { useState, useEffect } from "react";
-import DesktopNavBar from "../logged-in/desktop/nav-desktop";
-import DesktopLoggedOutNavBar from "../logged-out/desktop/nav-desktop";
-import MobileLoggedOutNavBar from "../logged-out/mobile/nav-mobile";
-import MobileLoggedInNavBar from "../logged-in/mobile/nav-mobile";
-import MobileAdminNavBar from "../admin/mobile/nav-admin-mobile";
-import DesktopAdminNavBar from "../admin/desktop/nav-admin";
+import { useEffect, useState } from "react";
+import { redirect } from 'next/navigation'
+import RegistrationMobilePage from "@/components/page-components/registration-page/mobile/reg-mobile";
+import RegistrationDesktopPage from "@/components/page-components/registration-page/desktop/reg-desktop";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const AuthURI = isProd
     ? process.env.NEXT_PUBLIC_AUTH_URI_FRONT_END_PROD
     : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
 
-export default function NavBarSwitcher() {
-    const [loginStatus, setLoginStatus] = useState("loggedOut");
+export default function RegistrationPage() {
     const [isMobile, setIsMobile] = useState(false);
+    const [loginStatus, setLoginStatus] = useState("loggedOut");
 
     // Determines to render desktop or mobile components
     useEffect(() => {
         const handleResize = () => {
-        setIsMobile(window.innerWidth < 600);
+            setIsMobile(window.innerWidth < 600);
         };
 
         handleResize(); // Checking the initial screen size
@@ -28,11 +25,11 @@ export default function NavBarSwitcher() {
 
         return () => window.removeEventListener("resize", handleResize);
     }, []);
-
+  
     useEffect(() => {
         const isUserLoggedIn = async () => {
-            const token = localStorage.getItem("token");
-    
+        const token = localStorage.getItem("token");
+
             try {
                 if (token) {
                     const res = await fetch(`${AuthURI}/v1/validateJWT`, {
@@ -63,15 +60,19 @@ export default function NavBarSwitcher() {
         };
 
         isUserLoggedIn();
+
     }, [loginStatus]);
 
-    if (loginStatus === "loggedIn") {
-        return isMobile ? <MobileLoggedInNavBar /> : <DesktopNavBar />;
-    } 
-    else if (loginStatus === "admin" ) {
-        return isMobile ? <MobileAdminNavBar /> : <DesktopAdminNavBar />;
+    /* Forces to run on the client side */
+    if (loginStatus != "loggedOut") {
+        redirect("/");
+    }
+
+    // 2 Variants of Registration Page for mobile and dekstop
+    if (isMobile) {
+        return <RegistrationMobilePage AuthURI={AuthURI}/>
     }
     else {
-        return isMobile ? <MobileLoggedOutNavBar /> : <DesktopLoggedOutNavBar />;
+        return <RegistrationDesktopPage AuthURI={AuthURI}/>
     }
 }

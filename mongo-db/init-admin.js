@@ -2,7 +2,7 @@ db = db.getSiblingDB('database'); // Selecting the DB
 
 db['admin-details'].insertMany([
     {
-        "username": "admin",
+        "email": "admin",
         "fName": "Jack",
         "lName": "Smith",
         "NiNumber": "SC912924B",
@@ -15,7 +15,7 @@ db['admin-details'].insertMany([
 
 db['auth-collections'].insertMany([
     {
-        "username": "admin",
+        "email": "admin",
         "password": "$2a$10$cqEwqoTecwqqWQ7he4WFBeI6AAUDUBQvICr4gzr0DaOfhqaC3BPJe",
         "createdAt": new Date(),
         "updatedAt": new Date(),

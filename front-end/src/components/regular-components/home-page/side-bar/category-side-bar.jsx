@@ -1,13 +1,11 @@
 import Link from 'next/link'
 
-export default function CategorySideBar({ fontSizeMultiplier }) {
-    // Setting the root font size based on the fontSizeMultiplier
-    const rootFontSize = `${16 * fontSizeMultiplier}px`;
+export default function CategorySideBar() {
 
     return (
         <Link href="/login">
-            <div className="bg-[#FF4D00] m-1 h-[75dvh] w-[15dvw] flex items-center justify-center">
-                <p style={{ color: "white", fontSize: rootFontSize }}>Categories</p>
+            <div className="bg-[#FF4D00] hover:bg-[#c21300] text-white m-1 h-[69dvh] w-[15vw] flex items-center justify-center">
+                <p>Categories</p>
             </div>
         </Link>
   );

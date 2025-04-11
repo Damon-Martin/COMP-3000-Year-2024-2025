@@ -1,16 +1,16 @@
 
 class CredentialChecker  {
-    CheckRequestBody (username, pass) {
-        if (!username && !pass) {
+    CheckRequestBody (email, pass) {
+        if (!email && !pass) {
             return({
                 code: 400,
-                error: "You are missing the username & password"
+                error: "You are missing the email & password"
             });
         }
-        if (!username) {
+        if (!email) {
             return({
                 code: 400,
-                error: "You are missing the username"
+                error: "You are missing the email"
             });
         }
         if (!pass) {

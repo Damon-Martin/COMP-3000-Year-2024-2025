@@ -237,7 +237,34 @@ class ItemCategoriesController {
         }
     }
     
-    async searchForItemsByText() {}
+    async searchItemsByText(query) {
+        if (!query || query.trim() === "") {
+            return {
+                code: 400,
+                error: "Search query cannot be empty"
+            };
+        }
+
+        try {
+            // Case-insensitive search in name and description
+            const items = await this.itemsModel.find({
+                $or: [
+                    { name: { $regex: query, $options: 'i' } }, // Searching inside the item's name
+                ]
+            });
+
+            return {
+                code: 200,
+                items: items
+            };
+        } catch (e) {
+            return {
+                code: 500,
+                error: `Server error: ${e.message}`
+            };
+        }
+    }
+
 }
 
 export default ItemCategoriesController;

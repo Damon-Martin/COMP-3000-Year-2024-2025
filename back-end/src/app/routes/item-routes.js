@@ -393,4 +393,61 @@ ItemRouter.post("/", AuthMiddleware.checkIfAdmin, async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /v1/items/search:
+ *   get:
+ *     summary: Searches for items by query string
+ *     description: Returns all items that match the query in their name using regex. tro would find trousers eg.
+ *     tags:
+ *       - ItemController
+ *     parameters:
+ *       - in: query
+ *         name: query
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: Search term to filter items by name or description
+ *         example: "tro"
+ *     responses:
+ *       200:
+ *         description: List of matching items sorted by price
+ *       400:
+ *         description: Bad request if the search query is empty
+ *       500:
+ *         description: Internal server error
+ */
+ItemRouter.get('/search', async (req, res) => {
+    try {
+        const { query } = req.query;
+
+        // Validate query
+        if (!query || query.trim() === "") {
+            return res.status(400).json({
+                error: "Search query can't be empty"
+            });
+        }
+
+        // Call the controller method to search items
+        const response = await itemCategoriesController.searchItemsByText(query);
+
+        if (response.code === 200) {
+            return res.status(response.code).json({
+                items: response.items
+            });
+        } else {
+            return res.status(response.code).json({
+                error: response.error
+            });
+        }
+    } 
+    catch (e) {
+        return res.status(500).json({
+            error: "Failed to run search logic"
+        });
+    }
+});
+
+
 export default ItemRouter;

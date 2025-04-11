@@ -27,7 +27,7 @@ const authController = new AuthController(AuthModel, SessionModel, UserDetailMod
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               email:
  *                 type: string
  *                 description: Unique Username for the customer
  *               password:
@@ -69,7 +69,7 @@ const authController = new AuthController(AuthModel, SessionModel, UserDetailMod
  *         description: Server error
  */
 AuthRouter.post("/register", async (req, res) => {
-    const uName = req.body.username;
+    const uName = req.body.email;
     const pass = req.body.password;
     const userDetails = req.body.userDetails;
 
@@ -104,9 +104,9 @@ AuthRouter.post("/register", async (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               email:
  *                 type: string
- *                 description: User's username.
+ *                 description: User's email.
  *               password:
  *                 type: string
  *                 description: User's password.
@@ -127,7 +127,7 @@ AuthRouter.post("/register", async (req, res) => {
  *         description: Server error.
  */
 AuthRouter.post("/login", async (req, res) => {
-    const uName = req.body.username;
+    const uName = req.body.email;
     const pass = req.body.password;
 
     const result = await authController.login(uName, pass);
@@ -161,7 +161,7 @@ AuthRouter.post("/login", async (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               username:
+ *               email:
  *                 type: string
  *                 description: Unique Username for the admin
  *               password:
@@ -206,7 +206,7 @@ AuthRouter.post("/login", async (req, res) => {
  *         description: Server error
  */
 AuthRouter.post("/registerAdmin", async (req, res) => {
-    const uName = req.body.username;
+    const uName = req.body.email;
     const pass = req.body.password;
     const adminDetails = req.body.adminDetails;
 
@@ -271,7 +271,7 @@ AuthRouter.post("/validateJWT", async (req, res) => {
     if (result.code == 200) {
         res.status(result.code).json({
             token: result.token,
-            username: result.username,
+            email: result.email,
             admin: result.admin,
             msg: result.msg,
         })
