@@ -7,7 +7,7 @@ export default function RegistrationDesktopPage() {
         <div>
             <NavBarSwitcher />
             <main className="flex flex-row justify-center items-center">
-                <RegistrationCard width={"30vw"} height={"30vh"} />
+                <RegistrationCard width={"60vw"} height={"66vh"} margin={"40px"} />
             </main>
         </div>
     );

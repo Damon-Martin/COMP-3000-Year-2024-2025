@@ -8,7 +8,7 @@ export default function DesktopNavBar() {
     // Desktop Varient
     return (
         <div className="bg-[#D9D9D9] text-black p-1 w-full flex items-center justify-between">
-            <SearchBar widthvw={93}/>
+            <SearchBar widthVW={93}/>
             {/* Right-aligned Links */}
             <div className="ml-auto flex items-center">
                 <NavBtn size={28} redirectURL="/" altTxt="Home Page" svgLocation="/images/shop-icon/shop-icon.svg" activeSvgLocation="/images/shop-icon/shop-active.svg"  />
