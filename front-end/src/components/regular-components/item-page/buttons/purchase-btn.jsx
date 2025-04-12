@@ -1,12 +1,10 @@
-'use client'
+'use client';
 
-import Link from 'next/link';
-
-// Text color either white or black
-export default function PurchaseButton({ text, bgColor, color, width, height }) {
+export default function PurchaseButton({ text, bgColor, textColor }) {
     return (
         <button
-            className={`bg-[${bgColor}] text-${color} mt-1 w-${width} h-${height} rounded-sm`}
+            style={{ backgroundColor: bgColor, color: textColor }}
+            className="w-full py-2 rounded-md font-semibold shadow-sm transition-colors duration-200"
         >
             {text}
         </button>

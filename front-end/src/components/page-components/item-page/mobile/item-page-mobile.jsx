@@ -1,28 +1,35 @@
-import HeaderBar from '@/components/regular-components/all-pages/header-bar/header-bar';
-import PurchaseButton from '@/components/regular-components/item-page/buttons/purchase-btn';
-import DesktopLoggedOutNavBar from '@/components/regular-components/nav-bar/logged-out/desktop/nav-desktop';
-import NavBarSwitcher from '@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher';
-import Image from 'next/image';
+'use client';
 
-export default function ItemPageMobile({ name, price, description, imageUrl, altImgTxt }) {
-    console.log(imageUrl);
+import Image from 'next/image';
+import NavBarSwitcher from '@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher';
+import PurchaseButton from '@/components/regular-components/item-page/buttons/purchase-btn';
+import SearchBar from '@/components/regular-components/search-bar/search-bar';
+
+export default function ItemPageMobile({ id, name, price, description, imageUrl, altImgTxt }) {
     return (
-        <div>
+        <div className="min-h-screen">
             <NavBarSwitcher />
-            <main className="flex flex-col items-center justify-start p-6 gap-10">
-                <Image 
-                    src={imageUrl} 
-                    alt={altImgTxt}
-                    width={640} 
-                    height={150} 
-                    className="rounded-lg shadow-lg"
-                />
-                <div className="min-w-[400px] max-w-[600px]"> {/* Added min-width and adjusted max-width */}
-                    <p className="text-2xl font-bold">{name}</p>
-                    <p className="mt-1">£{price}</p>
-                    <p className="mt-1">{description}</p>
-                    <PurchaseButton text={"Buy Now"} bgColor={"#FF4D00"} color={"white"} width={"full"} height={40} />
-                    <PurchaseButton text={"Add to Cart"} bgColor={"#D9D9D9"} color={"black"} width={"full"} height={40} />
+            <SearchBar />
+            <main className="flex flex-col items-center p-6 gap-8">
+                <div className="w-full flex justify-center">
+                    <Image 
+                        src={imageUrl} 
+                        alt={altImgTxt}
+                        width={640} 
+                        height={150} 
+                        className="rounded-lg shadow-md object-cover"
+                    />
+                </div>
+
+                <div className="w-full max-w-md space-y-4">
+                    <h1 className="text-2xl font-bold">{name}</h1>
+                    <p className="text-lg">£{price}</p>
+                    <p className="text-sm">{description}</p>
+
+                    <div className="space-y-2 pt-2">
+                        <PurchaseButton text="Buy Now" bgColor={"#FF4D00"} textColor="white" />
+                        <PurchaseButton text="Add to Cart" bgColor={"#D9D9D9"} textColor="black" />
+                    </div>
                 </div>
             </main>
         </div>

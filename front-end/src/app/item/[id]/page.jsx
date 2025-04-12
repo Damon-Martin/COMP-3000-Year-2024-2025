@@ -57,5 +57,5 @@ export default function ItemPage() {
     }
 
 
-    return isMobile ? <ItemPageMobile name={item.name} price={item.price} description={item.description} imageUrl={item.imageUrl} altImgTxt={item.altImgTxt}/> : <ItemPageDesktop name={item.name} price={item.price} description={item.description} imageUrl={item.imageUrl} altImgTxt={item.altImgTxt} />
+    return isMobile ? <ItemPageMobile id={ItemID} name={item.name} price={item.price} description={item.description} imageUrl={item.imageUrl} altImgTxt={item.altImgTxt}/> : <ItemPageDesktop id={ItemID} name={item.name} price={item.price} description={item.description} imageUrl={item.imageUrl} altImgTxt={item.altImgTxt} />
 }
