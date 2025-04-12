@@ -2,6 +2,7 @@
 
 import HeaderBar from "@/components/regular-components/all-pages/header-bar/header-bar";
 import SupportButton from "@/components/regular-components/all-pages/support-btn/support-btn";
+import AllItemsCardHome from "@/components/regular-components/home-page/all-item-rows/all-Item-rows";
 import ItemCardDesktop from "@/components/regular-components/home-page/item-card/item-card-desktop";
 import ItemRowHomeDesktop from "@/components/regular-components/home-page/item-row/item-row";
 import CategorySideBar from "@/components/regular-components/home-page/side-bar/category-side-bar";
@@ -19,7 +20,7 @@ export default function HomeDesktop({ ItemList }) {
             <main className="flex flex-row justify-center">
                 <div id="Best Selling" className="m-3 min-w-[82vw] max-h-[74vh] overflow-auto">
                     <p className="font-bold text-xl mb-3">Best Selling</p>
-                    <ItemRowHomeDesktop chunkOfItemList={ItemList}/>
+                    <AllItemsCardHome ItemList={ItemList}/>
                 </div>
                 <div className="ml-auto">
                     <CategorySideBar />
