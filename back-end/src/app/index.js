@@ -1,5 +1,6 @@
 import express from 'express';
 import mongoose from 'mongoose';
+import PaymentRouter from './routes/payment-routes.js';
 import ItemRouter from './routes/item-routes.js';
 import AuthMiddleware from './middleware/auth-middleware.js';
 
@@ -48,6 +49,7 @@ async function main() {
       app.use(express.urlencoded({ extended: true }));
 
       app.use("/v1/items", ItemRouter);
+      app.use("/v1/payments", PaymentRouter)
 
       app.listen(port, () => {
         console.log(`Example app listening on port ${port} & Production is ${isProduction}`)
