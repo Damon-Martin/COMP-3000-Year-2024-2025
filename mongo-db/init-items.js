@@ -36,8 +36,8 @@ db.items.insertMany([
     },
     {
       "_id": ObjectId('67f6a1b7c02fe16921544ca6'),
-      "name": "Trousers",
-      "description": "Standard generic trousers at an affordable price",
+      "name": "Men's Smart Trousers",
+      "description": "Smart trousers at an affordable price in the grey colour",
       "price": 15.99,
       "totalSold": 90,
       "imageUrl": "https://media.istockphoto.com/id/532278616/photo/perfect-match.jpg?s=612x612&w=0&k=20&c=mdMGXG-gb2ByZV2O0zMhI4C6oDGGkIOmKk_cvTCvDZI=",
@@ -49,5 +49,5 @@ db.items.insertMany([
         "$date": "2025-04-09T16:13:47.296Z"
       },
       "__v": 0
-  }
+  },
 ]);
