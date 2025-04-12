@@ -6,20 +6,29 @@ import DesktopNavBar from "@/components/regular-components/nav-bar/logged-in/des
 import DesktopLoggedOutNavBar from "@/components/regular-components/nav-bar/logged-out/desktop/nav-desktop";
 import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import SearchBar from "@/components/regular-components/search-bar/search-bar";
+import SearchResultButtonMobile from "@/components/regular-components/search-page/result-button.jsx/mobile/search-result-button";
 
 import { useState, useEffect } from "react";
 
 // Mobile Variant of the Page
 // Content is more vertical
-export default function HomeMobile({ isLoggedIn }) {
-
+export default function HomeMobile({ ItemList }) {
 
     return (
         <div>
             <NavBarSwitcher />
             <SearchBar />
-            <main className="flex flex-row">
-                <h1>Best Selling</h1>
+            <main className="flex flex-col">
+                <p>Best Selling</p>
+                {ItemList.map(currentItem => (
+                    <SearchResultButtonMobile
+                        item={currentItem}
+                        name={currentItem.name}
+                        price={currentItem.price}
+                        imageURL={currentItem.imageUrl}
+                        altTxtImage={currentItem.altImgTxt}
+                    />
+                ))}
             </main>
         </div>
         
