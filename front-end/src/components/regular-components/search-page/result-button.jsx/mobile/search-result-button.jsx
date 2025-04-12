@@ -18,7 +18,7 @@ export default function SearchResultButtonMobile({ item, name = "Item Name", pri
             />
             <div className="flex flex-col justify-center pl-4">
                 <p>{name}</p>
-                <p>${price}</p>
+                <p>£{price}</p>
             </div>
         </button>
     );

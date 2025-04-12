@@ -17,7 +17,7 @@ export default function SearchResultButtonDesktop({ item, name = "Item Name", pr
             />
             <div className="flex flex-col justify-center pl-4">
                 <p>{name}</p>
-                <p>${price}</p>
+                <p>£{price}</p>
             </div>
         </button>
     );
