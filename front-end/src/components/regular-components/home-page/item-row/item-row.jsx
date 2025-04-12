@@ -1,6 +1,6 @@
 import ItemCardDesktop from "../item-card/item-card-desktop";
 
-// Push 6 items from ItemList to chunkOfItemList
+// Push 5 items from ItemList to chunkOfItemList (each row)
 export default function ItemRowHomeDesktop({ chunkOfItemList }) {
     return (
         <div className="flex justify-left gap-4">
