@@ -119,7 +119,7 @@ db.items.insertMany([
     "name": "Wooden Bunny Toy",
     "description": "A Wooden Bunny Toy suitable for toddlers",
     "price": 4.99,
-    "totalSold": 0,
+    "totalSold": 1,
     "imageUrl": "https://images.rawpixel.com/image_800/cHJpdmF0ZS9zdGF0aWMvaW1hZ2Uvd2Vic2l0ZS8yMDIyLTA0L2xyL2JzNzQ1LWltYWdlLWt3dng1ODFqLmpwZw.jpg",
     "altImgTxt": "Image of a Wooden Bunny Toy",
     "createdAt": {
@@ -145,5 +145,134 @@ db.items.insertMany([
       "$date": "2025-04-12T04:08:12.004Z"
     },
     "__v": 0
+  },
+  {
+    "_id": ObjectId("67faa34b12f175d8d624017c"),
+    "name": "Grey Gloves",
+    "description": "Wolly Gloves suitable for even the most extreme of climates",
+    "price": 19.99,
+    "totalSold": 1,
+    "imageUrl": "https://media.istockphoto.com/id/1094915042/photo/cold-day-on-the-snow.jpg?s=612x612&w=0&k=20&c=idX55WJJ4UDMA5_NNsytykgK7yUjZRCfvPkfruYE2EQ=",
+    "altImgTxt": "Image of a Warm Gloves",
+    "createdAt": {
+      "$date": "2025-04-12T17:30:51.974Z"
+    },
+    "updatedAt": {
+      "$date": "2025-04-12T17:30:51.974Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": ObjectId("67faa40c12f175d8d6240180"),
+    "name": "American T-Shirt",
+    "description": "An American T-Shirt for all seasons that is Unisex",
+    "price": 19.99,
+    "totalSold": 499,
+    "imageUrl": "https://c.pxhere.com/photos/4b/9f/adult_art_black_and_white_facial_expression_fashion_girl_outdoors_photoshoot-1499771.jpg!d",
+    "altImgTxt": "Image of an American T-Shirt",
+    "createdAt": {
+      "$date": "2025-04-12T17:34:04.210Z"
+    },
+    "updatedAt": {
+      "$date": "2025-04-12T17:34:04.210Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": ObjectId("67faa4ae12f175d8d6240184"),
+    "name": "Green Dress",
+    "description": "A luxurious green dress for ladies, suitable for summers.",
+    "price": 29.99,
+    "totalSold": 400,
+    "imageUrl": "https://freerangestock.com/sample/141920/woman-in-green-dress-posing-and-standing-in-narrow-lane--lookin.jpg",
+    "altImgTxt": "Image of a Green Dress",
+    "createdAt": {
+      "$date": "2025-04-12T17:36:46.636Z"
+    },
+    "updatedAt": {
+      "$date": "2025-04-12T17:36:46.636Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": ObjectId("67faa58d12f175d8d6240188"),
+    "name": "Grey Hoodie",
+    "description": "A trendy hoodie suitable for teens and adults",
+    "price": 19.99,
+    "totalSold": 500,
+    "imageUrl": "https://upload.wikimedia.org/wikipedia/commons/a/ad/Man_Hoodie_Salamanca_%28Unsplash%29.jpg",
+    "altImgTxt": "Image of a Grey Hoodie",
+    "createdAt": {
+      "$date": "2025-04-12T17:40:29.846Z"
+    },
+    "updatedAt": {
+      "$date": "2025-04-12T17:40:29.846Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": ObjectId("67faa63f12f175d8d624018c"),
+    "name": "Short Chinos",
+    "description": "Short Chinos built for summer suitable for teens and adults",
+    "price": 14.99,
+    "totalSold": 399,
+    "imageUrl": "https://www.dobell.co.uk/media/magefan_blog/19.Short-Chinos-BlogPost2.jpg",
+    "altImgTxt": "Image of a Grey Hoodie",
+    "createdAt": {
+      "$date": "2025-04-12T17:43:27.948Z"
+    },
+    "updatedAt": {
+      "$date": "2025-04-12T17:43:27.948Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": ObjectId("67faa6cb12f175d8d6240190"),
+    "name": "Christmas Jumper",
+    "description": "A Blue Christmas Jumper for children",
+    "price": 14.99,
+    "totalSold": 200,
+    "imageUrl": "https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvdXB3azYxNzc1MDU1LXdpa2ltZWRpYS1pbWFnZS1rb3dicWQ0Yi5qcGc.jpg",
+    "altImgTxt": "Image of a Grey Hoodie",
+    "createdAt": {
+      "$date": "2025-04-12T17:45:47.426Z"
+    },
+    "updatedAt": {
+      "$date": "2025-04-12T17:45:47.426Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": ObjectId("67faa77c12f175d8d6240194"),
+    "name": "Ripped Jeans",
+    "description": "Blue Ripped Jeans Unisex for Teens and Adults",
+    "price": 24.99,
+    "totalSold": 100,
+    "imageUrl": "https://images.rawpixel.com/image_800/czNmcy1wcml2YXRlL3Jhd3BpeGVsX2ltYWdlcy93ZWJzaXRlX2NvbnRlbnQvbHIvcHg2MDAyODEtaW1hZ2Uta3d2dmIwZ2EuanBn.jpg",
+    "altImgTxt": "Image of a Ripped Jeans",
+    "createdAt": {
+      "$date": "2025-04-12T17:48:44.983Z"
+    },
+    "updatedAt": {
+      "$date": "2025-04-12T17:48:44.983Z"
+    },
+    "__v": 0
+  },
+  {
+    "_id": ObjectId("67faa82e12f175d8d6240198"),
+    "name": "Woman's Summer Hat",
+    "description": "Womans Summer Hat suitable for very hot days",
+    "price": 34.99,
+    "totalSold": 50,
+    "imageUrl": "https://cdn.stocksnap.io/img-thumbs/960w/straw-hat_R27ZN6PJ4S.jpg",
+    "altImgTxt": "Image of Woman's Summer Hat",
+    "createdAt": {
+      "$date": "2025-04-12T17:51:42.631Z"
+    },
+    "updatedAt": {
+      "$date": "2025-04-12T17:51:42.631Z"
+    },
+    "__v": 0
   }
+
 ]);

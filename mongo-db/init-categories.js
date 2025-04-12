@@ -7,7 +7,7 @@ db.categories.insertMany([
         "categoryName": "Clothing",
         "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Ego_Unisex_Fashions%2C_1981_Hall%2C_Kirkgate_Market%2C_Leeds_%2822nd_September_2012%29.JPG/1600px-Ego_Unisex_Fashions%2C_1981_Hall%2C_Kirkgate_Market%2C_Leeds_%2822nd_September_2012%29.JPG?2012123013263",
         "altImgTxt": "Image of Clothing",
-        "items": [ ObjectId('67f6a1b7c02fe16921544ca7'), ObjectId('67f6a1b7c02fe16921544ca8'), ObjectId('67f6a1b7c02fe16921544ca6')],
+        "items": [ ObjectId("67faa82e12f175d8d6240198"), ObjectId("67faa77c12f175d8d6240194"), ObjectId("67faa63f12f175d8d624018c"), ObjectId("67faa58d12f175d8d6240188"), ObjectId("67faa40c12f175d8d6240180"), ObjectId("67faa34b12f175d8d624017c"), ObjectId('67f6a1b7c02fe16921544ca7'), ObjectId('67f6a1b7c02fe16921544ca8'), ObjectId('67f6a1b7c02fe16921544ca6')],
         "__v": 0
     },
     {
