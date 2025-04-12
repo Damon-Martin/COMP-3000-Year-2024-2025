@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const AuthURI = String(process.env.NEXT_PUBLIC_AUTH_SERVER_URI);
+const AuthURI = String(process.env.AUTH_URI_FOR_BACKEND_ONLY);
 
 class AuthMiddleware {
 
