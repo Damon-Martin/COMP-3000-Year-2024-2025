@@ -96,7 +96,7 @@ PaymentRouter.post("/create-order-single-item", async (req, res) => {
                             value: item.price.toFixed(2), // Item price
                         },
                         item_id: item._id,
-                        item_name: item.name,
+                        name: item.name,
                         description: item.description,
                         quantity: quantity,
                     },
@@ -150,9 +150,64 @@ PaymentRouter.post("/create-order-single-item", async (req, res) => {
 })
 
 
-PaymentRouter.post("/capture-single-item-order", (req, res) => {
+PaymentRouter.post("/capture-order", async (req, res) => {
+    const { orderID } = req.body;
 
-})
+    if (!orderID) {
+        return res.status(400).json({ error: "Missing orderID in request body" });
+    }
+
+    try {
+        // Get PayPal access token
+        const accessToken = await generateAccessToken();
+
+        // Capture the PayPal order
+        const captureResponse = await fetch(`${PAYPAL_URI}/v2/checkout/orders/${orderID}/capture`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+            },
+        });
+
+        if (!captureResponse.ok) {
+            const errorData = await captureResponse.json();
+            console.error("Error from PayPal:", errorData);
+            return res.status(500).json({ error: "Failed to capture order", details: errorData });
+        }
+
+        const captureData = await captureResponse.json();
+
+        // User has paid successfully
+        if (captureData.status === "COMPLETED") {
+            const capture = captureData.purchase_units[0].payments.captures[0];
+
+            return res.json({
+                success: true,
+                message: "Payment captured successfully",
+                transactionID: capture.id,
+                amount: capture.amount,
+                payer: captureData.payment_source?.paypal?.email_address,
+                fullCaptureData: captureData,
+            });
+        } 
+        // Payment failed
+        else {
+            return res.status(400).json({
+                success: false,
+                message: `Payment not completed. Status: ${captureData.status}`,
+                fullCaptureData: captureData,
+            });
+        }
+    } 
+    catch (e) {
+        console.error("Capture error:", e);
+        return res.status(500).json({
+            error: "Server error while capturing payment",
+        });
+    }
+});
+
 
 
 export default PaymentRouter;
