@@ -48,8 +48,8 @@ async function generateAccessToken() {
  * @swagger
  * /v1/payments/create-order:
  *   post:
- *     summary: Creates an order by sending a list of itemIDs
- *     description: This sends an order to the customer which gives the order id and link
+ *     summary: Creates an order by sending a list of itemIDs and a username
+ *     description: This sends an order to the customer which gives the order id and approval link. The username is used as a custom identifier for the order.
  *     tags:
  *       - PaymentController
  *     requestBody:
@@ -65,23 +65,35 @@ async function generateAccessToken() {
  *                   type: string
  *                   format: uuid
  *                 description: List of item IDs to include in the order
- *                 example: ["67faa63f12f175d8d624018c", "67f6a1b7c02fe16921544ca8", 67f6a1b7c02fe16921544ca8]
+ *                 example: ["67faa63f12f175d8d624018c", "67f6a1b7c02fe16921544ca8"]
+ *               username:
+ *                 type: string
+ *                 description: The username email of the customer. Customers can have diff email for paypal and app.
+ *                 example: "example@email.com"
  *             required:
  *               - itemIDs
+ *               - username
  *     responses:
  *       200:
  *         description: Bill Sent to client (They got to pay using the portal link)
  *       400:
- *         description: Bad Request - Invalid input
+ *         description: Bad Request - Invalid input, missing itemIDs or username
  *       500:
  *         description: Internal server error
  */
 PaymentRouter.post("/create-order", async (req, res) => {
-    const { itemIDs } = req.body;
+    const { itemIDs, username } = req.body;  // Accept username along with itemIDs
 
     if (!itemIDs || !Array.isArray(itemIDs) || itemIDs.length === 0) {
         return res.status(400).json({
             error: "Missing or invalid itemIDs in request body",
+        });
+    }
+
+    // Checking if username email is provided and is valid
+    if (!username || typeof username !== 'string' || username.trim() === '') {
+        return res.status(400).json({
+            error: "Missing or invalid username",
         });
     }
 
@@ -124,7 +136,8 @@ PaymentRouter.post("/create-order", async (req, res) => {
                     }
                 }
             },
-            items
+            items,
+            custom_id: username,
         }];
 
         // Generating the access token for PayPal API
@@ -216,10 +229,10 @@ PaymentRouter.post("/capture-order", async (req, res) => {
     }
 
     try {
-        // Get PayPal access token
+        // Geting PayPal access token
         const accessToken = await generateAccessToken();
 
-        // Capture the PayPal order
+        // Capturing the PayPal order
         const captureResponse = await fetch(`${PAYPAL_URI}/v2/checkout/orders/${orderID}/capture`, {
             method: "POST",
             headers: {
@@ -240,13 +253,36 @@ PaymentRouter.post("/capture-order", async (req, res) => {
         if (captureData.status === "COMPLETED") {
             const capture = captureData.purchase_units[0].payments.captures[0];
 
+            // Fetching order details
+            const orderDetailsResponse = await fetch(`${PAYPAL_URI}/v2/checkout/orders/${orderID}`, {
+                method: 'GET',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${accessToken}`,
+                },
+            });
+
+            // Handling payment failure
+            if (!orderDetailsResponse.ok) {
+                const errorDetails = await orderDetailsResponse.json();
+                console.error("Error fetching order details:", errorDetails);
+                return res.status(500).json({
+                    error: "Error retrieving order details for custom_id",
+                    details: errorDetails
+                });
+            }
+
+            const orderDetails = await orderDetailsResponse.json(); // We can send this optionally (very large)
+            const customId = orderDetails.purchase_units[0].custom_id;
+
+            // Sending response with payment details and username
             return res.json({
                 success: true,
                 message: "Payment captured successfully",
                 transactionID: capture.id,
                 amount: capture.amount,
                 payer: captureData.payment_source?.paypal?.email_address,
-                fullCaptureData: captureData,
+                username: customId,  // customers username email
             });
         } 
         // Payment failed
