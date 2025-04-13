@@ -5,6 +5,12 @@ import CategoriesModel from "../models/categories.js";
 import ItemCategoriesController from "../controllers/ItemCategoriesController.js";
 
 
+
+const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
+const AppURL = isProd 
+    ? process.env.NEXT_PUBLIC_URL_PROD 
+    : process.env.NEXT_PUBLIC_URL;
+
 const CLIENT_ID = String(process.env.NEXT_PUBLIC_PAYPAL_SANDBOX_CLIENT_ID);
 const CLIENT_SECRET = String(process.env.PAYPAL_SANDBOX_SECRET);
 const PAYPAL_URI = 'https://api-m.sandbox.paypal.com';
@@ -121,13 +127,23 @@ PaymentRouter.post("/create-order", async (req, res) => {
             items
         }];
 
+        // Generating the access token for PayPal API
         const accessToken = await generateAccessToken();
 
+        const returnUrl = `${AppURL}`;  // Success URL
+        const cancelUrl = `${AppURL}`; // Cancel URL
+
+        // Building the order request body with return_url and cancel_url
         const orderRequestBody = {
             intent: "CAPTURE",
             purchase_units: purchaseUnits,
+            application_context: {
+                return_url: returnUrl,
+                cancel_url: cancelUrl
+            }
         };
 
+        // Creating the order with the PayPal API
         const orderResponse = await fetch(`${PAYPAL_URI}/v2/checkout/orders`, {
             method: 'POST',
             headers: {
@@ -137,6 +153,7 @@ PaymentRouter.post("/create-order", async (req, res) => {
             body: JSON.stringify(orderRequestBody),
         });
 
+        // Handling error if the order creation fails
         if (!orderResponse.ok) {
             return res.status(500).json({
                 error: `${orderResponse.statusText}`,
@@ -144,22 +161,24 @@ PaymentRouter.post("/create-order", async (req, res) => {
             });
         }
 
+        // Getting the approval link from the order response
+        // This is the payment portal
         const orderData = await orderResponse.json();
         const approvalLink = orderData.links.find(link => link.rel === 'approve')?.href;
 
+        // Send the order ID and approval link back to the client
         return res.json({
             orderID: orderData.id,
             approvalLink: approvalLink,
         });
     } 
-    catch (err) {
-        console.error("Create Order Error:", err);
+    catch (e) {
+        console.error("Create Order Error:", e);
         return res.status(500).json({
             error: "Server Failed Creating Order Completely",
         });
     }
 });
-
 
 
 /**
@@ -169,7 +188,7 @@ PaymentRouter.post("/create-order", async (req, res) => {
  *     summary: Captures order once user pays
  *     description: Checks if user pays and if they do, saves the order to the database and tells the user it was ok
  *     tags:
- *       - ItemController
+ *       - PaymentController
  *     requestBody:
  *       required: true
  *       content:
