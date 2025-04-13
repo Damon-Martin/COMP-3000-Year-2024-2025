@@ -5,6 +5,7 @@ import ItemRouter from './routes/item-routes.js';
 import AuthMiddleware from './middleware/auth-middleware.js';
 
 import { specs, swaggerUI } from './config/swagger-config.js';
+import BasketRouter from './routes/basket-routes.js';
 
 const app = express()
 const isProduction = process.env.NEXT_PUBLIC_PRODUCTION === 'true'; // Using Logic to determine if true or false based on env string
@@ -48,8 +49,10 @@ async function main() {
       app.use(express.json());
       app.use(express.urlencoded({ extended: true }));
 
+      // Syncing Routes
       app.use("/v1/items", ItemRouter);
-      app.use("/v1/payments", PaymentRouter)
+      app.use("/v1/payments", PaymentRouter);
+      app.use("/v1/basket", BasketRouter);
 
       app.listen(port, () => {
         console.log(`Example app listening on port ${port} & Production is ${isProduction}`)

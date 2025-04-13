@@ -101,7 +101,34 @@ export default function ItemPageDesktop({ id, name, price, description, imageUrl
 
     const addToCartPressed = (e) => {
         e.preventDefault();
-        alert('Add to Cart pressed');
+
+        // LocalStorage if loggedOut
+        if (loginStatus == "loggedOut") {
+            
+            let clientBasket = localStorage.getItem("clientBasket");
+            
+            if (!clientBasket) {
+                clientBasket = { basket: [] };
+            }
+            else {
+                clientBasket = JSON.parse(clientBasket);
+            }
+
+            clientBasket.basket.push({ id, name, price, description, imageUrl, altImgTxt });
+            localStorage.setItem("clientBasket", JSON.stringify(clientBasket));
+
+            alert('Item Added to Basket');
+            console.log(clientBasket);
+        }
+        // DB if loggedIn
+        else {
+            // get this item and get items in clientBasket
+
+            // send to backend to merge them to the db (it will add them to any items in db already)
+
+
+            // sync with db
+        }
     };
 
     return (
