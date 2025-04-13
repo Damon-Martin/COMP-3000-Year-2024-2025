@@ -38,12 +38,11 @@ async function generateAccessToken() {
     }
 }
 
-
 /**
  * @swagger
- * /v1/payments/create-order-single-item:
+ * /v1/payments/create-order:
  *   post:
- *     summary: Creates an order of a single itemID
+ *     summary: Creates an order by sending a list of itemIDs
  *     description: This sends an order to the customer which gives the order id and link
  *     tags:
  *       - PaymentController
@@ -54,10 +53,15 @@ async function generateAccessToken() {
  *           schema:
  *             type: object
  *             properties:
- *               itemID:
- *                 type: uuid
- *                 description: The ID of the category to which the item belongs.
- *                 example: "67faa63f12f175d8d624018c"
+ *               itemIDs:
+ *                 type: array
+ *                 items:
+ *                   type: string
+ *                   format: uuid
+ *                 description: List of item IDs to include in the order
+ *                 example: ["67faa63f12f175d8d624018c", "67f6a1b7c02fe16921544ca8", 67f6a1b7c02fe16921544ca8]
+ *             required:
+ *               - itemIDs
  *     responses:
  *       200:
  *         description: Bill Sent to client (They got to pay using the portal link)
@@ -66,90 +70,125 @@ async function generateAccessToken() {
  *       500:
  *         description: Internal server error
  */
-PaymentRouter.post("/create-order-single-item", async (req, res) => {
-    
-    const itemID = req.body.itemID;
-    const quantity = 1;
+PaymentRouter.post("/create-order", async (req, res) => {
+    const { itemIDs } = req.body;
 
-    if (!itemID) {
-        res.status(400).json({
-            "error": "Missing Order Details",
-        })
+    if (!itemIDs || !Array.isArray(itemIDs) || itemIDs.length === 0) {
+        return res.status(400).json({
+            error: "Missing or invalid itemIDs in request body",
+        });
     }
 
-    try{
-        const response = await itemCategoriesController.getItemByID(itemID);
-        
-        /*********************** Making the bill section  ********************************/
-        if (response.code==200) {
-            const item = response.item; // _id, name, price, description, totalSold
-            
-            // Creating the paypal order here
-            const accessToken = await generateAccessToken();
+    try {
+        const items = [];
+        let total = 0.00;
 
-            const orderRequestBody = {
-                intent: "CAPTURE",  // Capturing payment immediately
-                purchase_units: [
-                    {
-                        amount: {
-                            currency_code: "GBP", 
-                            value: item.price.toFixed(2), // Item price
-                        },
-                        item_id: item._id,
-                        name: item.name,
-                        description: item.description,
-                        quantity: quantity,
-                    },
-                ],
-            };
+        for (const itemID of itemIDs) {
+            const response = await itemCategoriesController.getItemByID(itemID);
 
-            // Sending Order to be inialised on Paypal which i send the details to customer
-            const orderResponse = await fetch(`${PAYPAL_URI}/v2/checkout/orders`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                    'Authorization': `Bearer ${accessToken}`,
-                },
-                body: JSON.stringify(orderRequestBody),
-            });
-
-            // Failed to create an order, nothing to give to the customer to accept or decline
-            if (!orderResponse.ok) {
-                res.status(500).json({
-                    "error": `${orderResponse.statusText}`},
-                );
+            if (response.code !== 200) {
+                return res.status(response.code).json({
+                    error: `Item not found or invalid: ${itemID}`,
+                    details: response.error,
+                });
             }
 
-            /*********************** Sending the bill section  ********************************/
+            const item = response.item;
+            total += item.price;
 
-            // Order has been initialised. Now the customer has to accept it and pay or decline it
-            const orderData = await orderResponse.json();
-
-            
-            // This link is the portal to pay
-            const approvalLink = orderData.links.find(link => link.rel === 'approve').href;
-
-            // Sending the customer the bill
-            res.json({
-                orderID: orderData.id,
-                approvalLink: approvalLink,  // Redirect Link to PayPal's Payment Portal
+            items.push({
+                name: item.name,
+                description: item.description,
+                unit_amount: {
+                    currency_code: "GBP",
+                    value: item.price.toFixed(2),
+                },
+                quantity: "1"
             });
         }
-        else {
-            res.status(response.code).json({
-                "error": response.error,
-            })
+
+        const purchaseUnits = [{
+            amount: {
+                currency_code: "GBP",
+                value: total.toFixed(2),
+                breakdown: {
+                    item_total: {
+                        currency_code: "GBP",
+                        value: total.toFixed(2)
+                    }
+                }
+            },
+            items
+        }];
+
+        const accessToken = await generateAccessToken();
+
+        const orderRequestBody = {
+            intent: "CAPTURE",
+            purchase_units: purchaseUnits,
+        };
+
+        const orderResponse = await fetch(`${PAYPAL_URI}/v2/checkout/orders`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${accessToken}`,
+            },
+            body: JSON.stringify(orderRequestBody),
+        });
+
+        if (!orderResponse.ok) {
+            return res.status(500).json({
+                error: `${orderResponse.statusText}`,
+                orderRequestBody: orderRequestBody
+            });
         }
+
+        const orderData = await orderResponse.json();
+        const approvalLink = orderData.links.find(link => link.rel === 'approve')?.href;
+
+        return res.json({
+            orderID: orderData.id,
+            approvalLink: approvalLink,
+        });
+    } 
+    catch (err) {
+        console.error("Create Order Error:", err);
+        return res.status(500).json({
+            error: "Server Failed Creating Order Completely",
+        });
     }
-    catch {
-        res.status(500).json({
-            "error": "Server Failed Creating Order Completely"
-        })
-    }
-    
-})
+});
 
 
+
+/**
+ * @swagger
+ * /v1/payments/capture-order:
+ *   post:
+ *     summary: Captures order once user pays
+ *     description: Checks if user pays and if they do, saves the order to the database and tells the user it was ok
+ *     tags:
+ *       - ItemController
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               orderID:
+ *                 type: string
+ *                 description: The PayPal order ID to capture
+ *                 example: 5O190127TN364715T
+ *     responses:
+ *       200:
+ *         description: Payment captured successfully
+ *       400:
+ *         description: Missing or invalid order ID, or payment not completed
+ *       500:
+ *         description: Internal server error while capturing payment
+ */
 PaymentRouter.post("/capture-order", async (req, res) => {
     const { orderID } = req.body;
 
