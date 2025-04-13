@@ -59,6 +59,7 @@ class AuthController {
                     return {
                         code: 200,
                         token: token,
+                        email: email,
                         msg: "Login Successful",
                         admin: false
                     };
@@ -66,6 +67,7 @@ class AuthController {
                 return {
                     code: 200,
                     token: token,
+                    email: email,
                     msg: "Login Successful",
                     admin: true
                 };
@@ -148,6 +150,7 @@ class AuthController {
                     return {
                         code: 200,
                         token: token,
+                        email: email,
                         msg: "Customer Registered Successfully"
                     }
                 }
@@ -235,6 +238,7 @@ class AuthController {
                     return {
                         code: 200,
                         token: token,
+                        email: email,
                         msg: "Admin Registered Successfully"
                     }
                 }

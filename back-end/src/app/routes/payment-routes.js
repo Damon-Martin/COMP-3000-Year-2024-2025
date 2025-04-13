@@ -143,7 +143,7 @@ PaymentRouter.post("/create-order", async (req, res) => {
         // Generating the access token for PayPal API
         const accessToken = await generateAccessToken();
 
-        const returnUrl = `${AppURL}`;  // Success URL
+        const returnUrl = `${AppURL}/item/purchase-result`;  // Success URL
         const cancelUrl = `${AppURL}`; // Cancel URL
 
         // Building the order request body with return_url and cancel_url

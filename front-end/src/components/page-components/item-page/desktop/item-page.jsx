@@ -1,59 +1,108 @@
-"use client"
+'use client';
 
 import HeaderBar from '@/components/regular-components/all-pages/header-bar/header-bar';
 import PurchaseButton from '@/components/regular-components/item-page/buttons/purchase-btn';
 import DesktopLoggedOutNavBar from '@/components/regular-components/nav-bar/logged-out/desktop/nav-desktop';
 import NavBarSwitcher from '@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher';
 import Image from 'next/image';
-import useRouter from 'next/navigation'
+import { useRouter } from 'next/navigation';
+import { useState, useEffect } from 'react';
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
+
 const BackendURI = isProd 
     ? process.env.NEXT_PUBLIC_BACKEND_URI_PROD 
     : process.env.NEXT_PUBLIC_BACKEND_URI;
 
+const AuthURI = isProd
+    ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
+    : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
+
 export default function ItemPageDesktop({ id, name, price, description, imageUrl, altImgTxt }) {
+    const [loginStatus, setLoginStatus] = useState('loggedOut');
+    const [username, setUsername] = useState('');
+    const router = useRouter();
+
+    useEffect(() => {
+        const isUserLoggedIn = async () => {
+            const token = localStorage.getItem('token');
+
+            try {
+                if (token) {
+                    const res = await fetch(`${AuthURI}/v1/validateJWT`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json',
+                        },
+                        body: JSON.stringify({ token }),
+                    });
+
+                    const data = await res.json();
+                    setUsername(data.email);
+
+                    if (data.admin === 'admin') {
+                        setLoginStatus('admin');
+                    } else if (res.status === 200) {
+                        setLoginStatus('loggedIn');
+                    } else {
+                        localStorage.removeItem('token');
+                        setLoginStatus('loggedOut');
+                    }
+                }
+            } catch (e) {
+                console.error('JWT Checker Fetch Failed: ', e);
+            }
+        };
+
+        isUserLoggedIn();
+    }, []);
+
     const purchasePressed = (e) => {
         e.preventDefault();
-        
-        const createOrder = async () => {
-            // Creating order for single item
-            const res = await fetch(`${BackendURI}/v1/payments/create-order`, {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ itemIDs: [ id ] })
-            });
 
-            if (res.ok) {
-                const data = await res.json();
-                const approvalLink = data.approvalLink;
-                localStorage.setItem("orderID", data.orderID); // Storing Order ID For Capture on Processing Page
-                window.location.href = approvalLink;
-            } 
-            else if (res.status === 400) {
-                alert('Bad Request: Creating Order');
-                console.error("Creating Order Error on Client")
-            } 
-            else if (res.status === 500) {
-                alert('Something wrong happened');
-                console.error("Creating Order Error on Server")
-            } 
-            else {
-                alert('Something wrong happened');
-                console.error(`Unexpected error: ${res.status}`);
-            }
+        if (loginStatus !== 'loggedOut') {
+            const createOrder = async () => {
+                // Creating order for single item
+                const res = await fetch(`${BackendURI}/v1/payments/create-order`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify({ itemIDs: [id], username }),
+                });
 
-            console.log(data)
+                if (res.ok) {
+                    const data = await res.json();
+                    const approvalLink = data.approvalLink;
+                    localStorage.setItem('orderID', data.orderID); // Storing Order ID For Capture on Processing Page
+                    router.push(approvalLink);
+                } 
+                else if (res.status === 400) {
+                    alert('Bad Request: Creating Order');
+                    console.error('Creating Order Error on Client');
+                } 
+                else if (res.status === 500) {
+                    alert('Something wrong happened');
+                    console.error('Creating Order Error on Server');
+                } 
+                else {
+                    alert('Something wrong happened');
+                    console.error(`Unexpected error: ${res.status}`);
+                }
+            };
+
+            createOrder();
         }
+        // Encouraging the user to login
+        else {
+            router.push("/login");
+        }
+    };
 
-        createOrder();
-    }
     const addToCartPressed = (e) => {
         e.preventDefault();
-        alert("Add to Cart pressed");
-    }
+        alert('Add to Cart pressed');
+    };
 
     return (
         <div>
@@ -70,7 +119,7 @@ export default function ItemPageDesktop({ id, name, price, description, imageUrl
                     <p className="text-4xl font-semibold">{name}</p>
                     <p className="text-xl font-medium">£{price}</p>
                     <p className="text-base">{description}</p>
-                    
+
                     <div className="flex flex-col space-y-2 w-full">
                         <PurchaseButton 
                             text="Buy Now" 

@@ -79,7 +79,8 @@ AuthRouter.post("/register", async (req, res) => {
         res.status(result.code).json({
             token: result.token,
             msg: result.msg,
-            admin: false
+            admin: false,
+            email: uName,
         })
     }
     else {
@@ -136,7 +137,8 @@ AuthRouter.post("/login", async (req, res) => {
         res.status(result.code).json({
             token: result.token,
             msg: result.msg,
-            admin: result.admin
+            admin: result.admin,
+            email: uName,
         })
     }
     else {
@@ -216,7 +218,8 @@ AuthRouter.post("/registerAdmin", async (req, res) => {
         res.status(result.code).json({
             token: result.token,
             msg: result.msg,
-            admin: true
+            admin: true,
+            email: uName,
         })
     }
     else {
