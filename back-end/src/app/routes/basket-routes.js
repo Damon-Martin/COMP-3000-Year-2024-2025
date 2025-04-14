@@ -184,7 +184,7 @@ BasketRouter.get("/get-basket", async (req, res) => {
  *         description: The ID of the item to remove from the basket
  *     responses:
  *       200:
- *         description: Basket Item List Sent Successfully
+ *         description: Item Deleted. Sends new List.
  *       400:
  *         description: No token provided or invalid request
  *       500:
@@ -208,5 +208,40 @@ BasketRouter.delete("/delete-item", async (req, res) => {
     }
 })
 
+
+/**
+ * @swagger
+ * /v1/basket/clear-basket:
+ *   delete:
+ *     summary: Deletes all items from the basket
+ *     tags:
+ *       - BasketController
+ *     security:
+ *       - bearerAuth: []
+ *     responses:
+ *       200:
+ *         description: All items Deleted
+ *       400:
+ *         description: No token provided or invalid request
+ *       500:
+ *         description: Internal server error
+ */
+BasketRouter.delete("/clear-basket", async (req, res) => {
+    const token = req.headers.authorization;
+    const id = req.query.id;
+
+    const response = await basketController.deleteAllItemsFromBasket(token);
+
+    if (response.code != 200) {
+        res.status(response.code).json({
+            error: response.error
+        })
+    }
+    else {
+        res.status(200).json({
+            basket: response.basket
+        })
+    }
+})
 
 export default BasketRouter;

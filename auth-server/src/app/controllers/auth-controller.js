@@ -39,7 +39,7 @@ class AuthController {
 
             if (isPasswordValid) {
 
-                let token = jwt.sign({ userId: user._id }, 'Example-Secret-Key', {
+                let token = jwt.sign({ userId: user._id,  timestamp: Date.now() }, 'Example-Secret-Key', {
                     expiresIn: '1h',
                 });
 
@@ -222,7 +222,7 @@ class AuthController {
                 await user.save();
                 await currentDetails.save();
 
-                let token = jwt.sign({ userId: user._id }, 'Example-Secret-Key', {
+                let token = jwt.sign({ userId: user._id,  timestamp: Date.now() }, 'Example-Secret-Key', {
                     expiresIn: '1h',
                 });
 

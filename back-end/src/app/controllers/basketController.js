@@ -148,6 +148,46 @@ class BasketController {
         }
     }
 
+    async deleteAllItemsFromBasket(token) {
+        const response = await this.getUsernameFromToken(token);
+        
+        if (response.code !== 200) {
+            return { code: response.code, error: response.error };
+        }
+        
+        const email = response.email;
+    
+        try {
+            const basket = await this.basketModel.findOne({ email: email });
+    
+            // User has no items to delete
+            if (!basket) {
+                return {
+                    code: 200,
+                    basket: []
+                };
+            }
+    
+            // Clear all items from the basket
+            basket.items = [];
+    
+            // Saving the empty basket
+            await basket.save();
+    
+            return {
+                code: 200,
+                basket: []
+            };
+        }
+        catch (e) {
+            return {
+                code: 500,
+                error: `Mongoose failed to clear the user's basket, ${e}`
+            };
+        }
+    }
+    
+
     async getUsernameFromToken(token) {
         if (!token) {
             return { code: 400, error: "No token provided. Token is needed to auth and contains the username" };
