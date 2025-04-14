@@ -39,7 +39,7 @@ class AuthController {
 
             if (isPasswordValid) {
 
-                let token = jwt.sign({ userId: user._id }, 'Example-Secret-Key', {
+                let token = jwt.sign({ userId: user._id,  timestamp: Date.now() }, 'Example-Secret-Key', {
                     expiresIn: '1h',
                 });
 
@@ -59,6 +59,7 @@ class AuthController {
                     return {
                         code: 200,
                         token: token,
+                        email: email,
                         msg: "Login Successful",
                         admin: false
                     };
@@ -66,6 +67,7 @@ class AuthController {
                 return {
                     code: 200,
                     token: token,
+                    email: email,
                     msg: "Login Successful",
                     admin: true
                 };
@@ -148,6 +150,7 @@ class AuthController {
                     return {
                         code: 200,
                         token: token,
+                        email: email,
                         msg: "Customer Registered Successfully"
                     }
                 }
@@ -219,7 +222,7 @@ class AuthController {
                 await user.save();
                 await currentDetails.save();
 
-                let token = jwt.sign({ userId: user._id }, 'Example-Secret-Key', {
+                let token = jwt.sign({ userId: user._id,  timestamp: Date.now() }, 'Example-Secret-Key', {
                     expiresIn: '1h',
                 });
 
@@ -235,6 +238,7 @@ class AuthController {
                     return {
                         code: 200,
                         token: token,
+                        email: email,
                         msg: "Admin Registered Successfully"
                     }
                 }

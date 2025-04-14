@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  docker-compose-works:
+  integration-tests:
     runs-on: ubuntu-latest
 
     steps:
@@ -22,6 +22,17 @@ jobs:
     # Step to start Docker Compose
     - name: Run Docker Compose
       run: docker-compose up -d
+
+    - name: Waiting for services to boot up fully
+      run: sleep 10
+
+    - name: Installing Node Modules
+      working-directory: ./back-end
+      run: npm install
+      
+    - name: Running Integration Tests for Auth Server
+      working-directory: ./back-end
+      run: npm run int-test
 
     # Step to stop and remove Docker Compose resources
     - name: Tear Down Docker Compose
