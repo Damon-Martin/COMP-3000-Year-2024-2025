@@ -73,6 +73,8 @@ export default function BasketPage() {
         // LoggedIn so use db
         if (loginStatus != "loggedOut") {
 
+            const syncOfflineItems = async () => {}
+            
             const fetchItems = async () => {
                 const token = localStorage.getItem("token");
 
@@ -87,16 +89,15 @@ export default function BasketPage() {
                 if (rawRes.status != 200) {
                     alert("Failed to fetch basket")
                 }
+                // Fetched Items
                 else {
                     const data = await rawRes.json();
                     const basket = data.basket;
                     setBasket(basket);
-                    console.log(basket);
                 }
             }
 
             fetchItems();
-            console.log("LoggedIn and got to fetch items")
         }
         // LoggedOut: Use localStorage
         else {
@@ -117,7 +118,7 @@ export default function BasketPage() {
     return (
         <div>
             <NavBarSwitcher />
-            { isMobile ? <BasketMobile basketList={basket} loginStatus={loginStatus}/> : <BasketDesktop basketList={basket} loginStatus={loginStatus}/>} 
+            { isMobile ? <BasketMobile basketList={basket} setBasket={setBasket} loginStatus={loginStatus} setLoginStatus={setLoginStatus}/> : <BasketDesktop basketList={basket} setBasket={setBasket} loginStatus={loginStatus} setLoginStatus={setLoginStatus}/>} 
         </div>
     )
 }
