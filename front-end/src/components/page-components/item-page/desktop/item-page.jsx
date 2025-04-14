@@ -1,8 +1,6 @@
 'use client';
 
-import HeaderBar from '@/components/regular-components/all-pages/header-bar/header-bar';
 import PurchaseButton from '@/components/regular-components/item-page/buttons/purchase-btn';
-import DesktopLoggedOutNavBar from '@/components/regular-components/nav-bar/logged-out/desktop/nav-desktop';
 import NavBarSwitcher from '@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher';
 import Image from 'next/image';
 import { useRouter } from 'next/navigation';
@@ -102,6 +100,8 @@ export default function ItemPageDesktop({ id, name, price, description, imageUrl
     const addToCartPressed = (e) => {
         e.preventDefault();
 
+        const newItem = { id, name, price, description, imageUrl, altImgTxt };
+
         // LocalStorage if loggedOut
         if (loginStatus == "loggedOut") {
             
@@ -114,7 +114,7 @@ export default function ItemPageDesktop({ id, name, price, description, imageUrl
                 clientBasket = JSON.parse(clientBasket);
             }
 
-            clientBasket.basket.push({ id, name, price, description, imageUrl, altImgTxt });
+            clientBasket.basket.push(newItem);
             localStorage.setItem("clientBasket", JSON.stringify(clientBasket));
 
             alert('Item Added to Basket');
@@ -123,11 +123,38 @@ export default function ItemPageDesktop({ id, name, price, description, imageUrl
         // DB if loggedIn
         else {
             // get this item and get items in clientBasket
+            const addToBasket = async () => {
+                const itemsToSync = localStorage.getItem("clientBasket");
+                const token = localStorage.getItem("token");
 
-            // send to backend to merge them to the db (it will add them to any items in db already)
+                let reqBody = { newItem: newItem }
 
+                // If there is items to sync from loggedOut
+                if (itemsToSync) {
+                    const itemList = JSON.parse(itemsToSync).basket;
+                    reqBody = { newItem: newItem, clientItems: itemList }
+                }
 
-            // sync with db
+                // Syncing to the database and adding them to the user's items or making it
+                const res = await fetch(`${BackendURI}/v1/basket/add-items`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Authorization': `${token}`
+                    },
+                    body: JSON.stringify(reqBody),
+                });
+
+                if (res.ok) {
+                    localStorage.removeItem("clientBasket")
+                    alert("Item Added to Basket")
+                }
+                else {
+                    alert("Failed to add to Basket")
+                }
+            }
+
+            addToBasket();
         }
     };
 
