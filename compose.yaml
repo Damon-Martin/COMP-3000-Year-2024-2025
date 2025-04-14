@@ -21,6 +21,15 @@ services:
     ports:
       - 82:3000
 
+  back-end2:
+    build:
+      context: ./back-end
+      dockerfile: .dockerfile
+    container_name: back-end2
+    env_file:
+      - path: ./front-end/.env.local
+        required: true
+
   front-end:
     build:
       context: ./front-end

@@ -1,5 +1,7 @@
 "use client"
 
+import BasketDesktop from "@/components/page-components/basket-page/desktop/basket-desktop";
+import BasketMobile from "@/components/page-components/basket-page/mobile/basket-mobile";
 import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import { useEffect, useState } from "react";
 
@@ -115,6 +117,7 @@ export default function BasketPage() {
     return (
         <div>
             <NavBarSwitcher />
+            { isMobile ? <BasketMobile basketList={basket}/> : <BasketDesktop basketList={basket}/>} 
         </div>
     )
 }
