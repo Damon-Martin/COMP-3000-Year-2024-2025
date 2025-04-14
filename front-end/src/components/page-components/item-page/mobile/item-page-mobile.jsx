@@ -42,14 +42,17 @@ export default function ItemPageMobile({ id, name, price, description, imageUrl,
 
                     if (data.admin === 'admin') {
                         setLoginStatus('admin');
-                    } else if (res.status === 200) {
+                    } 
+                    else if (res.status === 200) {
                         setLoginStatus('loggedIn');
-                    } else {
+                    } 
+                    else {
                         localStorage.removeItem('token');
                         setLoginStatus('loggedOut');
                     }
                 }
-            } catch (e) {
+            } 
+            catch (e) {
                 console.error('JWT Checker Fetch Failed: ', e);
             }
         };

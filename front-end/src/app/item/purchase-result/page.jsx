@@ -35,7 +35,8 @@ export default function PurchaseResultPage() {
 
                 if (rawRes.ok) {
                     alert("Order captured successfully!");
-                } else {
+                } 
+                else {
                     alert("Bad OrderID");
                 }
             } 
