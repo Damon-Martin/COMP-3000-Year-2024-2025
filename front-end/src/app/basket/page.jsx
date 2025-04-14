@@ -17,6 +17,7 @@ export default function BasketPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
     const [isMobile, setIsMobile] = useState(false);
     const [basket, setBasket] = useState([]);
+    const [username, setUsername] = useState();
 
     // Determines to render desktop or mobile components
     useEffect(() => {
@@ -45,12 +46,15 @@ export default function BasketPage() {
                     });
 
                     const data = await res.json();
+                    setUsername(data.email)
 
                     if (data.admin === "admin") {
                         setLoginStatus("admin");
-                    } else if (res.status === 200) {
+                    } 
+                    else if (res.status === 200) {
                         setLoginStatus("loggedIn");
-                    } else {
+                    } 
+                    else {
                         localStorage.removeItem("token");
                         setLoginStatus("loggedOut");
                     }
@@ -143,9 +147,9 @@ export default function BasketPage() {
         <div>
             <NavBarSwitcher />
             {isMobile ? (
-                <BasketMobile basketList={basket} setBasket={setBasket} loginStatus={loginStatus} setLoginStatus={setLoginStatus} />
+                <BasketMobile basketList={basket} setBasket={setBasket} loginStatus={loginStatus} setLoginStatus={setLoginStatus} username={username} />
             ) : (
-                <BasketDesktop basketList={basket} setBasket={setBasket} loginStatus={loginStatus} setLoginStatus={setLoginStatus} />
+                <BasketDesktop basketList={basket} setBasket={setBasket} loginStatus={loginStatus} setLoginStatus={setLoginStatus} username={username} />
             )}
         </div>
     );

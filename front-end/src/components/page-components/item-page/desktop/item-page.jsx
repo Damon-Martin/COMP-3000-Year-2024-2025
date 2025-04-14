@@ -66,7 +66,7 @@ export default function ItemPageDesktop({ id, name, price, description, imageUrl
                     headers: {
                         'Content-Type': 'application/json',
                     },
-                    body: JSON.stringify({ itemIDs: [id], username }),
+                    body: JSON.stringify({ itemIDs: [id], username: username }),
                 });
 
                 if (res.ok) {
