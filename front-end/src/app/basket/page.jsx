@@ -117,7 +117,7 @@ export default function BasketPage() {
     return (
         <div>
             <NavBarSwitcher />
-            { isMobile ? <BasketMobile basketList={basket}/> : <BasketDesktop basketList={basket}/>} 
+            { isMobile ? <BasketMobile basketList={basket} loginStatus={loginStatus}/> : <BasketDesktop basketList={basket} loginStatus={loginStatus}/>} 
         </div>
     )
 }
