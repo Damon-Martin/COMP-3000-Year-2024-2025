@@ -5,13 +5,12 @@ import BasketMobile from "@/components/page-components/basket-page/mobile/basket
 import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import { useEffect, useState } from "react";
 
-
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const AuthURI = isProd
     ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
     : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
-const BackendURI = isProd 
-    ? process.env.NEXT_PUBLIC_BACKEND_URI_PROD 
+const BackendURI = isProd
+    ? process.env.NEXT_PUBLIC_BACKEND_URI_PROD
     : process.env.NEXT_PUBLIC_BACKEND_URI;
 
 export default function BasketPage() {
@@ -33,126 +32,121 @@ export default function BasketPage() {
 
     useEffect(() => {
         const isUserLoggedIn = async () => {
-        const token = localStorage.getItem("token");
+            const token = localStorage.getItem("token");
 
             try {
                 if (token) {
                     const res = await fetch(`${AuthURI}/v1/validateJWT`, {
                         method: "POST",
                         headers: {
-                        "Content-Type": "application/json",
+                            "Content-Type": "application/json",
                         },
                         body: JSON.stringify({ token: token }),
                     });
-            
+
                     const data = await res.json();
-                    
-                    if (data.admin == "admin") {
-                        setLoginStatus("admin")
-                    }
-                    else if (res.status == 200) {
+
+                    if (data.admin === "admin") {
+                        setLoginStatus("admin");
+                    } else if (res.status === 200) {
                         setLoginStatus("loggedIn");
-                    }
-                    else {
+                    } else {
                         localStorage.removeItem("token");
                         setLoginStatus("loggedOut");
                     }
                 }
-            } 
-            catch (e) {
+            } catch (e) {
                 console.error("JWT Checker Fetch Failed: ", e);
             }
         };
 
         isUserLoggedIn();
-
     }, []);
 
     /****************** Fetching Basket  ***************************/
-    useEffect(() => {
-        // LoggedIn so use db
-        if (loginStatus != "loggedOut") {
 
-            const syncBasket = async () => {
-                const itemsToSync = localStorage.getItem("clientBasket");
-                const token = localStorage.getItem("token");
+    // Syncs the localStorage basket to the backend
+    const syncBasket = async () => {
+        const itemsToSync = localStorage.getItem("clientBasket");
+        const token = localStorage.getItem("token");
 
-                // If there is items to sync from loggedOut
-                if (itemsToSync && token) {
-                    const itemList = JSON.parse(itemsToSync).basket;
-                    // There are items to sync
-                    if (itemList.length > 0){
+        if (itemsToSync && token) {
+            const itemList = JSON.parse(itemsToSync).basket;
 
-                        const currentItem = itemList.pop()
-                        let reqBody = { newItem: currentItem, clientItems: itemList }
+            // There are items to sync
+            if (itemList.length > 0) {
+                const currentItem = itemList.pop();
+                let reqBody = { newItem: currentItem, clientItems: itemList };
 
-                        // Syncing to the database and adding them to the user's items or making it
-                        const res = await fetch(`${BackendURI}/v1/basket/add-items`, {
-                            method: 'POST',
-                            headers: {
-                                'Content-Type': 'application/json',
-                                'Authorization': `${token}`
-                            },
-                            body: JSON.stringify(reqBody),
-                        });
-
-                        if (res.ok) {
-                            localStorage.removeItem("clientBasket")
-                            alert("Offline Basket Synced")
-                        }
-                        else {
-                            alert("Failed to sync offline basket")
-                        }
-                    }
-                    // No items to sync
-                }
-            }
-            
-            const fetchItems = async () => {
-                const token = localStorage.getItem("token");
-
-                const rawRes = await fetch(`${BackendURI}/v1/basket/get-basket`, {
-                    method: "GET",
+                const res = await fetch(`${BackendURI}/v1/basket/add-items`, {
+                    method: 'POST',
                     headers: {
-                        "Content-Type": "application/json",
-                        "Authorization": `Bearer ${token}`
-                    }
+                        'Content-Type': 'application/json',
+                        'Authorization': `${token}`,
+                    },
+                    body: JSON.stringify(reqBody),
                 });
 
-                if (rawRes.status != 200) {
-                    alert("Failed to fetch basket")
-                }
-                // Fetched Items
-                else {
-                    const data = await rawRes.json();
-                    const basket = data.basket;
-                    setBasket(basket);
+                if (res.ok) {
+                    localStorage.removeItem("clientBasket");
+                    alert("Offline Basket Synced");
+                } else {
+                    alert("Failed to sync offline basket");
                 }
             }
-
-            syncBasket();
-            fetchItems();
         }
-        // LoggedOut: Use localStorage
+    };
+
+    // Fetches Basket from the server
+    const fetchItems = async () => {
+        const token = localStorage.getItem("token");
+
+        const rawRes = await fetch(`${BackendURI}/v1/basket/get-basket`, {
+            method: "GET",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${token}`,
+            },
+        });
+
+        if (rawRes.status !== 200) {
+            alert("Failed to fetch basket");
+        } 
         else {
-            const rawItemList = localStorage.getItem("clientBasket");
-
-            // There is no basket yet and the user is not loggedin
-            if (!rawItemList) {
-                setBasket([]);
-            }
-            // Using the basket from the localStorage
-            else {
-                const parsedBasket = JSON.parse(rawItemList).basket;
-                setBasket(parsedBasket);
-            }
+            const data = await rawRes.json();
+            const basket = data.basket;
+            setBasket(basket);
         }
+    };
+
+    useEffect(() => {
+        const getBasketData = async () => {
+            if (loginStatus !== "loggedOut") {
+                await syncBasket(); // Wait for syncBasket to complete before fetching basket
+                fetchItems(); // Fetch basket after syncing
+            } else {
+                const rawItemList = localStorage.getItem("clientBasket");
+
+                if (!rawItemList) {
+                    setBasket([]);
+                } else {
+                    const parsedBasket = JSON.parse(rawItemList).basket;
+                    setBasket(parsedBasket);
+                }
+            }
+        };
+
+        getBasketData();
     }, [loginStatus]);
 
     return (
         <div>
             <NavBarSwitcher />
-            { isMobile ? <BasketMobile basketList={basket} setBasket={setBasket} loginStatus={loginStatus} setLoginStatus={setLoginStatus}/> : <BasketDesktop basketList={basket} setBasket={setBasket} loginStatus={loginStatus} setLoginStatus={setLoginStatus}/>} 
+            {isMobile ? (
+                <BasketMobile basketList={basket} setBasket={setBasket} loginStatus={loginStatus} setLoginStatus={setLoginStatus} />
+            ) : (
+                <BasketDesktop basketList={basket} setBasket={setBasket} loginStatus={loginStatus} setLoginStatus={setLoginStatus} />
+            )}
         </div>
-    )
+    );
 }
