@@ -73,7 +73,40 @@ export default function BasketPage() {
         // LoggedIn so use db
         if (loginStatus != "loggedOut") {
 
-            const syncOfflineItems = async () => {}
+            const syncBasket = async () => {
+                const itemsToSync = localStorage.getItem("clientBasket");
+                const token = localStorage.getItem("token");
+
+                // If there is items to sync from loggedOut
+                if (itemsToSync && token) {
+                    const itemList = JSON.parse(itemsToSync).basket;
+                    // There are items to sync
+                    if (itemList.length > 0){
+
+                        const currentItem = itemList.pop()
+                        let reqBody = { newItem: currentItem, clientItems: itemList }
+
+                        // Syncing to the database and adding them to the user's items or making it
+                        const res = await fetch(`${BackendURI}/v1/basket/add-items`, {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'Authorization': `${token}`
+                            },
+                            body: JSON.stringify(reqBody),
+                        });
+
+                        if (res.ok) {
+                            localStorage.removeItem("clientBasket")
+                            alert("Offline Basket Synced")
+                        }
+                        else {
+                            alert("Failed to sync offline basket")
+                        }
+                    }
+                    // No items to sync
+                }
+            }
             
             const fetchItems = async () => {
                 const token = localStorage.getItem("token");
@@ -97,6 +130,7 @@ export default function BasketPage() {
                 }
             }
 
+            syncBasket();
             fetchItems();
         }
         // LoggedOut: Use localStorage
