@@ -8,6 +8,9 @@ const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const AuthURI = isProd
     ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
     : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
+const BackendURI = isProd 
+    ? process.env.NEXT_PUBLIC_BACKEND_URI_PROD 
+    : process.env.NEXT_PUBLIC_BACKEND_URI;
 
 export default function BasketPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
@@ -61,13 +64,37 @@ export default function BasketPage() {
 
         isUserLoggedIn();
 
-    }, [loginStatus]);
+    }, []);
 
     /****************** Fetching Basket  ***************************/
     useEffect(() => {
         // LoggedIn so use db
         if (loginStatus != "loggedOut") {
 
+            const fetchItems = async () => {
+                const token = localStorage.getItem("token");
+
+                const rawRes = await fetch(`${BackendURI}/v1/basket/get-basket`, {
+                    method: "GET",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    }
+                });
+
+                if (rawRes.status != 200) {
+                    alert("Failed to fetch basket")
+                }
+                else {
+                    const data = await rawRes.json();
+                    const basket = data.basket;
+                    setBasket(basket);
+                    console.log(basket);
+                }
+            }
+
+            fetchItems();
+            console.log("LoggedIn and got to fetch items")
         }
         // LoggedOut: Use localStorage
         else {
@@ -83,7 +110,7 @@ export default function BasketPage() {
                 setBasket(parsedBasket);
             }
         }
-    }, []);
+    }, [loginStatus]);
 
     return (
         <div>
