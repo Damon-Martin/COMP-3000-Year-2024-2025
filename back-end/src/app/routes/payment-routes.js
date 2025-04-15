@@ -3,7 +3,8 @@ import express from "express";
 import ItemsModel from "../models/items.js";
 import CategoriesModel from "../models/categories.js";
 import ItemCategoriesController from "../controllers/ItemCategoriesController.js";
-
+import OrderHistoryController from "../controllers/ordersHistoryController.js";
+import OrderHistoryModel from "../models/order-history.js";
 
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
@@ -16,6 +17,7 @@ const CLIENT_SECRET = String(process.env.PAYPAL_SANDBOX_SECRET);
 const PAYPAL_URI = 'https://api-m.sandbox.paypal.com';
 
 const itemCategoriesController = new ItemCategoriesController(CategoriesModel, ItemsModel);
+const orderHistoryController = new OrderHistoryController(OrderHistoryModel);
 
 const PaymentRouter = express.Router();
 
@@ -272,18 +274,47 @@ PaymentRouter.post("/capture-order", async (req, res) => {
                 });
             }
 
-            const orderDetails = await orderDetailsResponse.json(); // We can send this optionally (very large)
-            const customId = orderDetails.purchase_units[0].custom_id;
 
-            // Sending response with payment details and username
-            return res.json({
-                success: true,
-                message: "Payment captured successfully",
-                transactionID: capture.id,
-                amount: capture.amount,
-                payer: captureData.payment_source?.paypal?.email_address,
-                username: customId,  // customers username email
-            });
+            /******************* Saving to successful order to db section **********************/
+            const orderDetails = await orderDetailsResponse.json(); // We can send this optionally (very large)
+            
+            const transactionID = capture.id; // Transaction ID is for refunds
+            const totalAmount = capture.amount;
+            const email = orderDetails.purchase_units[0].custom_id;
+            const payerEmail = captureData.payment_source?.paypal?.email_address;
+            const items = orderDetails.purchase_units[0].items;
+            
+
+
+            // This gives a status code
+            // Saving Order to order history
+            const rawRes = await orderHistoryController.addOrderDetailsDB(transactionID, totalAmount, email, payerEmail, items);
+            console.log(rawRes)
+            
+            /******************* Success: Givng details to customer **********************/
+            if (rawRes.code == 200) {
+                
+                // Sending response with payment details and username
+                return res.status(200).json({
+                    transactionID: transactionID,
+                    success: true,
+                    message: "Payment captured successfully",
+                    amount: totalAmount,
+                    payer: payerEmail,
+                    username: email,  // customers username email
+                    items: items
+                });
+            }
+            // Failed saving to DB, Perform Refund Immediately
+            else {
+
+
+                return res.status(500).json({
+                    transactionID: transactionID,
+                    msg: "Failed to save to the database",
+                    error: rawRes.error
+                });
+            }
         } 
         // Payment failed
         else {
@@ -302,6 +333,92 @@ PaymentRouter.post("/capture-order", async (req, res) => {
     }
 });
 
+
+/**
+ * @swagger
+ * /v1/payments/refund-order:
+ *   post:
+ *     summary: Refunds a captured order
+ *     description: Full Refund when provided a valid transaction ID for Paypal
+ *     tags:
+ *       - PaymentController
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               transactionID:
+ *                 type: string
+ *                 description: The PayPal transaction ID to refund
+ *                 example: 8A6W81234X679788B
+ *     responses:
+ *       200:
+ *         description: Refund processed successfully
+ *       400:
+ *         description: Missing or invalid transaction ID
+ *       500:
+ *         description: Internal server error while processing refund
+ */
+PaymentRouter.post("/refund-order", async (req, res) => {
+    const { transactionID } = req.body;
+
+    // Checking if a transactionID was provided at all
+    if (!transactionID) {
+        return res.status(400).json({
+            error: "Missing transactionID in request body"
+        });
+    }
+
+    try {
+        // Getting a PayPal access token
+        const accessToken = await generateAccessToken();
+
+        // Issuing Refund via Paypal
+        const refundResponse = await fetch(`${PAYPAL_URI}/v2/payments/captures/${transactionID}/refund`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+            },
+            // By sending an empty object. It defaults to a full refund
+            body: JSON.stringify({}),
+        });
+
+        if (!refundResponse.ok) {
+            const errorData = await refundResponse.json();
+            console.error("Error from PayPal:", errorData);
+            return res.status(500).json({
+                error: "Failed to process refund",
+                details: errorData
+            });
+        }
+
+        const refundData = await refundResponse.json();
+
+        // Checking if the paypal refund is successful
+        if (refundData.status === "COMPLETED") {
+            return res.status(200).json({
+                message: "Full refund processed successfully",
+                refundDetails: refundData
+            });
+        } 
+        // Refund Failed: Most likely due to bad transaction ID
+        else {
+            return res.status(400).json({
+                error: "Refund failed",
+                details: refundData
+            });
+        }
+    } 
+    catch (e) {
+        console.error("Refund error:", e);
+        return res.status(500).json({
+            error: "Server error while processing refund",
+        });
+    }
+});
 
 
 export default PaymentRouter;

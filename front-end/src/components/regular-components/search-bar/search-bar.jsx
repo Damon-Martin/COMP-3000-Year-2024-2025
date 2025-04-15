@@ -4,11 +4,10 @@ import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 export default function SearchBar({ widthVW }) {
-    const [query, setQuery] = useState(''); // Contains text from form
+    const [query, setQuery] = useState('');
     const router = useRouter();
 
     const handleSearch = () => {
-        // Requires a query to redirect
         if (query.trim()) {
             router.push(`/search?query=${query.trim()}`);
         }
@@ -21,21 +20,27 @@ export default function SearchBar({ widthVW }) {
     };
 
     return (
-        <div 
-            className="flex m-1 border rounded-lg overflow-hidden shadow-sm"
+        <div
+            className="flex m-1 shadow-sm"
             style={{ width: `${widthVW}vw` }}
         >
-            <input 
-                type="text" 
-                value={query} 
-                onChange={(e) => setQuery(e.target.value)} 
+            <input
+                type="text"
+                value={query}
+                onChange={(e) => setQuery(e.target.value)}
                 onKeyDown={handleKeyDown}
-                className="text-black flex-grow p-2 outline-none transition duration-200 hover:bg-gray-100 focus:ring-orange-600" 
-                placeholder="Search..." 
+                className="text-black flex-grow p-2 outline-none border border-gray-300 focus:ring-2 focus:ring-orange-600 focus:border-orange-600 rounded-l-md transition duration-200 hover:bg-gray-100"
+                placeholder="Search..."
+                aria-label="Enter Search Query"
             />
-            <button onClick={handleSearch} className="bg-[#FF4D00] hover:bg-[#c21300] px-4 py-1 text-white">
+            <button
+                onClick={handleSearch}
+                className="bg-[#FF4D00] hover:bg-[#c21300] px-4 py-2 text-white border border-gray-300 border-l-0 rounded-r-md rounded-l-none focus:bg-[#c21300] focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-600 transition duration-200"
+                aria-label="Search Button"
+                onKeyDown={handleKeyDown}
+            >
                 Search
             </button>
         </div>
-    );
+    );    
 }
