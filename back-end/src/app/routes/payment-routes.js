@@ -3,7 +3,8 @@ import express from "express";
 import ItemsModel from "../models/items.js";
 import CategoriesModel from "../models/categories.js";
 import ItemCategoriesController from "../controllers/ItemCategoriesController.js";
-
+import OrderHistoryController from "../controllers/ordersHistoryController.js";
+import OrderHistoryModel from "../models/order-history.js";
 
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
@@ -16,6 +17,7 @@ const CLIENT_SECRET = String(process.env.PAYPAL_SANDBOX_SECRET);
 const PAYPAL_URI = 'https://api-m.sandbox.paypal.com';
 
 const itemCategoriesController = new ItemCategoriesController(CategoriesModel, ItemsModel);
+const orderHistoryController = new OrderHistoryController(OrderHistoryModel);
 
 const PaymentRouter = express.Router();
 
@@ -272,18 +274,47 @@ PaymentRouter.post("/capture-order", async (req, res) => {
                 });
             }
 
-            const orderDetails = await orderDetailsResponse.json(); // We can send this optionally (very large)
-            const customId = orderDetails.purchase_units[0].custom_id;
 
-            // Sending response with payment details and username
-            return res.json({
-                success: true,
-                message: "Payment captured successfully",
-                transactionID: capture.id,
-                amount: capture.amount,
-                payer: captureData.payment_source?.paypal?.email_address,
-                username: customId,  // customers username email
-            });
+            /******************* Saving to successful order to db section **********************/
+            const orderDetails = await orderDetailsResponse.json(); // We can send this optionally (very large)
+            
+            const transactionID = capture.id; // Transaction ID is for refunds
+            const totalAmount = capture.amount;
+            const email = orderDetails.purchase_units[0].custom_id;
+            const payerEmail = captureData.payment_source?.paypal?.email_address;
+            const items = orderDetails.purchase_units[0].items;
+            
+
+
+            // This gives a status code
+            // Saving Order to order history
+            const rawRes = await orderHistoryController.addOrderDetailsDB(transactionID, totalAmount, email, payerEmail, items);
+            console.log(rawRes)
+            
+            /******************* Success: Givng details to customer **********************/
+            if (rawRes.code == 200) {
+                
+                // Sending response with payment details and username
+                return res.status(200).json({
+                    transactionID: transactionID,
+                    success: true,
+                    message: "Payment captured successfully",
+                    amount: totalAmount,
+                    payer: payerEmail,
+                    username: email,  // customers username email
+                    items: items
+                });
+            }
+            // Failed saving to DB, Perform Refund Immediately
+            else {
+
+
+                return res.status(500).json({
+                    transactionID: transactionID,
+                    msg: "Failed to save to the database",
+                    error: rawRes.error
+                });
+            }
         } 
         // Payment failed
         else {
