@@ -1,14 +1,44 @@
-const express = require('express');
-const http = require('http');
-const socketIo = require('socket.io');
+import https from 'https';
+import fs from 'fs';
+import express from 'express';
+import { Server } from 'socket.io';
+
+
+import path from 'path';
+import { fileURLToPath } from 'url';
+import cors from 'cors';
+
+// ES module trick
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const port = 3000;
-
-// Initialising Socket Server with express
 const app = express();
-const server = http.createServer(app);
-const io = socketIo(server);
 
+// SSL configuration
+const sslOptions = {
+    key: fs.readFileSync(path.resolve(__dirname, './ssl-certs/private.key.pem')),
+    cert: fs.readFileSync(path.resolve(__dirname, './ssl-certs/domain.cert.pem')),
+};
+  
+
+// Creating a HTTPS server
+const server = https.createServer(sslOptions, app);
+
+// Enabling CORS
+app.use(cors({
+  origin: ['https://localhost', 'https://comp3000-el-comercio.xyz'],
+  methods: ['GET', 'POST'],
+  allowedHeaders: ['Content-Type', 'application/json'],
+}));
+
+const io = new Server(server, {
+  cors: {
+    origin: ['https://localhost', 'https://comp3000-el-comercio.xyz'],
+    methods: ['GET', 'POST'],
+  },
+  transports: ['websocket', 'polling'],
+});
 
 // each username (email) gets 1 chatroom
 // this keeps track of them

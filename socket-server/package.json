@@ -1,5 +1,6 @@
 {
   "name": "socket-server",
+  "type": "module",
   "version": "1.0.0",
   "description": "Socket IO socket server for support chat",
   "main": "./src/app/index.js",
@@ -10,6 +11,7 @@
   "author": "Damon Martin",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "express": "^5.1.0",
     "socket.io": "^4.8.1"
   }
