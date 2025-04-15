@@ -1,0 +1,16 @@
+{
+  "name": "socket-server",
+  "version": "1.0.0",
+  "description": "Socket IO socket server for support chat",
+  "main": "./src/app/index.js",
+  "scripts": {
+    "start": "node ./src/app/index.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Damon Martin",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "socket.io": "^4.8.1"
+  }
+}
