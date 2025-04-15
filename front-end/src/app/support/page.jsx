@@ -23,9 +23,11 @@ const AuthURI = isProd
 export default function SupportPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
     const [username, setUsername] = useState(`user${Math.floor(Math.random() * 10000)}`);
-    const [activeUsers, setActiveUsers] = useState({})
+    const [activeUsers, setActiveUsers] = useState({}) // Admin only
     const [isMobile, setIsMobile] = useState(false);
     const [socket, setSocket] = useState(null);
+
+    const [ messages, setMessages ] = useState([]) // Queue: push() and shift()
 
     // Determines to render desktop or mobile components
     useEffect(() => {
@@ -59,7 +61,7 @@ export default function SupportPage() {
 
                     if (data.admin === "admin") {
                         setLoginStatus("admin");
-                        setUsername(data.email)
+                        setUsername(`Admin`)
                     } 
                     else if (res.status === 200) {
                         setLoginStatus("loggedIn");
@@ -70,7 +72,8 @@ export default function SupportPage() {
                         setLoginStatus("loggedOut");
                     }
                 }
-            } catch (e) {
+            } 
+            catch (e) {
                 console.error("JWT Checker Fetch Failed: ", e);
             }
         };
@@ -82,30 +85,16 @@ export default function SupportPage() {
     useEffect(() => {
         const socket = io(SupportURI);
 
-        if (loginStatus != "admin") {
-            // For customer: join the chat using username (or other unique identifier)
-            socket.emit("join-chat", username);
+        const handleIncomingMessage = (msgReceived) => {
+            console.log(JSON.stringify(msgReceived));
+            if (msgReceived.username && msgReceived.msg) {
+              // append to list of messages that auto renders
+              setMessages((prevMessages) => [...prevMessages, msgReceived]);
+              console.log(msgReceived);
+            }
+        };
 
-            // Listening for messages
-            socket.on("support-chat", (msg) => {
-                console.log(`New message from admin: ${msg}`);
-            });
-
-            socket.on("joined-chat", (message) => {
-                console.log(message);
-            });
-        }
-        else {
-
-            socket.on("connect", () => {
-                socket.emit("admin-join");
-            });
-
-            // Listen for active users list from the server
-            socket.on("active-users", (users) => {
-                setActiveUsers(users);
-            });
-        }
+        socket.on('support-chat', handleIncomingMessage);
 
         // Setting state: To be shared between child components
         setSocket(socket);
@@ -114,13 +103,10 @@ export default function SupportPage() {
         return () => {
             socket.disconnect();
         };
-    }, [loginStatus])
+    }, [])
 
-    if (loginStatus != "admin"){
-        return isMobile ? <SupportMobile username={username} socket={socket}/> : <SupportDesktop username={username} socket={socket}/>;
-    }
-    else {
-        return isMobile ? <SupportMobileAdmin username={username} socket={socket}/> : <SupportDesktopAdmin username={username} socket={socket}/>;
-    }
+
+    return isMobile ? <SupportMobile username={username} socket={socket}/> : <SupportDesktop username={username} socket={socket}/>;
+    
     
 }

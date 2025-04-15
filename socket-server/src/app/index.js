@@ -2,8 +2,6 @@ import https from 'https';
 import fs from 'fs';
 import express from 'express';
 import { Server } from 'socket.io';
-
-
 import path from 'path';
 import { fileURLToPath } from 'url';
 import cors from 'cors';
@@ -20,9 +18,8 @@ const sslOptions = {
     key: fs.readFileSync(path.resolve(__dirname, './ssl-certs/private.key.pem')),
     cert: fs.readFileSync(path.resolve(__dirname, './ssl-certs/domain.cert.pem')),
 };
-  
 
-// Creating a HTTPS server
+// Creating an HTTPS server
 const server = https.createServer(sslOptions, app);
 
 // Enabling CORS
@@ -40,58 +37,27 @@ const io = new Server(server, {
   transports: ['websocket', 'polling'],
 });
 
-// each username (email) gets 1 chatroom
-// this keeps track of them
-const userRooms = {}; 
 
-// During connection
+const userRooms = {}; // Chatrooms for customers
+const adminSockets = new Set(); // All Admins Sockets
+
+
 io.on('connection', (socket) => {
-    console.log('a user connected');
-  
-    /******************* Clients join using join-chat *************************/
-    // Listen for the username (room) to join a specific chat room
-    socket.on('join-chat', (username) => {
-        // Checking if username is valid
-        if (username) {
-            console.log(`${username} has joined the chat`);
-            
-            // Add user to the chat room
-            socket.join(username);
-            
-            // the key with the username will have the value of the socket.id (chat-room)
-            userRooms[username] = socket.id;
+    console.log('A new client connected:', socket.id);
 
-            // Notifying the customer they are in the chat room
-            socket.emit('joined-chat', `Welcome to the chat, ${username}`);
-        }
-    });
-  
-    /******************* Admins join using this one *************************/
-    socket.on('support-chat', (data) => {
-        const username = data.username;
-        const msg = data.msg;
-
-        // Logging the message
-        console.log(`Message received from ${username}: ${msg}`);
-
-        // Emmiting only to the specific users chatroom
-        if (username && userRooms[username && msg]) {
-            socket.to(data.username).emit('support-chat', msg); // Sending directly to person
-        }
+    socket.on('support-chat', (msgObj) => {
+      console.log(`message: ${msgObj.msg} from ${msgObj.username}`);
+      socket.broadcast.emit('support-chat', msgObj);
     });
 
-    // Admin recieves a list of active users
-    socket.on('get-active-users', () => {
-        console.log('Active users: ', Object.keys(userRooms));
-        socket.emit('active-users', Object.keys(userRooms));
-    });
-
-    // Handling a client disconnect
+    /***************** Handling disconnects *********************/
     socket.on('disconnect', () => {
-        console.log('user disconnected');
+        console.log('User disconnected');
+
+        // Remove socket from admin list if it was an admin
+        adminSockets.delete(socket);
     });
 });
-
 
 server.listen(3000, () => {
   console.log(`Server is running on port: ${port}`);
