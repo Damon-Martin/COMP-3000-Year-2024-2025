@@ -106,7 +106,7 @@ export default function SupportPage() {
     }, [])
 
 
-    return isMobile ? <SupportMobile username={username} socket={socket}/> : <SupportDesktop username={username} socket={socket}/>;
+    return isMobile ? <SupportMobile username={username} socket={socket} messages={messages} setMessages={setMessages}/> : <SupportDesktop username={username} socket={socket} messages={messages} setMessages={setMessages}/>;
     
     
 }
