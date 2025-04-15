@@ -334,5 +334,91 @@ PaymentRouter.post("/capture-order", async (req, res) => {
 });
 
 
+/**
+ * @swagger
+ * /v1/payments/refund-order:
+ *   post:
+ *     summary: Refunds a captured order
+ *     description: Full Refund when provided a valid transaction ID for Paypal
+ *     tags:
+ *       - PaymentController
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             properties:
+ *               transactionID:
+ *                 type: string
+ *                 description: The PayPal transaction ID to refund
+ *                 example: 8A6W81234X679788B
+ *     responses:
+ *       200:
+ *         description: Refund processed successfully
+ *       400:
+ *         description: Missing or invalid transaction ID
+ *       500:
+ *         description: Internal server error while processing refund
+ */
+PaymentRouter.post("/refund-order", async (req, res) => {
+    const { transactionID } = req.body;
+
+    // Checking if a transactionID was provided at all
+    if (!transactionID) {
+        return res.status(400).json({
+            error: "Missing transactionID in request body"
+        });
+    }
+
+    try {
+        // Getting a PayPal access token
+        const accessToken = await generateAccessToken();
+
+        // Issuing Refund via Paypal
+        const refundResponse = await fetch(`${PAYPAL_URI}/v2/payments/captures/${transactionID}/refund`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "Authorization": `Bearer ${accessToken}`,
+            },
+            // By sending an empty object. It defaults to a full refund
+            body: JSON.stringify({}),
+        });
+
+        if (!refundResponse.ok) {
+            const errorData = await refundResponse.json();
+            console.error("Error from PayPal:", errorData);
+            return res.status(500).json({
+                error: "Failed to process refund",
+                details: errorData
+            });
+        }
+
+        const refundData = await refundResponse.json();
+
+        // Checking if the paypal refund is successful
+        if (refundData.status === "COMPLETED") {
+            return res.status(200).json({
+                message: "Full refund processed successfully",
+                refundDetails: refundData
+            });
+        } 
+        // Refund Failed: Most likely due to bad transaction ID
+        else {
+            return res.status(400).json({
+                error: "Refund failed",
+                details: refundData
+            });
+        }
+    } 
+    catch (e) {
+        console.error("Refund error:", e);
+        return res.status(500).json({
+            error: "Server error while processing refund",
+        });
+    }
+});
+
 
 export default PaymentRouter;
