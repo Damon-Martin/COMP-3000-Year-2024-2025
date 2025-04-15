@@ -38,6 +38,8 @@ services:
     env_file:
       - path: ./front-end/.env.local
         required: true
+    ports:
+      - 3000:3000
 
   front-end:
     build:
