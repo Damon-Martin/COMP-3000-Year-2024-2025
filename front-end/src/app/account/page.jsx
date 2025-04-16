@@ -13,6 +13,7 @@ const AuthURI = isProd
 export default function AccountPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
     const [isMobile, setIsMobile] = useState(false);
+    const router = useRouter();
 
     // Determines to render desktop or mobile components
     useEffect(() => {
@@ -29,7 +30,7 @@ export default function AccountPage() {
         useEffect(() => {
             const isUserLoggedIn = async () => {
             const token = localStorage.getItem("token");
-            const router = useRouter();
+            
 
             try {
                 if (token) {
