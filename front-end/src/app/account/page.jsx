@@ -3,7 +3,7 @@
 import AccountsPageDesktop from "@/components/page-components/accounts-page/accounts-page";
 
 import { useState, useEffect } from "react";
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/navigation'
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const AuthURI = isProd
