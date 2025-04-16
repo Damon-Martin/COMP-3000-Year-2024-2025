@@ -1,15 +1,75 @@
-import HeaderBar from "@/components/regular-components/all-pages/header-bar/header-bar";
-import CategorySideBar from "@/components/regular-components/home-page/side-bar/category-side-bar";
-import DesktopNavBar from "@/components/regular-components/nav-bar/logged-in/desktop/nav-desktop";
-import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
+"use client"
+
+import AccountsPageDesktop from "@/components/page-components/accounts-page/accounts-page";
+
+import { useState, useEffect } from "react";
+import { useRouter } from 'next/router'
+
+const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
+const AuthURI = isProd
+    ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
+    : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
 
 export default function AccountPage() {
-  return (
-    <div>
-        <NavBarSwitcher />
-        <main className="flex flex-row">
-            <h1>Accounts</h1>
-        </main>
-    </div>
-  );
+    const [loginStatus, setLoginStatus] = useState("loggedOut");
+    const [isMobile, setIsMobile] = useState(false);
+    const router = useRouter();
+
+    // Determines to render desktop or mobile components
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 800);
+        };
+
+        handleResize(); // Checking the initial screen size
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+
+    useEffect(() => {
+        const isUserLoggedIn = async () => {
+            const token = localStorage.getItem("token");
+
+            try {
+                if (token) {
+                    const res = await fetch(`${AuthURI}/v1/validateJWT`, {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json",
+                        },
+                        body: JSON.stringify({ token: token }),
+                    });
+
+                    const data = await res.json();
+                    setUsername(data.email)
+
+                    if (data.admin === "admin") {
+                        setLoginStatus("admin");
+                    } 
+                    else if (res.status === 200) {
+                        setLoginStatus("loggedIn");
+                    } 
+                    else {
+                        localStorage.removeItem("token");
+                        setLoginStatus("loggedOut");
+                    }
+                }
+            } catch (e) {
+                console.error("JWT Checker Fetch Failed: ", e);
+            }
+        };
+
+        isUserLoggedIn();
+    }, []);
+
+
+    if (loginStatus == "loggedOut" || loginStatus == "admin") {
+        router.push("/")
+    }
+
+    // User is logged In
+    return (
+      <AccountsPageDesktop />
+    );
 }
