@@ -13,7 +13,6 @@ const AuthURI = isProd
 export default function AccountPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
     const [isMobile, setIsMobile] = useState(false);
-    const router = useRouter();
 
     // Determines to render desktop or mobile components
     useEffect(() => {
@@ -27,9 +26,10 @@ export default function AccountPage() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-    useEffect(() => {
-        const isUserLoggedIn = async () => {
+        useEffect(() => {
+            const isUserLoggedIn = async () => {
             const token = localStorage.getItem("token");
+            const router = useRouter();
 
             try {
                 if (token) {
@@ -54,6 +54,11 @@ export default function AccountPage() {
                         localStorage.removeItem("token");
                         setLoginStatus("loggedOut");
                     }
+
+                    /* Performing Redirect for loginStatus that should not have account details */
+                    if (loginStatus == "loggedOut" || loginStatus == "admin") {
+                        router.push("/")
+                    }
                 }
             } catch (e) {
                 console.error("JWT Checker Fetch Failed: ", e);
@@ -62,11 +67,6 @@ export default function AccountPage() {
 
         isUserLoggedIn();
     }, []);
-
-
-    if (loginStatus == "loggedOut" || loginStatus == "admin") {
-        router.push("/")
-    }
 
     // User is logged In
     return (
