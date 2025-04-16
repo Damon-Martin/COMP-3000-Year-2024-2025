@@ -30,9 +30,13 @@ jobs:
       working-directory: ./back-end
       run: npm install
       
-    - name: Running Integration Tests for Auth Server
+    - name: Running Integration Tests for Backend
       working-directory: ./back-end
       run: npm run int-test
+    
+    - name: Running Unit Tests for Backend
+      working-directory: ./back-end
+      run: npm run unit-test
 
     # Step to stop and remove Docker Compose resources
     - name: Tear Down Docker Compose
