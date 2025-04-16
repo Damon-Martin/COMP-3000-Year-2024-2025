@@ -30,6 +30,17 @@ services:
       - path: ./front-end/.env.local
         required: true
 
+  socket-service:
+    build:
+      context: ./socket-server
+      dockerfile: .dockerfile
+    container_name: socket-service
+    env_file:
+      - path: ./front-end/.env.local
+        required: true
+    ports:
+      - 3000:3000
+
   front-end:
     build:
       context: ./front-end
