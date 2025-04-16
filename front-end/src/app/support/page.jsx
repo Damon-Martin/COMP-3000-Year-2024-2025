@@ -1,11 +1,7 @@
 "use client";
 
-import HomeDesktop from "@/components/page-components/home-page/desktop/home-desktop";
-import HomeMobile from "@/components/page-components/home-page/mobile/home-mobile";
-import SupportMobile from "@/components/page-components/support-page/mobile/customer/support-mobile";
-import SupportDesktop from "@/components/page-components/support-page/desktop/customer/support-desktop";
-import SupportMobileAdmin from "@/components/page-components/support-page/mobile/admin/support-mobile-admin";
-import SupportDesktopAdmin from "@/components/page-components/support-page/desktop/admin/support-desktop-admin";
+import SupportMobile from "@/components/page-components/support-page/mobile/support-mobile";
+import SupportDesktop from "@/components/page-components/support-page/desktop/support-desktop";
 
 import { useState, useEffect } from "react";
 import { io } from 'socket.io-client';
@@ -32,7 +28,7 @@ export default function SupportPage() {
     // Determines to render desktop or mobile components
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 600);
+            setIsMobile(window.innerWidth < 800);
         };
 
         handleResize(); // Checking the initial screen size

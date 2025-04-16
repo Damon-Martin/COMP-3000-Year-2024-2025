@@ -1,5 +1,6 @@
 'use client';
 
+import SupportButton from '@/components/regular-components/all-pages/support-btn/support-btn';
 import PurchaseButton from '@/components/regular-components/item-page/buttons/purchase-btn';
 import NavBarSwitcher from '@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher';
 import Image from 'next/image';
@@ -190,6 +191,7 @@ export default function ItemPageDesktop({ id, name, price, description, imageUrl
                     </div>
                 </div>
             </main>
+            <SupportButton />
         </div>
     );
 }

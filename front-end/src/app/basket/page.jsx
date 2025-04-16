@@ -22,7 +22,7 @@ export default function BasketPage() {
     // Determines to render desktop or mobile components
     useEffect(() => {
         const handleResize = () => {
-            setIsMobile(window.innerWidth < 600);
+            setIsMobile(window.innerWidth < 800);
         };
 
         handleResize(); // Checking the initial screen size

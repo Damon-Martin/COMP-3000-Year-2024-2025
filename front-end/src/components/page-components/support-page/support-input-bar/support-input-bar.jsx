@@ -8,8 +8,9 @@ const [msgToSend, setMsgToSend] = useState('');
     const sendMessage = () => {
         // Message is not empty
         if (msgToSend.trim()) {
-            setMessages((prevMessages) => [...prevMessages, msgToSend]); // Appends message to be rendered
-            socket.emit("support-chat", { username: username, msg: msgToSend}) // Sends message
+            const msgObjToSend = { username: username, msg: msgToSend}
+            setMessages((prevMessages) => [...prevMessages, msgObjToSend]); // Appends message to be rendered
+            socket.emit("support-chat", msgObjToSend) // Sends message
         }
     };
 
