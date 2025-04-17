@@ -166,23 +166,48 @@ describe("Unit Tests: User Details Routes", () => {
         assert.equal(res.status, 404, data.error);
     });
 
-    /*
+    
     it("Should delete user details with valid email. Expect STATUS 200", async () => {
         assert.isAbove(token.length, 0, "Invalid Admin Token");
-
-        const email = "david.smith@gmail.com"; // Existing user email for this test
-
-        const res = await fetch(`${BackendURI}/v1/user-details?email=${email}`, {
+    
+        // Part 1: Register a new random user to be deleted
+        const randomEmail = `randomuser${Date.now()}@gmail.com`; // Generate a random email based on timestamp
+        const randomPassword = "password";
+        
+        const registerData = {
+            email: randomEmail,
+            password: randomPassword,
+            userDetails: {
+                fName: "Random",
+                lName: "User",
+                tel: "07431234567",
+                address: "123 Random Street",
+                postcode: "AB1 2CD"
+            }
+        };
+    
+        const registerRes = await fetch(`${AuthURI}/v1/register`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify(registerData)
+        });
+    
+        const registerResponseData = await registerRes.json();
+        assert.equal(registerRes.status, 200, "User registration failed.");
+    
+        // Part 2: Delete the newly registered user
+        const deleteRes = await fetch(`${BackendURI}/v1/user-details?email=${randomEmail}`, {
             method: "DELETE",
             headers: {
                 "Content-Type": "application/json",
                 "Authorization": `Bearer ${token}`
             }
         });
-
-        const data = await res.json();
-        assert.equal(res.status, 200, data.error);
-        assert.equal(data.msg, "User deleted successfully", "The user should be deleted.");
-    });
-    */
+    
+        const deleteData = await deleteRes.json();
+        assert.equal(deleteRes.status, 200, deleteData.error);
+    });    
+    
 });
