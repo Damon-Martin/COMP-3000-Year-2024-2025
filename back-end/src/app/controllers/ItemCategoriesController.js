@@ -107,10 +107,17 @@ class ItemCategoriesController {
             }
     
             // Extracting item IDs from the category
-            const items = category.items || []; // Ensuring it's an array
+            const itemIDs = category.items || [];
+
+            // Retrieve the actual item documents
+            const items = await this.itemsModel.find({
+                _id: { $in: itemIDs }
+            });
+
 
             return {
                 code: 200,
+                categoryName: category.categoryName,
                 msg: "Successfully retrieved list of Item IDs",
                 items: items
             };
