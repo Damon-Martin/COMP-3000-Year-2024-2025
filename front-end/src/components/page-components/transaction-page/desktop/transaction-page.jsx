@@ -38,6 +38,51 @@ export default function TransactionPageDesktop({ transactionID }) {
         fetchTransaction();
     }, [])
 
+    const refundBtnPressed = async (e) => {
+        e.preventDefault();
+
+        try {
+            const token = localStorage.getItem("token");
+
+            const rawRefundRes = await fetch(`${BackendURI}/v1/payments/refund-order`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                },
+                body: JSON.stringify({ transactionID: transactionID})
+            })
+
+            if (rawRefundRes.ok) {
+
+                const rawRefundRes2 = await fetch(`${BackendURI}/v1/order-history/set-transaction-refunded`, {
+                    method: "PATCH",
+                    headers: {
+                        "Content-Type": "application/json",
+                        "Authorization": `Bearer ${token}`
+                    },
+                    body: JSON.stringify({ transactionID: transactionID})
+                })
+
+                if (!rawRefundRes2.ok) {
+                    alert("Money Refunded but website does not show it")
+                }
+
+                // Refresh Page (SUCCESS)
+                // Full Reload to force everything to rerender
+                window.location.reload();
+            }
+            // Failed to refund
+            else {
+                alert("Refund Failed")
+            }
+        }
+        catch(e) {
+            alert("Refund Failed")
+            console.error(e)
+        }
+    }
+
     // Rendering the data to the dispay
     return (
         <div className="min-h-screen">
@@ -46,8 +91,20 @@ export default function TransactionPageDesktop({ transactionID }) {
                 <div className="bg-[#d9d9d9] p-6 rounded-2xl shadow-md w-full max-w-2xl">
                     {transactionData?.order ? (
                         <div>
-                            <h1 className="text-xl font-bold mb-2 text-center">Order #{transactionID}</h1>
-                            <p className="text-md mb-4 text-center">Total: £{transactionData.order.totalAmount?.value}</p>
+                            <div className="flex flex-row justify-between">
+                                <h1 className="text-xl font-bold mb-2">Order #{transactionID}</h1>
+                                {/* Only Rendering button if it is not refunded */}
+                                {!transactionData.order.isRefunded && (
+                                    <button
+                                        className="bg-red-600 text-white px-4 py-2 rounded-md hover:bg-red-700 transition-colors duration-200"
+                                        aria-label="Button to Refund Order"
+                                        onClick={refundBtnPressed}
+                                    >
+                                        Refund
+                                    </button>
+                                )}
+                            </div>
+                            <p className="text-md mb-4">Total: £{transactionData.order.totalAmount?.value}</p>
 
                             {/* Dynamically Rendering multiple Items nested in the data */}
                             <div>

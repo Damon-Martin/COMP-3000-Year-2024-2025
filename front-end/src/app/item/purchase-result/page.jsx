@@ -60,9 +60,10 @@ export default function PurchaseResultPage() {
                     alert("Bad OrderID");
                     router.push(`/transaction/order-failure`);
                 }
+                localStorage.removeItem("orderID");
             } 
             catch (e) {
-                // Redirect to order failure page
+                // Failed completely fetching PayPal
                 alert("Paypal Failure");
                 console.error(e);
                 router.push(`/transaction/order-failure`);
@@ -73,7 +74,6 @@ export default function PurchaseResultPage() {
             captureOrder();
         }
 
-        localStorage.removeItem("orderID");
     }, []);
 
     return (
