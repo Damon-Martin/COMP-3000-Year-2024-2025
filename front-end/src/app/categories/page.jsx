@@ -1,5 +1,7 @@
 "use client"
 
+import CategoriesPageDesktop from "@/components/page-components/categories-page/desktop/category-page";
+import CategoriesPageMobile from "@/components/page-components/categories-page/mobile/category-page";
 import { useEffect, useState } from "react";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
@@ -9,6 +11,8 @@ const BackendURI = isProd
 
 export default function CategoriesPage() {
     const [categoriesList, setCategoriesList] = useState([])
+    const [isMobile, setIsMobile] = useState(false);
+
     useEffect(() => {
         const fetchCategories = async () => {
             try {
@@ -38,9 +42,28 @@ export default function CategoriesPage() {
         fetchCategories();
     }, [])
 
-    return (
-        <div>
-            Categories Page
-        </div>
-    )
+    // Determines to render desktop or mobile components
+    useEffect(() => {
+        const handleResize = () => {
+            setIsMobile(window.innerWidth < 800);
+        };
+
+        handleResize(); // Checking the initial screen size
+        window.addEventListener("resize", handleResize);
+
+        return () => window.removeEventListener("resize", handleResize);
+    }, []);
+    
+
+    if (isMobile){
+        return (
+            <CategoriesPageMobile />
+        )
+    }
+    else {
+        return (
+            <CategoriesPageDesktop categoriesList={categoriesList}/>
+        )
+    }
+    
 }
