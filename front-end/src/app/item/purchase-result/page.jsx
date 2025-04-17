@@ -2,6 +2,7 @@
 
 import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import { useState, useEffect } from "react"
+import { useRouter } from 'next/navigation'
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
 const BackendURI = isProd 
@@ -12,13 +13,15 @@ const BackendURI = isProd
 // Redirects to order success page or order failure page
 export default function PurchaseResultPage() {
     const [orderID, setOrderID] = useState(null);
+    const router = useRouter();
 
     useEffect(() => {
         const rawOrderID = localStorage.getItem("orderID");
 
         if (rawOrderID) {
             setOrderID(rawOrderID);
-        } else {
+        } 
+        else {
             console.error("Order ID is missing in localStorage.");
             return;
         }
@@ -34,15 +37,35 @@ export default function PurchaseResultPage() {
                 });
 
                 if (rawRes.ok) {
-                    alert("Order captured successfully!");
+                    const data = await rawRes.json();
+
+                    // Deleting Basket
+                    const token = localStorage.getItem("token")
+                    const rawResBasket = await fetch(`${BackendURI}/v1/basket/clear-basket`, {
+                        method: "DELETE",
+                        headers: {
+                            "Content-Type": "application/json",
+                            "Authorization": `Bearer ${token}`
+                        }
+                    }) 
+
+                    if (!rawResBasket.ok) {
+                        alert("Failed to clear basket")
+                    }
+
+                    router.push(`/transaction?transactionID=${data.transactionID}`);
                 } 
                 else {
+                    // Redirect to order failure page
                     alert("Bad OrderID");
+                    router.push(`/transaction/order-failure`);
                 }
             } 
             catch (e) {
+                // Redirect to order failure page
                 alert("Paypal Failure");
                 console.error(e);
+                router.push(`/transaction/order-failure`);
             }
         };
 
