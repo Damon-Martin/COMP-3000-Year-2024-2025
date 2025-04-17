@@ -2,9 +2,22 @@ import express from "express";
 import AuthMiddleware from "../middleware/auth-middleware.js";
 import UserDetailsController from "../controllers/CustomerDetailsController.js";
 import UserDetailModel from "../models/customer-detail-model.js";
+import BasketModel from "../models/basket.js";
+import OrderHistoryModel from "../models/order-history.js";
+import AuthModel from "../models/auth-model.js";
+import CategoriesModel from "../models/categories.js";
+import ItemsModel from "../models/items.js";
 
 const UserDetailsRouter = express.Router();
-const userDetailsController = new UserDetailsController(UserDetailModel);
+
+
+// Inserting models into the controller
+const userDetailsController = new UserDetailsController(
+    UserDetailModel,
+    BasketModel,
+    OrderHistoryModel,
+    AuthModel
+);
 
 /**
  * @swagger

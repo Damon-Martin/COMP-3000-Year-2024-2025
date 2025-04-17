@@ -1,8 +1,13 @@
 import mongoose from 'mongoose';
 
 class UserDetailsController {
-    constructor(userDetailModel) {
+
+    constructor(userDetailModel, basketModel, orderHistoryModel, authModel) {
         this.userDetailModel = userDetailModel;
+        // Below is for account deletion
+        this.basketModel = basketModel;
+        this.orderHistoryModel = orderHistoryModel;
+        this.authModel = authModel;
     }
 
     // Adding User Details done in the Auth Controller
@@ -85,6 +90,16 @@ class UserDetailsController {
         }
 
         try {
+            // Part 1: Delete user's basket
+            await this.basketModel.deleteOne({ email });
+
+            // Part 2: Delete user's order history
+            await this.orderHistoryModel.deleteMany({ email });
+
+            // Part 3: Delete user's login credentials
+            await this.authModel.deleteOne({ email });
+
+            // Finally 6: Delete the user details
             const deletedUser = await this.userDetailModel.findOneAndDelete({ email });
 
             if (!deletedUser) {
@@ -96,7 +111,7 @@ class UserDetailsController {
 
             return {
                 code: 200,
-                msg: "User deleted successfully.",
+                msg: "User and all associated data deleted successfully.",
                 user: deletedUser
             };
         } 

@@ -12,6 +12,7 @@ const AuthURI = isProd
 export default function AccountPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
     const [isMobile, setIsMobile] = useState(false);
+    const [email, setEmail] = useState("");
     const router = useRouter();
 
     // Handling Mobile and Desktop Variants
@@ -44,6 +45,7 @@ export default function AccountPage() {
                 });
 
                 const data = await res.json();
+                setEmail(data.email);
 
                 // Account page for admins out of scope for now
                 if (data.admin === "admin") {
@@ -69,5 +71,5 @@ export default function AccountPage() {
     }, []);
 
 
-    return <AccountsPageDesktop />;
+    return <AccountsPageDesktop email={email}/>;
 }
