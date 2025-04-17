@@ -14,7 +14,7 @@ export default function AccountPage() {
     const [isMobile, setIsMobile] = useState(false);
     const router = useRouter();
 
-  // Handling Mobile and Desktop Variants
+    // Handling Mobile and Desktop Variants
     useEffect(() => {
         const handleResize = () => {
             setIsMobile(window.innerWidth < 800);
@@ -69,5 +69,5 @@ export default function AccountPage() {
     }, []);
 
 
-  return <AccountsPageDesktop />;
+    return <AccountsPageDesktop />;
 }

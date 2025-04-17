@@ -2,13 +2,16 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import OrderHistoryPageDesktop from "@/components/page-components/order-history/order-history-page";
+import OrderHistoryDesktop from "@/components/page-components/order-history-page/desktop/order-history-desktop"; 
 
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const AuthURI = isProd
-  ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
-  : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
+    ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
+    : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
+const BackendURI = isProd 
+    ? process.env.NEXT_PUBLIC_BACKEND_URI_PROD 
+    : process.env.NEXT_PUBLIC_BACKEND_URI;
 
 export default function OrderHistoryPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
@@ -69,11 +72,31 @@ export default function OrderHistoryPage() {
         isUserLoggedIn();
     }, []);
 
+    useEffect(() => {
+        const fetchOrderHistory = async () => {
+            const token = localStorage.getItem("token");
+            const rawRes = await fetch(`${BackendURI}/v1/order-history/get-all-orders`, {
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": `Bearer ${token}`
+                }
+            });
+
+            const data = await rawRes.json();
+            console.log(data.orderHistory);
+        }
+        if (loginStatus == "loggedIn") {
+            fetchOrderHistory();
+        }
+    }, [loginStatus])
+
+
     // Logic for mobile variant
     if (isMobile == false) {
-        return <OrderHistoryPageDesktop />
+        return <OrderHistoryDesktop />
     }
     else {
-        return <OrderHistoryPageDesktop />
+        return <OrderHistoryDesktop />
     }
 }
