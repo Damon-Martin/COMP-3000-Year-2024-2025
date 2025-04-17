@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "start": "node ./src/app/index.js",
-    "int-test": "mocha ./src/test/int/**/*.test.js"
+    "int-test": "mocha ./src/test/int/**/*.test.js",
+    "unit-test": "mocha ./src/test/unit/**/*.test.js"
   },
   "repository": {
     "type": "git",
