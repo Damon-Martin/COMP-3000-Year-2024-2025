@@ -16,6 +16,7 @@ const BackendURI = isProd
 export default function OrderHistoryPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
     const [isMobile, setIsMobile] = useState(false);
+    const [orderHistory, setOrderHistory] = useState([]);
     const router = useRouter();
 
     // Handling Mobile and Desktop Variants
@@ -84,7 +85,7 @@ export default function OrderHistoryPage() {
             });
 
             const data = await rawRes.json();
-            console.log(data.orderHistory);
+            setOrderHistory(data.orderHistory);
         }
         if (loginStatus == "loggedIn") {
             fetchOrderHistory();
@@ -94,9 +95,9 @@ export default function OrderHistoryPage() {
 
     // Logic for mobile variant
     if (isMobile == false) {
-        return <OrderHistoryDesktop />
+        return <OrderHistoryDesktop orderHistory={orderHistory}/>
     }
     else {
-        return <OrderHistoryDesktop />
+        return <OrderHistoryDesktop orderHistory={orderHistory}/>
     }
 }
