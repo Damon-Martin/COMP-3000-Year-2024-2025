@@ -42,7 +42,6 @@ export default function AccountPage() {
                 });
 
                 const data = await res.json();
-                setUsername(data.email)
 
                 // Out of scope for now so redirect
                 if (data.admin === "admin") {
