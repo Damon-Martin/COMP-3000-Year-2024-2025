@@ -27,46 +27,51 @@ export default function AccountPage() {
         return () => window.removeEventListener("resize", handleResize);
     }, []);
 
-        useEffect(() => {
-            const isUserLoggedIn = async () => {
-            const token = localStorage.getItem("token");
-            
+    useEffect(() => {
+        const isUserLoggedIn = async () => {
+        const token = localStorage.getItem("token");
+        
+        try {
+            if (token) {
+                const res = await fetch(`${AuthURI}/v1/validateJWT`, {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({ token: token }),
+                });
 
-            try {
-                if (token) {
-                    const res = await fetch(`${AuthURI}/v1/validateJWT`, {
-                        method: "POST",
-                        headers: {
-                            "Content-Type": "application/json",
-                        },
-                        body: JSON.stringify({ token: token }),
-                    });
+                const data = await res.json();
+                setUsername(data.email)
 
-                    const data = await res.json();
-                    setUsername(data.email)
-
-                    if (data.admin === "admin") {
-                        setLoginStatus("admin");
-                    } 
-                    else if (res.status === 200) {
-                        setLoginStatus("loggedIn");
-                    } 
-                    else {
-                        localStorage.removeItem("token");
-                        setLoginStatus("loggedOut");
-                    }
-
-                    /* Performing Redirect for loginStatus that should not have account details */
-                    if (loginStatus == "loggedOut" || loginStatus == "admin") {
-                        router.push("/")
-                    }
+                // Out of scope for now so redirect
+                if (data.admin === "admin") {
+                    setLoginStatus("admin");
+                } 
+                // User is LoggedIn: Thus should have access
+                else if (res.status === 200) {
+                    setLoginStatus("loggedIn");
+                } 
+                // User is LoggedOut
+                else {
+                    localStorage.removeItem("token");
+                    setLoginStatus("loggedOut");
                 }
-            } catch (e) {
-                console.error("JWT Checker Fetch Failed: ", e);
             }
-        };
 
-        isUserLoggedIn();
+            if (loginStatus == "loggedOut") {
+                router.push("/login")
+            }
+            if (loginStatus == "admin") {
+                router.push("/")
+            }
+
+        } 
+        catch (e) {
+            console.error("JWT Checker Fetch Failed: ", e);
+        }
+        }
+    isUserLoggedIn();
     }, []);
 
     // User is logged In
