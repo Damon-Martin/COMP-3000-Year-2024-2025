@@ -57,16 +57,16 @@ export default function SearchPage({ searchParams }) {
             <div>
                 <NavBarSwitcher />
                 <SearchBar />
-                <main className="flex flex-col items-center justify-center overflow-auto max-h-[76vh]">
-                {itemList.map(currentItem => (
-                    <SearchResultButtonMobile
-                        item={currentItem}
-                        name={currentItem.name}
-                        price={currentItem.price}
-                        imageURL={currentItem.imageUrl}
-                        altTxtImage={currentItem.altImgTxt}
-                    />
-                ))}
+                <main className="flex flex-col items-center justify-start overflow-y-auto max-h-[76vh] m-3">
+                    {itemList.map(currentItem => (
+                        <SearchResultButtonMobile
+                            item={currentItem}
+                            name={currentItem.name}
+                            price={currentItem.price}
+                            imageURL={currentItem.imageUrl}
+                            altTxtImage={currentItem.altImgTxt}
+                        />
+                    ))}
                 </main>
             </div>
         );
@@ -75,16 +75,16 @@ export default function SearchPage({ searchParams }) {
         return (
             <div>
                 <NavBarSwitcher />
-                <main className="flex flex-col items-center justify-center overflow-auto max-h-[76vh]">
-                {itemList.map(currentItem => (
-                    <SearchResultButtonDesktop
-                        item={currentItem}
-                        name={currentItem.name}
-                        price={currentItem.price}
-                        imageURL={currentItem.imageUrl}
-                        altTxtImage={currentItem.altImgTxt}
-                    />
-                ))}
+                <main className="flex flex-col items-center justify-center overflow-auto max-h-[76vh] m-3">
+                    {itemList.map(currentItem => (
+                        <SearchResultButtonDesktop
+                            item={currentItem}
+                            name={currentItem.name}
+                            price={currentItem.price}
+                            imageURL={currentItem.imageUrl}
+                            altTxtImage={currentItem.altImgTxt}
+                        />
+                    ))}
                 </main>
             </div>
         );

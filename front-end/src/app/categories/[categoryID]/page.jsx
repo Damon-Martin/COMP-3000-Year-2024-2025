@@ -4,6 +4,7 @@ import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
 import SingleCategoryDesktop from '@/components/page-components/allUsers/single-category-page/desktop/single-category-desktop';
 import NavBarSwitcher from '@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher';
+import SingleCategoryMobile from '@/components/page-components/allUsers/single-category-page/mobile/single-category-mobile';
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
 const BackendURI = isProd 
@@ -59,7 +60,10 @@ export default function CategoryPage() {
     // Waiting for data to be fetched
     if (!categoryData) return (<div><NavBarSwitcher/><p>Loading...</p></div>);
 
+    if (isMobile) {
+        return <SingleCategoryMobile categoryName={categoryData.categoryName} itemList={categoryData.items}/>
+    }
     return (
-        <SingleCategoryDesktop categoryName={categoryData.categoryName} categoryList={categoryData.items}/>
+        <SingleCategoryDesktop categoryName={categoryData.categoryName} itemList={categoryData.items}/>
     )
 }

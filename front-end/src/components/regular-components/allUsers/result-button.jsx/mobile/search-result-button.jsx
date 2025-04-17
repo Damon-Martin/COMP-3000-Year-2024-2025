@@ -1,25 +1,36 @@
+'use client';
+
 import Image from 'next/image';
-import { useRouter } from 'next/navigation'
+import Link from 'next/link';
 
-
-export default function SearchResultButtonMobile({ item, name = "Item Name", price = "XX.XX", imageURL, altTxtImage }) {
-    const router = useRouter();
-    const btnPressed = (e) => {
-        e.preventDefault();
-        router.push(`/item/${item._id}`)
-    }
+export default function SearchResultButtonMobile({
+    item,
+    name = "Item Name",
+    price = "XX.XX",
+    imageURL,
+    altTxtImage = "Product image"
+}) {
     return (
-        <button onClick={btnPressed} type="button" key={item._id} className="bg-[#D9D9D9] hover:bg-gray-100 text-black mt-4 min-w-[97vw] min-h-[15vh] max-h-[15vh] rounded-md flex items-center">
-            <Image
-                src={imageURL}
-                placeholder="blur"
-                alt={altTxtImage}
-                className="rounded-md mr-4 min-h-[15vh] max-h-[15vh] min-w-[20vw] max-w-[20vw]"
-            />
-            <div className="flex flex-col justify-center pl-4">
-                <p>{name}</p>
-                <p>£{price}</p>
+        <Link
+            href={`/item/${item._id}`}
+            key={item._id}
+            className="bg-[#D9D9D9] hover:bg-gray-100 text-black mt-3 min-h-[42vh] border rounded-xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden w-full"
+            aria-label={`Link to ${name}`}
+        >
+            <div className="relative w-full h-60">
+                <Image
+                    src={imageURL}
+                    alt={altTxtImage}
+                    fill
+                    className="rounded-t-2xl object-cover"
+                />
             </div>
-        </button>
+            <div className="p-4">
+                <h2 className="text-lg font-semibold truncate">{name}</h2>
+                <div className="flex justify-between items-center mt-1 mb-1">
+                    <span className="font-bold">£{Number(price).toFixed(2)}</span>
+                </div>
+            </div>
+        </Link>
     );
 }

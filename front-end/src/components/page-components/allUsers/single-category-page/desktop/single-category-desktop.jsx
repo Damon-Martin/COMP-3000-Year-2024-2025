@@ -3,7 +3,7 @@ import Link from "next/link"
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import CategorySideBar from "@/components/regular-components/allUsers/home-page/side-bar/category-side-bar";
 
-export default function SingleCategoryDesktop({ categoryName="INSERT CATEGORY NAME", categoryList=[] }) {
+export default function SingleCategoryDesktop({ categoryName="INSERT CATEGORY NAME", itemList=[] }) {
     return (
         <div>
             <NavBarSwitcher />
@@ -12,7 +12,7 @@ export default function SingleCategoryDesktop({ categoryName="INSERT CATEGORY NA
                     {/* Rendering items as a grid */}
                     <h1 className="text-2xl font-bold my-4">{categoryName}</h1>
                     <div className=" overflow-auto min-w-[83vw] max-w-[83vw] max-h-[65vh] text-black grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
-                        {categoryList.map(item => (
+                        {itemList.map(item => (
                             <Link
                                 href={`/item/${item._id}`}
                                 aria-label={`Link to ${item.name}`}

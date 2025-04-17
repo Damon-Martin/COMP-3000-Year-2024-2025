@@ -55,9 +55,12 @@ export default function CategoriesPage() {
     }, []);
     
 
+    // Waiting for data to be fetched
+    if (!categoriesList) return (<div><NavBarSwitcher/><p>Loading...</p></div>);
+
     if (isMobile){
         return (
-            <CategoriesPageMobile />
+            <CategoriesPageMobile categoriesList={categoriesList}/>
         )
     }
     else {
