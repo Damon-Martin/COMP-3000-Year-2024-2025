@@ -56,6 +56,7 @@ export default function SearchPage({ searchParams }) {
         return (
             <div>
                 <NavBarSwitcher />
+                <SearchBar />
                 <main className="flex flex-col items-center justify-center overflow-auto max-h-[76vh]">
                 {itemList.map(currentItem => (
                     <SearchResultButtonMobile

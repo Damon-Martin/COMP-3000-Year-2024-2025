@@ -9,6 +9,7 @@ import SearchBar from "@/components/regular-components/search-bar/search-bar";
 import SearchResultButtonMobile from "@/components/regular-components/search-page/result-button.jsx/mobile/search-result-button";
 
 import { useState, useEffect } from "react";
+import Link from 'next/link'
 
 // Mobile Variant of the Page
 // Content is more vertical
@@ -20,6 +21,9 @@ export default function HomeMobile({ ItemList }) {
             <SearchBar />
             <main className="flex flex-col">
                 <p>Best Selling</p>
+                <Link href="/categories" className="bg-[#FF4D00] hover:bg-[#c21300] text-white m-3 ml-0 h-[20vh] w-[94vw] mr-3 ml-3 rounded-lg flex items-center justify-center">
+                    <p>Categories</p>
+                </Link>
                 {ItemList.map(currentItem => (
                     <SearchResultButtonMobile
                         item={currentItem}
