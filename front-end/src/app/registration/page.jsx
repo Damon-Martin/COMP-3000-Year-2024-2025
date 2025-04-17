@@ -2,8 +2,8 @@
 
 import { useEffect, useState } from "react";
 import { redirect } from 'next/navigation'
-import RegistrationMobilePage from "@/components/page-components/registration-page/mobile/reg-mobile";
-import RegistrationDesktopPage from "@/components/page-components/registration-page/desktop/reg-desktop";
+import RegistrationMobilePage from "@/components/page-components/allUsers/registration-page/mobile/reg-mobile";
+import RegistrationDesktopPage from "@/components/page-components/allUsers/registration-page/desktop/reg-desktop";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const AuthURI = isProd

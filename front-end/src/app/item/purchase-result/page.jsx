@@ -1,6 +1,6 @@
 "use client"
 
-import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
+import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import { useState, useEffect } from "react"
 import { useRouter } from 'next/navigation'
 

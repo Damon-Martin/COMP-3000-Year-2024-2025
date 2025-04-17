@@ -2,8 +2,8 @@
 
 import { useState, useEffect } from "react";
 import { useRouter, useSearchParams } from 'next/navigation';
-import TransactionPageDesktop from "@/components/page-components/transaction-page/desktop/transaction-page";
-import TransactionPageMobile from "@/components/page-components/transaction-page/mobile/transaction-page";
+import TransactionPageDesktop from "@/components/page-components/loggedIn/transaction-page/desktop/transaction-page";
+import TransactionPageMobile from "@/components/page-components/loggedIn/transaction-page/mobile/transaction-page";
 
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";

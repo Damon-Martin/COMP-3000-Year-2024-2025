@@ -5,8 +5,8 @@ import "./globals.css";
 
 // Import the metadata from the separate file
 import { metadata } from './metadata';
-import HeaderBar from "@/components/regular-components/all-pages/header-bar/header-bar";
-import DesktopLoggedOutNavBar from "@/components/regular-components/nav-bar/logged-out/desktop/nav-desktop";
+import HeaderBar from "@/components/regular-components/allUsers/all-pages/header-bar/header-bar";
+import DesktopLoggedOutNavBar from "@/components/regular-components/allUsers/nav-bar/logged-out/desktop/nav-desktop";
 
 export default function RootLayout({ children }) {
   const [fontSizeMultiplier, setFontSizeMultiplier] = useState(1);

@@ -1,6 +1,6 @@
 "use client";
 
-import AccountsPageDesktop from "@/components/page-components/accounts-page/accounts-page";
+import AccountsPageDesktop from "@/components/page-components/loggedIn/accounts-page/accounts-page";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 

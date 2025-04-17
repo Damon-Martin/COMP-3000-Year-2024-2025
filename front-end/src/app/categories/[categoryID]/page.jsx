@@ -2,7 +2,8 @@
 
 import { useRouter, useParams } from 'next/navigation';
 import { useEffect, useState } from 'react';
-import SingleCategoryDesktop from '@/components/page-components/single-category-page/desktop/single-category-desktop';
+import SingleCategoryDesktop from '@/components/page-components/allUsers/single-category-page/desktop/single-category-desktop';
+import NavBarSwitcher from '@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher';
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
 const BackendURI = isProd 
@@ -47,14 +48,18 @@ export default function CategoryPage() {
             else {
                 const data = await rawRes.json();
                 console.log(data.items);
-                setCategoriesData(data.items);
+                setCategoriesData(data);
             }
         }
 
         fetchCategoryData();
     }, [categoryID])
     
+
+    // Waiting for data to be fetched
+    if (!categoryData) return (<div><NavBarSwitcher/><p>Loading...</p></div>);
+
     return (
-        <SingleCategoryDesktop categoryData={categoryData}/>
+        <SingleCategoryDesktop categoryName={categoryData.categoryName} categoryList={categoryData.items}/>
     )
 }

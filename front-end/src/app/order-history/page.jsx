@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import OrderHistoryDesktop from "@/components/page-components/order-history-page/desktop/order-history-desktop"; 
+import OrderHistoryDesktop from "@/components/page-components/loggedIn/order-history-page/desktop/order-history-desktop"; 
 
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";

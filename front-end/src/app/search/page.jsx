@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 
-import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
-import SearchBar from "@/components/regular-components/search-bar/search-bar";
-import SearchResultButtonDesktop from "@/components/regular-components/search-page/result-button.jsx/desktop/search-result-button";
-import SearchResultButtonMobile from "@/components/regular-components/search-page/result-button.jsx/mobile/search-result-button";
+import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
+import SearchBar from "@/components/regular-components/allUsers/search-bar/search-bar";
+import SearchResultButtonDesktop from "@/components/regular-components/allUsers/result-button.jsx/desktop/search-result-button";
+import SearchResultButtonMobile from "@/components/regular-components/allUsers/result-button.jsx/mobile/search-result-button";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const BackendURI = isProd 

@@ -1,7 +1,7 @@
 "use client"
 
-import CategoriesPageDesktop from "@/components/page-components/categories-page/desktop/category-page";
-import CategoriesPageMobile from "@/components/page-components/categories-page/mobile/category-page";
+import CategoriesPageDesktop from "@/components/page-components/allUsers/categories-page/desktop/category-page";
+import CategoriesPageMobile from "@/components/page-components/allUsers/categories-page/mobile/category-page";
 import { useEffect, useState } from "react";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";

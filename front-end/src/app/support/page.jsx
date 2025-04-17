@@ -1,7 +1,7 @@
 "use client";
 
-import SupportMobile from "@/components/page-components/support-page/mobile/support-mobile";
-import SupportDesktop from "@/components/page-components/support-page/desktop/support-desktop";
+import SupportMobile from "@/components/page-components/allUsers/support-page/mobile/support-mobile";
+import SupportDesktop from "@/components/page-components/allUsers/support-page/desktop/support-desktop";
 
 import { useState, useEffect } from "react";
 import { io } from 'socket.io-client';
