@@ -5,6 +5,7 @@ import Link from "next/link";
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import SearchBar from "@/components/regular-components/allUsers/search-bar/search-bar";
 import SearchResultButtonMobile from "@/components/regular-components/allUsers/result-button.jsx/mobile/search-result-button";
+import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 
 export default function SingleCategoryMobile({ categoryName = "INSERT CATEGORY NAME", itemList = [] }) {
     return (
@@ -35,6 +36,7 @@ export default function SingleCategoryMobile({ categoryName = "INSERT CATEGORY N
                     ))}
                 </div>
             </main>
+            <SupportButton />
         </div>
     );
 }

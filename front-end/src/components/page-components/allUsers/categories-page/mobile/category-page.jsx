@@ -1,3 +1,4 @@
+import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import Link from 'next/link'
 
@@ -23,6 +24,7 @@ export default function CategoriesPageMobile({ categoriesList }) {
                     ))}
                 </div>
             </main>
+            <SupportButton />
         </div>
     );
 }

@@ -2,6 +2,7 @@ import Image from "next/image";
 import Link from "next/link"
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import CategorySideBar from "@/components/regular-components/allUsers/home-page/side-bar/category-side-bar";
+import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 
 export default function SingleCategoryDesktop({ categoryName="INSERT CATEGORY NAME", itemList=[] }) {
     return (
@@ -40,6 +41,7 @@ export default function SingleCategoryDesktop({ categoryName="INSERT CATEGORY NA
                 </main>
                 <CategorySideBar />
             </div>
+            <SupportButton />
         </div>
     );
 }

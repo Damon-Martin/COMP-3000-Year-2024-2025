@@ -1,6 +1,7 @@
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation'
+import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const BackendURI = isProd
@@ -133,6 +134,7 @@ export default function TransactionPageDesktop({ transactionID }) {
                     )}
                 </div>
             </main>
+            <SupportButton />
         </div>
     );
 }    

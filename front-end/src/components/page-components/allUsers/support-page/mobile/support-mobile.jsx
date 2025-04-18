@@ -10,8 +10,8 @@ export default function SupportMobile({ username, socket, messages, setMessages 
         <div>
             <NavBarSwitcher />
             <div className="flex justify-center">
-                <div className="flex flex-col justify-between m-3 min-h-[70vh] max-h-[70vh] min-w-[96vw] max-w-[96vw]">
-                    <div className="flex flex-col overflow-auto min-h-[64vh] max-h-[64vh] min-w-[96vw] max-w-[96vw]">
+                <div className="flex flex-col justify-between m-3 min-h-[60vh] max-h-[60vh] min-w-[96vw] max-w-[96vw]">
+                    <div className="flex flex-col overflow-auto min-h-[55vh] max-h-[55vh] min-w-[96vw] max-w-[96vw]">
                         {/* render messages: In reverse order to display most recent at top */}
                         {[...messages].reverse().map((msgObj, index) => (
                             <SupportMessageMobile

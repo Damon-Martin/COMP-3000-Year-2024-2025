@@ -1,6 +1,7 @@
 'use client'
 
 import HeaderBar from "@/components/regular-components/allUsers/all-pages/header-bar/header-bar";
+import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 import LoginCard from "@/components/regular-components/allUsers/login/login-card-center/login-card";
 import DesktopLoggedOutNavBar from "@/components/regular-components/allUsers/nav-bar/logged-out/desktop/nav-desktop";
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
@@ -13,6 +14,7 @@ export default function LoginDesktop() {
             <main className="flex flex-row justify-center items-center">
                 <LoginCard />
             </main>
+            <SupportButton />
         </div>
     );
 }

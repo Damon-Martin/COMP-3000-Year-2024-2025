@@ -1,6 +1,7 @@
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation'
+import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const BackendURI = isProd
@@ -86,7 +87,7 @@ export default function TransactionPageMobile({ transactionID }) {
 
     // Rendering the data to the dispay
     return (
-        <div className="min-h-screen">
+        <div>
             <NavBarSwitcher />
             <main className="flex justify-center items-start mt-10 px-4 text-black">
                 <div className="bg-[#d9d9d9] p-6 rounded-2xl shadow-md w-[96vw] max-w-2xl">
@@ -134,6 +135,7 @@ export default function TransactionPageMobile({ transactionID }) {
                     )}
                 </div>
             </main>
+            <SupportButton />
         </div>
     );
 }

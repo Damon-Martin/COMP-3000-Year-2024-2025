@@ -7,6 +7,7 @@ import SearchBar from '@/components/regular-components/allUsers/search-bar/searc
 
 import { useRouter } from 'next/navigation';
 import { useState, useEffect } from 'react';
+import SupportButton from '@/components/regular-components/allUsers/all-pages/support-btn/support-btn';
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
 
@@ -188,6 +189,7 @@ export default function ItemPageMobile({ id, name, price, description, imageUrl,
                     </div>
                 </div>
             </main>
+            <SupportButton />
         </div>
     );
 }

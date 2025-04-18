@@ -1,3 +1,4 @@
+import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import OrderButtonDesktop from "@/components/regular-components/loggedIn/order-history-page/order-button/desktop/order-button";
 import { useEffect } from "react";
@@ -19,6 +20,7 @@ export default function OrderHistoryDesktop({ orderHistory }) {
                         />
                     ))}
                 </main>
+                <SupportButton />
             </div>
         )
     }
@@ -30,6 +32,7 @@ export default function OrderHistoryDesktop({ orderHistory }) {
                     <p className="text-3xl" tabIndex={0}>Order History</p>
                     <p tabIndex={0}>Your Order history is Empty</p>
                 </main>
+                <SupportButton />
             </div>
         )
     }

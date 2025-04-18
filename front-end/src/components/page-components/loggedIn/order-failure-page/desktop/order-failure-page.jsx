@@ -2,6 +2,7 @@
 import Image from 'next/image'
 
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
+import SupportButton from '@/components/regular-components/allUsers/all-pages/support-btn/support-btn';
 
 
 export default function OrderFailureDesktop() {
@@ -17,6 +18,7 @@ export default function OrderFailureDesktop() {
                 </Image>
                 <p className="text-3xl">Order Failure</p>
             </main>
+            <SupportButton />
         </div>
     )
 }
