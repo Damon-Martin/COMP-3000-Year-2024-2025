@@ -1,18 +1,18 @@
 import PurchaseButton from "@/components/regular-components/allUsers/buttons/purchase-btn"
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher"
 import SupportInputBarDesktop from "../support-input-bar/support-input-bar"
-import SupportMessageDesktop from "@/components/regular-components/allUsers/support-page/message/desktop/support-message"
 import SupportMessageMobile from "@/components/regular-components/allUsers/support-page/message/mobile/support-message"
 
 export default function SupportMobile({ username, socket, messages, setMessages }) {
-
     return (
-        <div>
+        <div className="flex flex-col h-[67vh] max-h-[67vh]">
             <NavBarSwitcher />
-            <div className="flex justify-center">
-                <div className="flex flex-col justify-between m-3 min-h-[60vh] max-h-[60vh] min-w-[96vw] max-w-[96vw]">
-                    <div className="flex flex-col overflow-auto min-h-[55vh] max-h-[55vh] min-w-[96vw] max-w-[96vw]">
-                        {/* render messages: In reverse order to display most recent at top */}
+
+            <div className="flex flex-col flex-grow items-center m-3 min-w-[96vw] max-w-[96vw]">
+                {/* Container with fixed message area height */}
+                <div className="flex flex-col h-[65vh]">
+                    {/* Message area */}
+                    <div className="overflow-auto max-h-[65vh] min-h-[65vh]">
                         {[...messages].reverse().map((msgObj, index) => (
                             <SupportMessageMobile
                                 key={index}
@@ -21,8 +21,15 @@ export default function SupportMobile({ username, socket, messages, setMessages 
                             />
                         ))}
                     </div>
-                    {/* Support Form Input here*/}
-                    <SupportInputBarDesktop socket={socket} username={username} setMessages={setMessages}/>
+
+                    {/* Sticky input bar */}
+                    <div className="sticky bottom-0 p-2">
+                        <SupportInputBarDesktop
+                            socket={socket}
+                            username={username}
+                            setMessages={setMessages}
+                        />
+                    </div>
                 </div>
             </div>
         </div>

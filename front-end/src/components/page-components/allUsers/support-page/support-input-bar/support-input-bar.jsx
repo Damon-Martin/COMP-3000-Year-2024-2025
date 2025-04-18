@@ -11,6 +11,7 @@ const [msgToSend, setMsgToSend] = useState('');
             const msgObjToSend = { username: username, msg: msgToSend}
             setMessages((prevMessages) => [...prevMessages, msgObjToSend]); // Appends message to be rendered
             socket.emit("support-chat", msgObjToSend) // Sends message
+            setMsgToSend("");
         }
     };
 
