@@ -2,10 +2,10 @@
 
 import { useState, useEffect } from "react";
 
-import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
-import SearchBar from "@/components/regular-components/search-bar/search-bar";
-import SearchResultButtonDesktop from "@/components/regular-components/search-page/result-button.jsx/desktop/search-result-button";
-import SearchResultButtonMobile from "@/components/regular-components/search-page/result-button.jsx/mobile/search-result-button";
+import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
+import SearchBar from "@/components/regular-components/allUsers/search-bar/search-bar";
+import SearchResultButtonDesktop from "@/components/regular-components/allUsers/result-button.jsx/desktop/search-result-button";
+import SearchResultButtonMobile from "@/components/regular-components/allUsers/result-button.jsx/mobile/search-result-button";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const BackendURI = isProd 
@@ -56,16 +56,17 @@ export default function SearchPage({ searchParams }) {
         return (
             <div>
                 <NavBarSwitcher />
-                <main className="flex flex-col items-center justify-center overflow-auto max-h-[76vh]">
-                {itemList.map(currentItem => (
-                    <SearchResultButtonMobile
-                        item={currentItem}
-                        name={currentItem.name}
-                        price={currentItem.price}
-                        imageURL={currentItem.imageUrl}
-                        altTxtImage={currentItem.altImgTxt}
-                    />
-                ))}
+                <SearchBar />
+                <main className="flex flex-col items-center justify-start overflow-y-auto max-h-[76vh] m-3">
+                    {itemList.map(currentItem => (
+                        <SearchResultButtonMobile
+                            item={currentItem}
+                            name={currentItem.name}
+                            price={currentItem.price}
+                            imageURL={currentItem.imageUrl}
+                            altTxtImage={currentItem.altImgTxt}
+                        />
+                    ))}
                 </main>
             </div>
         );
@@ -74,16 +75,16 @@ export default function SearchPage({ searchParams }) {
         return (
             <div>
                 <NavBarSwitcher />
-                <main className="flex flex-col items-center justify-center overflow-auto max-h-[76vh]">
-                {itemList.map(currentItem => (
-                    <SearchResultButtonDesktop
-                        item={currentItem}
-                        name={currentItem.name}
-                        price={currentItem.price}
-                        imageURL={currentItem.imageUrl}
-                        altTxtImage={currentItem.altImgTxt}
-                    />
-                ))}
+                <main className="flex flex-col items-center justify-center overflow-auto max-h-[76vh] m-3">
+                    {itemList.map(currentItem => (
+                        <SearchResultButtonDesktop
+                            item={currentItem}
+                            name={currentItem.name}
+                            price={currentItem.price}
+                            imageURL={currentItem.imageUrl}
+                            altTxtImage={currentItem.altImgTxt}
+                        />
+                    ))}
                 </main>
             </div>
         );

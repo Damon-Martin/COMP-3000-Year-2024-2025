@@ -1,8 +1,8 @@
 "use client";
 
 import { useState, useEffect } from "react";
-import HomeDesktop from "@/components/page-components/home-page/desktop/home-desktop";
-import HomeMobile from "@/components/page-components/home-page/mobile/home-mobile";
+import HomeDesktop from "@/components/page-components/allUsers/home-page/desktop/home-desktop";
+import HomeMobile from "@/components/page-components/allUsers/home-page/mobile/home-mobile";
 
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";

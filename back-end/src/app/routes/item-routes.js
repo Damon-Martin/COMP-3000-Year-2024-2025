@@ -159,7 +159,7 @@ ItemRouter.get('/all-categories', async (req, res) => {
  * /v1/items/all-items-by-categoryID:
  *   get:
  *     summary: Retrieves all items based on requested category
- *     description: Returns a JSON object of all items filtered by categoryID
+ *     description: Returns the category name and all items filtered by categoryID
  *     tags:
  *       - ItemController 
  *     parameters:
@@ -171,31 +171,48 @@ ItemRouter.get('/all-categories', async (req, res) => {
  *         description: The ID of the category to fetch items for
  *     responses:
  *       200:
- *         description: List of all items for the given category
+ *         description: Successfully retrieved items for the given category
  *         content:
  *           application/json:
  *             schema:
- *               type: array
- *               items:
- *                 type: object
- *                 properties:
- *                   _id:
- *                     type: string
- *                     description: Unique identifier for the item
- *                   name:
- *                     type: string
- *                     description: Name of the item
- *                   image_url:
- *                     type: string
- *                     description: Name of the item
- *                   price:
- *                     type: string
- *                     description: Name of the item
- *                   description:
- *                     type: string
- *                     description: Name of the item
+ *               type: object
+ *               properties:
+ *                 code:
+ *                   type: integer
+ *                   example: 200
+ *                 categoryName:
+ *                   type: string
+ *                   description: Name of the category
+ *                 msg:
+ *                   type: string
+ *                   description: Descriptive message
+ *                 items:
+ *                   type: array
+ *                   description: Array of items in the category
+ *                   items:
+ *                     type: object
+ *                     properties:
+ *                       _id:
+ *                         type: string
+ *                       name:
+ *                         type: string
+ *                         description: Item name
+ *                       imageUrl:
+ *                         type: string
+ *                         description: URL of the item image
+ *                       altImgTxt:
+ *                         type: string
+ *                         description: Alt image text
+ *                       price:
+ *                         type: number
+ *                         description: Price of the item
+ *                       description:
+ *                         type: string
+ *                         description: Description of the item
  *       400:
- *         description: Bad request (e.g., missing categoryID)
+ *         description: Bad request
+ *       404:
+ *         description: Category not found
  *       500:
  *         description: Internal server error
  */
@@ -206,8 +223,9 @@ ItemRouter.get('/all-items-by-categoryID', async (req, res) => {
         
         if (response.code == 200) {
             return res.status(response.code).json({
+                categoryName: response.categoryName,
                 msg: response.msg,
-                categories: response.items
+                items: response.items
             })
         }
         else if (response.code) {
@@ -281,8 +299,8 @@ ItemRouter.post("/create-category", AuthMiddleware.checkIfAdmin, async (req, res
     try {
         const categoryName = req.body.categoryName;
         const itemsList = req.body.items;
-        const imageURL = req.body.imageURL; // Optional
-        const altImgTxt = req.body.altImgTxt; // Optional
+        const imageURL = req.body.imageURL;
+        const altImgTxt = req.body.altImgTxt;
         const response = await itemCategoriesController.addNewCategory(categoryName, imageURL, altImgTxt, itemsList);
 
         if (response.code == 200) {

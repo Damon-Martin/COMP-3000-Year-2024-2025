@@ -1,8 +1,8 @@
 "use client"
 
-import BasketDesktop from "@/components/page-components/basket-page/desktop/basket-desktop";
-import BasketMobile from "@/components/page-components/basket-page/mobile/basket-mobile";
-import NavBarSwitcher from "@/components/regular-components/nav-bar/nav-bar-switcher/nav-bar-switcher";
+import BasketDesktop from "@/components/page-components/loggedIn/basket-page/desktop/basket-desktop";
+import BasketMobile from "@/components/page-components/loggedIn/basket-page/mobile/basket-mobile";
+import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import { useEffect, useState } from "react";
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";

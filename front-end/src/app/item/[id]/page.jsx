@@ -1,9 +1,9 @@
 'use client';
 
 import { useParams } from 'next/navigation';
-import ItemPageDesktop from "@/components/page-components/item-page/desktop/item-page";
+import ItemPageDesktop from "@/components/page-components/allUsers/item-page/desktop/item-page";
 import { useEffect, useState } from 'react';
-import ItemPageMobile from '@/components/page-components/item-page/mobile/item-page-mobile';
+import ItemPageMobile from '@/components/page-components/allUsers/item-page/mobile/item-page-mobile';
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === 'true';
 const BackendURI = isProd 
