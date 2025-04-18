@@ -1,5 +1,6 @@
 "use client"
 
+import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 import BasketItemDesktop from "@/components/regular-components/allUsers/basket-page/item-div/desktop/basket-item"
 import BasketItemMobile from "@/components/regular-components/allUsers/basket-page/item-div/mobile/basket-item";
 import PurchaseButton from "@/components/regular-components/allUsers/buttons/purchase-btn"
@@ -101,6 +102,7 @@ export default function BasketMobile({ basketList, setBasket, loginStatus, setLo
                     onClick={PurchasePressed}
                 />
             </div>
+            <SupportButton />
         </div>
     )
 }

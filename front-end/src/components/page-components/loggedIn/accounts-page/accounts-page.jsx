@@ -5,6 +5,7 @@ import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav
 
 import { useRouter } from 'next/navigation'
 import { useEffect } from 'react';
+import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
@@ -77,6 +78,7 @@ export default function AccountsPageDesktop({ email }) {
                     <AccountsButtonDesktopLarge src="/order-history" title="Order History" ariaLabel={"Link to view Order History"} imgUrl="/images/history-icon/history-icon.svg" />
                 </div>
             </div>
+            <SupportButton />
         </div>
     )
 }
