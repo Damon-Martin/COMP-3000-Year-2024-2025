@@ -1,5 +1,6 @@
 'use client'
 
+import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
 import SearchResultButtonMobile from "@/components/regular-components/allUsers/result-button.jsx/mobile/search-result-button";
 import SearchBar from "@/components/regular-components/allUsers/search-bar/search-bar";
@@ -32,6 +33,7 @@ export default function HomeMobile({ ItemList = [] }) {
                     />
                 ))}
             </main>
+            <SupportButton />
         </div>
     );
 }
