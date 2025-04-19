@@ -64,7 +64,7 @@ UserDetailsRouter.get("/", AuthMiddleware.checkIfLoggedIn, async (req, res) => {
  * @swagger
  * /v1/user-details:
  *   patch:
- *     summary: Updating the User Details by email
+ *     summary: Update user details by email
  *     tags:
  *       - UserDetailsController
  *     security:
@@ -75,7 +75,7 @@ UserDetailsRouter.get("/", AuthMiddleware.checkIfLoggedIn, async (req, res) => {
  *         required: true
  *         schema:
  *           type: string
- *         description: Email of the user to update
+ *         description: Current Email of the user to Update
  *     requestBody:
  *       required: true
  *       content:
@@ -83,21 +83,48 @@ UserDetailsRouter.get("/", AuthMiddleware.checkIfLoggedIn, async (req, res) => {
  *           schema:
  *             type: object
  *             properties:
- *               firstName:
+ *               fName:
  *                 type: string
- *               lastName:
+ *               lName:
  *                 type: string
- *               phone:
+ *               tel:
  *                 type: string
+ *               address:
+ *                 type: string
+ *               postcode:
+ *                 type: string
+ *               newEmail:
+ *                 type: string
+ *                 description: New email to update across user and auth models (optional too)
  *             example:
- *               firstName: "John"
- *               lastName: "Doe"
- *               phone: "07857444758"
+ *               fName: "John"
+ *               lName: "Doe"
+ *               tel: "07857444758"
+ *               address: "456 New Road"
+ *               postcode: "AB1 2CD"
+ *               newEmail: "john.doe@example.com"
  *     responses:
  *       200:
  *         description: User details updated successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 msg:
+ *                   type: string
+ *                 user:
+ *                   type: object
+ *                   properties:
+ *                     _id: { type: string }
+ *                     email: { type: string }
+ *                     fName: { type: string }
+ *                     lName: { type: string }
+ *                     tel: { type: string }
+ *                     address: { type: string }
+ *                     postcode: { type: string }
  *       400:
- *         description: Missing email or update data
+ *         description: Missing email or update data, or email already taken
  *       404:
  *         description: User not found
  *       500:

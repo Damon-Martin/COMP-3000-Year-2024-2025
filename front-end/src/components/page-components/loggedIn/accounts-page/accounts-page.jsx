@@ -73,7 +73,7 @@ export default function AccountsPageDesktop({ email }) {
                 </div>
                 <div className="flex flex-col">
                     {/* Edit Details Button (LINK) */}
-                    <AccountsButtonDesktopLarge src="/" title="Edit Details" ariaLabel={"Link to Edit Account Details Page"} imgUrl="/images/user-details-icon/user-details-icon.svg" />
+                    <AccountsButtonDesktopLarge src="/view-details" title="View/Edit Details" ariaLabel={"Link to View/Edit Account Details"} imgUrl="/images/user-details-icon/user-details-icon.svg" />
                     {/* Order History Button (LINK) */}
                     <AccountsButtonDesktopLarge src="/order-history" title="Order History" ariaLabel={"Link to view Order History"} imgUrl="/images/history-icon/history-icon.svg" />
                 </div>

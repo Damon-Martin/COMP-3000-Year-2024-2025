@@ -2,7 +2,7 @@ import PurchaseButton from "@/components/regular-components/allUsers/buttons/pur
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher"
 
 import SupportMessageDesktop from "@/components/regular-components/allUsers/support-page/message/desktop/support-message"
-import SupportInputBarDesktop from "../support-input-bar/support-input-bar-desktop"
+import SupportInputBarDesktop from "../../../../regular-components/allUsers/support-page/support-input-bar/support-input-bar-desktop"
 
 export default function SupportDesktop({ username, socket, messages, setMessages }) {
     const btnPressed = () => {
