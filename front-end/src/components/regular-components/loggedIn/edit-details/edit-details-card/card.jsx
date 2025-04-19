@@ -98,7 +98,7 @@ export default function EditDetailsCard({ initialPlaceholderValues, email, onSuc
                 { label: "Telephone Number", name: "tel", type: "tel", placeholder: initialPlaceholderValues.tel || "Enter your telephone number" },
                 { label: "Address", name: "address", type: "text", placeholder: initialPlaceholderValues.address || "Enter your address" },
                 { label: "Postcode", name: "postcode", type: "text", placeholder: initialPlaceholderValues.postcode || "Enter your postcode" },
-                { label: "Email", name: "newEmail", type: "email", placeholder: initialPlaceholderValues.newEmail || "Enter your email" },
+                { label: "Email", name: "newEmail", type: "email", placeholder: email || "Enter your email" },
             ].map((field, idx) => (
                 <div key={idx}>
                     <label className="block mb-1 font-medium">{field.label}</label>
