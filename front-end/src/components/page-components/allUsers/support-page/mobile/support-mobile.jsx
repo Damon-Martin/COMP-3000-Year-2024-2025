@@ -1,7 +1,7 @@
 import PurchaseButton from "@/components/regular-components/allUsers/buttons/purchase-btn"
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher"
-import SupportInputBarDesktop from "../support-input-bar/support-input-bar"
 import SupportMessageMobile from "@/components/regular-components/allUsers/support-page/message/mobile/support-message"
+import SupportInputBarMobile from "../support-input-bar/support-input-bar-mobile"
 
 export default function SupportMobile({ username, socket, messages, setMessages }) {
     return (
@@ -24,7 +24,7 @@ export default function SupportMobile({ username, socket, messages, setMessages 
 
                     {/* Sticky input bar */}
                     <div className="sticky bottom-0 p-2">
-                        <SupportInputBarDesktop
+                        <SupportInputBarMobile
                             socket={socket}
                             username={username}
                             setMessages={setMessages}
