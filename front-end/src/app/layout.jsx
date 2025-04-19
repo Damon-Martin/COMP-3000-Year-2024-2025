@@ -27,6 +27,10 @@ export default function RootLayout({ children }) {
   };
 
   useEffect(() => {
+    // Checking local storage that it is enabled
+    const screenReaderEnabled = JSON.parse(localStorage.getItem("screen-reader")) || false;
+    if (!screenReaderEnabled) return;
+  
     const handleFocus = (e) => {
       const el = e.target;
       let text = "";
@@ -58,7 +62,8 @@ export default function RootLayout({ children }) {
       };
   
       text = getAriaText(el);
-  
+      
+      // Running the voice if the text is not null (trim() to check that)
       if (text.trim()) {
         const utterance = new SpeechSynthesisUtterance(text.trim());
         utterance.lang = "en-US";
