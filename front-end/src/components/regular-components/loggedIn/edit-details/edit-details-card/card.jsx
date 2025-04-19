@@ -118,6 +118,7 @@ export default function EditDetailsCard({ initialPlaceholderValues, email, onSuc
             <button
                 type="submit"
                 aria-label="Submit Edited Details"
+                title="Submit Edited Details"
                 disabled={isLoading}
                 className={`w-full py-2 text-white font-semibold rounded-md ${
                     isLoading

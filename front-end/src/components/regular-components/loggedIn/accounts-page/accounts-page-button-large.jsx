@@ -6,6 +6,7 @@ export default function AccountsButtonDesktopLarge({ src, title = "INSERT TITLE"
         <Link 
             href={src} 
             aria-label={ariaLabel} 
+            title={ariaLabel} 
             className="bg-[#D9D9D9] hover:bg-gray-100 text-black mt-3 min-w-[70vw] min-h-[20vh] max-h-[20vh] rounded-lg flex items-center"
         >
             <div className='flex flex-row items-center m-3'>

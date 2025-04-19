@@ -17,6 +17,7 @@ export default function SingleCategoryDesktop({ categoryName="INSERT CATEGORY NA
                             <Link
                                 href={`/item/${item._id}`}
                                 aria-label={`Link to ${item.name}`}
+                                title={`Link to ${item.name}`}
                                 key={item._id}
                                 className="bg-[#D9D9D9] hover:bg-gray-100 border rounded-xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden"
                             >

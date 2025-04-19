@@ -7,7 +7,7 @@ export default function CategoriesPageDesktop({ categoriesList }) {
             <NavBarSwitcher />
             <div className="rounded-xl grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
                 {categoriesList.map(category => (
-                    <Link aria-label={`Link to ${category.categoryName}`} href={`/categories/${category._id}`} key={category._id} className="bg-[#D9D9D9] hover:bg-gray-100 border rounded-xl overflow-hidden shadow-md">
+                    <Link title={`Link to ${category.categoryName}`} aria-label={`Link to ${category.categoryName}`} href={`/categories/${category._id}`} key={category._id} className="bg-[#D9D9D9] hover:bg-gray-100 border rounded-xl overflow-hidden shadow-md">
                         <img
                             src={category.imageURL}
                             alt={category.altImgTxt}

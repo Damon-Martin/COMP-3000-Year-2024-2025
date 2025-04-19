@@ -15,6 +15,7 @@ export default function HomeMobile({ ItemList = [] }) {
 
                 <Link
                     href="/categories"
+                    title="Link to Categories"
                     className="bg-[#FF4D00] mt-3 hover:bg-[#c21300] text-white min-h-[15vh] w-[94vw] rounded-lg flex items-center justify-center"
                 >
                     <p>Categories</p>

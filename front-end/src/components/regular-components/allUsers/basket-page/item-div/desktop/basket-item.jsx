@@ -126,6 +126,7 @@ export default function BasketItemDesktop({
                         href={`/item/${item.id}`}
                         className="text-left underline text-blue-600 hover:text-blue-800"
                         aria-label={`Go to ${name}`}
+                        title={`Go to ${name}`}
                         tabIndex={0}
                     >
                         {name}

@@ -8,7 +8,7 @@ export default function NavBtn({ svgLocation, activeSvgLocation, size, redirectU
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <Link href={redirectURL} aria-label={ariaLabel}>
+        <Link href={redirectURL} aria-label={ariaLabel} title={ariaLabel}>
                 <Image 
                     width={size} 
                     height={size} 
