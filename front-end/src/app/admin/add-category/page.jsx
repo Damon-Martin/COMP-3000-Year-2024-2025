@@ -1,13 +1,9 @@
 "use client";
 
-import AccountsPageDesktop from "@/components/page-components/loggedIn/accounts-page/accounts-page";
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
-import ViewDetailsDesktop from "@/components/page-components/loggedIn/view-details-page/desktop/view-details-page-desktop";
-import ViewDetailsMobile from "@/components/page-components/loggedIn/view-details-page/mobile/view-details-page-mobile";
-import EditDetailsDesktop from "@/components/page-components/loggedIn/edit-details-page/desktop/view-details-page-desktop";
-import EditDetailsMobile from "@/components/page-components/loggedIn/edit-details-page/mobile/view-details-page-mobile";
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
+import AddCategoryCard from "@/components/regular-components/admin/add-category-card/add-category-card";
 
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
@@ -15,7 +11,7 @@ const AuthURI = isProd
   ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
   : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
 
-export default function EditDetailsPage() {
+export default function AddCategoriesPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
     const [isMobile, setIsMobile] = useState(false);
     const [email, setEmail] = useState("");
@@ -83,8 +79,9 @@ export default function EditDetailsPage() {
     return (
         <div>
             <NavBarSwitcher />
-            <main>
-                <h1 className="text-3xl">Add Category</h1>
+            <h1 className="text-3xl">Add Category</h1>
+            <main className="w-full flex justify-center">
+                <AddCategoryCard />
             </main>
         </div>
     )
