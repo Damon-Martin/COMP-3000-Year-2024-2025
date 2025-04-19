@@ -1,5 +1,6 @@
 import SupportButton from "@/components/regular-components/allUsers/all-pages/support-btn/support-btn";
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
+
 import { useRouter } from 'next/navigation';
 import { useEffect, useState } from "react";
 import Link from 'next/link'
@@ -12,7 +13,7 @@ const BackendURI = isProd
     ? process.env.NEXT_PUBLIC_BACKEND_URI_PROD
     : process.env.NEXT_PUBLIC_BACKEND_URI;
 
-export default function ViewDetailsDesktop({ email }) {
+export default function ViewDetailsMobile({ email }) {
     const [UserData, setUserData] = useState(null);
     const router = useRouter();
 
@@ -32,7 +33,8 @@ export default function ViewDetailsDesktop({ email }) {
                     const data = await rawRes.json();
                     setUserData(data.user);
                     console.log(data.user);
-                } else {
+                } 
+                else {
                     router.push("/login");
                 }
             }
@@ -46,8 +48,8 @@ export default function ViewDetailsDesktop({ email }) {
             {/* NavBar */}
             <NavBarSwitcher />
             
-            <main className="flex items-center justify-center w-full">
-                <div className="min-w-[40vw] p-8 bg-[#d9d9d9] mt-8 rounded-md shadow-md text-black">
+            <main className="flex flex-1 items-center justify-center w-full">
+                <div className="min-w-[95vw] p-6 bg-[#d9d9d9] mt-5 rounded-md shadow-md text-black">
                     {UserData ? (
                         <div>
                             <div className="flex flex-row justify-between">

@@ -5,6 +5,8 @@ import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import ViewDetailsDesktop from "@/components/page-components/loggedIn/view-details-page/desktop/view-details-page-desktop";
 import ViewDetailsMobile from "@/components/page-components/loggedIn/view-details-page/mobile/view-details-page-mobile";
+import EditDetailsDesktop from "@/components/page-components/loggedIn/edit-details-page/desktop/view-details-page-desktop";
+import EditDetailsMobile from "@/components/page-components/loggedIn/edit-details-page/mobile/view-details-page-mobile";
 
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
@@ -12,7 +14,7 @@ const AuthURI = isProd
   ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
   : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
 
-export default function ViewDetailsPage() {
+export default function EditDetailsPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
     const [isMobile, setIsMobile] = useState(false);
     const [email, setEmail] = useState("");
@@ -75,8 +77,8 @@ export default function ViewDetailsPage() {
 
 
     if (isMobile) {
-        return <ViewDetailsMobile email={email}/>
+        return <EditDetailsMobile email={email}/>
     }
     
-    return <ViewDetailsDesktop email={email}/>
+    return <EditDetailsDesktop email={email}/>
 }

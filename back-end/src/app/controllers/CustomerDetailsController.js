@@ -65,7 +65,7 @@ class UserDetailsController {
                 const emailExists = await this.authModel.findOne({ email: updateData.newEmail });
                 if (emailExists) {
                     return {
-                        code: 400,
+                        code: 409,
                         error: `Email "${updateData.newEmail}" is already taken. Please choose another one.`
                     };
                 }
