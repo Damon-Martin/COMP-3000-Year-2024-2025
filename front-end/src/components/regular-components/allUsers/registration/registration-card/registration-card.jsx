@@ -111,6 +111,7 @@ export default function RegistrationCard({ width = "60vw", height = "auto", marg
                     type={field.type}
                     name={field.name}
                     placeholder={field.placeholder}
+                    aria-label={field.placeholder}
                     value={formData[field.name]}
                     onChange={handleChange}
                     required
@@ -121,6 +122,7 @@ export default function RegistrationCard({ width = "60vw", height = "auto", marg
             {/* Submit Button */}
             <button
                 type="submit"
+                aria-label="Submit Registration"
                 className="w-full py-2 mt-4 bg-[#FF4D00] text-white font-semibold rounded-md hover:bg-[#c21300] focus:outline-none focus:ring-2 ring-orange-600"
             >
                 Register

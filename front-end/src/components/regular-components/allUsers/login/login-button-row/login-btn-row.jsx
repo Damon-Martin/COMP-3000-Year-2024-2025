@@ -43,6 +43,7 @@ export default function LoginBtnRow() {
         <div style={{ display: 'flex', gap: '10px', width: '100%' }}>
             <button
                 style={registerStyle}
+                aria-label='Link to Registration'
                 onMouseEnter={() => setHovered({ ...hovered, register: true })}
                 onMouseLeave={() => setHovered({ ...hovered, register: false })}
                 type="button"
@@ -52,6 +53,7 @@ export default function LoginBtnRow() {
             </button>
             <button
                 style={loginStyle}
+                aria-label='Login Button'
                 onMouseEnter={() => setHovered({ ...hovered, login: true })}
                 onMouseLeave={() => setHovered({ ...hovered, login: false })}
                 type="submit"

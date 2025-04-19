@@ -108,6 +108,7 @@ export default function EditDetailsCard({ initialPlaceholderValues, email, onSuc
                         value={formData[field.name] || ""}
                         onChange={handleChange}
                         placeholder={field.placeholder}
+                        aria-label={field.label}
                         className="w-full border border-gray-300 px-3 py-2 rounded-md focus:outline-none focus:ring-2 focus:ring-orange-600"
                     />
                 </div>
@@ -116,6 +117,7 @@ export default function EditDetailsCard({ initialPlaceholderValues, email, onSuc
             {/* Submit Button and also shows the progress when it is loading */}
             <button
                 type="submit"
+                aria-label="Submit Edited Details"
                 disabled={isLoading}
                 className={`w-full py-2 text-white font-semibold rounded-md ${
                     isLoading

@@ -11,7 +11,7 @@ export default function SingleCategoryDesktop({ categoryName="INSERT CATEGORY NA
             <div className="flex flex-row m-3 min-h[74vh] max-h-[74vh] overflow-clip">
                 <main className="mr-4">
                     {/* Rendering items as a grid */}
-                    <h1 className="text-2xl font-bold my-4">{categoryName}</h1>
+                    <h1 className="text-2xl font-bold my-4" tabIndex={0} aria-label={`${categoryName}`}>{categoryName}</h1>
                     <div className=" overflow-auto min-w-[83vw] max-w-[83vw] max-h-[65vh] text-black grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                         {itemList.map(item => (
                             <Link

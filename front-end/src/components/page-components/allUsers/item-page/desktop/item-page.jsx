@@ -171,9 +171,9 @@ export default function ItemPageDesktop({ id, name, price, description, imageUrl
                     className="rounded-2xl shadow-xl object-cover"
                 />
                 <div className="max-w-md space-y-4">
-                    <p className="text-4xl font-semibold">{name}</p>
-                    <p className="text-xl font-medium">£{price}</p>
-                    <p className="text-base">{description}</p>
+                    <p className="text-4xl font-semibold" tabIndex={0} aria-label={`${name}`}>{name}</p>
+                    <p className="text-xl font-medium" tabIndex={0} aria-label={`Item costs £${price}`}>£{price}</p>
+                    <p className="text-base" tabIndex={0} aria-label={`Description: ${description}`}>{description}</p>
 
                     <div className="flex flex-col space-y-2 w-full">
                         <PurchaseButton 

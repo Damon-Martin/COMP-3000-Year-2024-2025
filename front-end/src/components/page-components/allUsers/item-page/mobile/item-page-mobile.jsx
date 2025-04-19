@@ -179,8 +179,8 @@ export default function ItemPageMobile({ id, name, price, description, imageUrl,
                 </div>
 
                 <div className="w-full max-w-md space-y-4">
-                    <h1 className="text-2xl font-bold">{name}</h1>
-                    <p className="text-lg">£{price}</p>
+                    <h1 className="text-2xl font-bold" tabIndex={0} aria-label={`${name}`}>{name}</h1>
+                    <p tabIndex={0} aria-label={`Costs £${price}`} className="text-lg">£{price}</p>
                     <p className="text-sm">{description}</p>
 
                     <div className="space-y-2 pt-2">

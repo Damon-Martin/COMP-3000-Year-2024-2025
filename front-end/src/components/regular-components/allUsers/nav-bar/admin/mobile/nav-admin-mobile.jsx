@@ -17,12 +17,12 @@ export default function MobileAdminNavBar() {
             </div>
             {isOpen && (
                 <div className="mt-2 flex flex-col gap-2">
-                    <Link href="/">
+                    <Link href="/" ariaLabel="link to Home Page">
                         <div className="text-black py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer">
                             Home Page
                         </div>
                     </Link>
-                    <Link href="/settings">
+                    <Link href="/settings" ariaLabel="link to Settings Page">
                         <div className="text-black py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer">
                             Settings
                         </div>

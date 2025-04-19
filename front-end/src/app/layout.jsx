@@ -9,25 +9,7 @@ import HeaderBar from "@/components/regular-components/allUsers/all-pages/header
 import DesktopLoggedOutNavBar from "@/components/regular-components/allUsers/nav-bar/logged-out/desktop/nav-desktop";
 
 export default function RootLayout({ children }) {
-  const [fontSizeMultiplier, setFontSizeMultiplier] = useState(1);
   const [isDyslexicFont, setIsDyslexicFont] = useState(false);
-
-  // Fetching font size multiplier from localStorage
-  useEffect(() => {
-    let sizeMultiplier = localStorage.getItem("font-size-multiplier");
-
-    // Default to 1 if null
-    if (!sizeMultiplier) {
-      sizeMultiplier = "1";
-      localStorage.setItem("font-size-multiplier", sizeMultiplier);
-    }
-
-    // Converting to a number and setting state
-    const parsedSizeMultiplier = Number(sizeMultiplier);
-    if (!isNaN(parsedSizeMultiplier)) {
-      setFontSizeMultiplier(parsedSizeMultiplier);
-    }
-  }, []);
 
   // Fetching dyslexic font preference
   useEffect(() => {
@@ -41,9 +23,56 @@ export default function RootLayout({ children }) {
 
   // Dynamic root font size
   const styleSettings = { 
-    fontFamily: isDyslexicFont ? dyslexicFont : defaultFont,
-    fontSize: `${16 * fontSizeMultiplier}px`
+    fontFamily: isDyslexicFont ? dyslexicFont : defaultFont
   };
+
+  useEffect(() => {
+    const handleFocus = (e) => {
+      const el = e.target;
+      let text = "";
+  
+      const getAriaText = (element) => {
+        if (!element) return "";
+  
+        // Checking aria-label to be read out loud
+        if (element.hasAttribute("aria-label")) {
+          return element.getAttribute("aria-label");
+        }
+  
+        // Checking element for aria-labelledby to be read out loud
+        if (element.hasAttribute("aria-labelledby")) {
+          const id = element.getAttribute("aria-labelledby");
+          const labelEl = document.getElementById(id);
+          if (labelEl) {
+            return labelEl.innerText || labelEl.textContent || "";
+          }
+        }
+  
+        // Checking the children recursively for the aria tag
+        for (const child of element.children) {
+          const childText = getAriaText(child);
+          if (childText) return childText;
+        }
+  
+        return "";
+      };
+  
+      text = getAriaText(el);
+  
+      if (text.trim()) {
+        const utterance = new SpeechSynthesisUtterance(text.trim());
+        utterance.lang = "en-US";
+        speechSynthesis.cancel();
+        speechSynthesis.speak(utterance);
+      }
+    };
+  
+    document.addEventListener("focusin", handleFocus);
+  
+    return () => {
+      document.removeEventListener("focusin", handleFocus);
+    };
+  }, []);  
 
   return (
     <html lang="en">
