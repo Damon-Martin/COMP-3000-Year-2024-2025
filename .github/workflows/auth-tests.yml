@@ -31,7 +31,7 @@ jobs:
       run: npm install
       
     - name: Running Unit Tests for Backend
-      working-directory: ./back-end
+      working-directory: ./auth-server
       run: npm run unit-test
 
     # Step to stop and remove Docker Compose resources
