@@ -3,19 +3,26 @@
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import NavBarSwitcher from "@/components/regular-components/allUsers/nav-bar/nav-bar-switcher/nav-bar-switcher";
-import AddCategoryCard from "@/components/regular-components/admin/add-category-card/add-category-card";
 import AddItemCard from "@/components/regular-components/admin/add-item-card/add-item-card";
 
 
+// Using env variables
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
 const AuthURI = isProd
-  ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
-  : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
+    ? process.env.NEXT_PUBLIC_AUTH_URI_PROD
+    : process.env.NEXT_PUBLIC_AUTH_SERVER_URI;
+
+const BackendURI = isProd
+    ? process.env.NEXT_PUBLIC_BACKEND_URI_PROD
+    : process.env.NEXT_PUBLIC_BACKEND_URI;
 
 export default function AddItemPage() {
     const [loginStatus, setLoginStatus] = useState("loggedOut");
     const [isMobile, setIsMobile] = useState(false);
     const [email, setEmail] = useState("");
+    const [categoryDetails, setCategoryDetails] = useState([]);
+    const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+    const [fetchError, setFetchError] = useState(null);
     const router = useRouter();
 
     // Handling Mobile and Desktop Variants
@@ -32,84 +39,91 @@ export default function AddItemPage() {
     // Checking login status
     useEffect(() => {
         const isUserLoggedIn = async () => {
-            const token = localStorage.getItem("token");
+        const token = localStorage.getItem("token");
 
-            if (!token) {
-                router.push("/login")
+        if (!token) {
+            router.push("/login");
+        }
+
+        try {
+            const res = await fetch(`${AuthURI}/v1/validateJWT`, {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify({ token }),
+            });
+
+            const data = await res.json();
+            setEmail(data.email);
+
+            //  LoggedIn user status should not have access to an admin page
+            if (res.status === 200) {
+                // is not admin
+                if (data.admin !== true) {
+                    router.push("/");
+                } 
+                // user is ok and has correct auth level
+                else {
+                    setLoginStatus("admin");
+                }
+            } 
+            else {
+                localStorage.removeItem("token");
+                router.push("/login");
             }
 
-            try {
-                const res = await fetch(`${AuthURI}/v1/validateJWT`, {
-                    method: "POST",
-                    headers: {
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({ token }),
-                });
-
-                const data = await res.json();
-                setEmail(data.email);
-
-                //  LoggedIn
-                if (res.status === 200) {
-                    // is not admin
-                    if (data.admin !== true) {
-                        router.push("/");
-                    } 
-                    else {
-                        setLoginStatus("admin");
-                    }
-                } 
-                else {
-                    localStorage.removeItem("token");
-                    router.push("/login");
-                }
-                
-            } 
-            catch (e) {
+        } 
+        catch (e) {
                 console.error("JWT validation failed:", e);
                 localStorage.removeItem("token");
-                router.push("/login")
-            }
-        };
-
+                router.push("/login");
+        }
+    };
         isUserLoggedIn();
+
     }, []);
 
-    const testData = [
-        {
-          "_id": "67f9cda665cc443c20c9a761",
-          "categoryName": "Clothing",
-          "imageURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Ego_Unisex_Fashions%2C_1981_Hall%2C_Kirkgate_Market%2C_Leeds_%2822nd_September_2012%29.JPG/1600px-Ego_Unisex_Fashions%2C_1981_Hall%2C_Kirkgate_Market%2C_Leeds_%2822nd_September_2012%29.JPG?2012123013263",
-          "altImgTxt": "Image of Clothing"
-        },
-        {
-          "_id": "67f9dd4f713c94334e2c3b04",
-          "categoryName": "Kitchen Appliances",
-          "imageURL": "https://live.staticflickr.com/7012/6736237505_27f2b796a5_b.jpg",
-          "altImgTxt": "Image of a Kitchen Appliances"
-        },
-        {
-          "_id": "67f9de9c713c94334e2c3b07",
-          "categoryName": "Furniture",
-          "imageURL": "https://upload.wikimedia.org/wikipedia/commons/d/d9/Kubus_sofa.jpg",
-          "altImgTxt": "Image of Furniture"
-        },
-        {
-          "_id": "67f9df26713c94334e2c3b0a",
-          "categoryName": "Toys",
-          "imageURL": "https://upload.wikimedia.org/wikipedia/commons/7/71/Modern_Toys%2C_Japan_1958-001.jpg",
-          "altImgTxt": "Image of Toys"
-        }
-    ];
+    // Fetching categories from the backend and passing into AddItemCard for the drop down menu
+    useEffect(() => {
+    const fetchCategories = async () => {
+        try {
+            const res = await fetch(`${BackendURI}/v1/items/all-categories`);
+            const data = await res.json();
 
-    return (
+            if (res.ok) {
+                setCategoryDetails(data.categories);
+            } 
+            else {
+                throw new Error(data.error || "Failed to load categories");
+            }
+        } 
+        catch (e) {
+            console.error("Error fetching categories:", e);
+            setFetchError("Could not load categories.");
+        } 
+        finally {
+            setIsLoadingCategories(false);
+        }
+    };
+
+        fetchCategories();
+    }, []);
+
+  // Rendering card component with fetched category data array
+  return (
         <div>
             <NavBarSwitcher />
             <h1 className="text-3xl">Add Category</h1>
             <main className="w-full flex justify-center">
-                <AddItemCard CategoryDetails={testData} />
+                {isLoadingCategories ? (
+                    <p className="text-gray-500 mt-4">Loading categories...</p>
+                ) : fetchError ? (
+                    <p className="text-red-500 mt-4">{fetchError}</p>
+                ) : (
+                    <AddItemCard CategoryDetails={categoryDetails} />
+                )}
             </main>
         </div>
-    )
+    );
 }

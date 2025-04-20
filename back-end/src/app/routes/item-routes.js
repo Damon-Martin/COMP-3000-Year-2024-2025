@@ -468,4 +468,202 @@ ItemRouter.get('/search', async (req, res) => {
 });
 
 
+/**
+ * @swagger
+ * /v1/items/{itemID}:
+ *   delete:
+ *     summary: Deletes a specific item by ID
+ *     description: Removes the item from the database and also from any categories it's linked to. Requires admin auth.
+ *     tags:
+ *       - ItemController
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: itemID
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the item to delete
+ *     responses:
+ *       200:
+ *         description: Item deleted successfully
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Item not found
+ *       500:
+ *         description: Internal server error
+ */
+ItemRouter.delete("/:itemID", AuthMiddleware.checkIfAdmin, async (req, res) => {
+    try {
+        const { itemID } = req.params;
+        const response = await itemCategoriesController.deleteItemByID(itemID);
+
+        return res.status(response.code).json(response.code === 200 ? { msg: response.msg } : { error: response.error });
+    }
+    catch (e) {
+        return res.status(500).json({
+            error: "Failed to delete item",
+            rawError: `${e}`
+        });
+    }
+});
+
+
+/**
+ * @swagger
+ * /v1/items/delete-category/{categoryID}:
+ *   delete:
+ *     summary: Deletes a specific category by ID
+ *     description: Removes the category from the database. Requires admin auth.
+ *     tags:
+ *       - ItemController
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: categoryID
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the category to delete
+ *     responses:
+ *       200:
+ *         description: Category deleted successfully
+ *       400:
+ *         description: Bad request
+ *       404:
+ *         description: Category not found
+ *       500:
+ *         description: Internal server error
+ */
+ItemRouter.delete("/delete-category/:categoryID", AuthMiddleware.checkIfAdmin, async (req, res) => {
+    try {
+        const { categoryID } = req.params;
+        const response = await itemCategoriesController.deleteCategoryByID(categoryID);
+
+        return res.status(response.code).json(response.code === 200 ? { msg: response.msg } : { error: response.error });
+    }
+    catch (e) {
+        return res.status(500).json({
+            error: "Failed to delete category",
+            rawError: `${e}`
+        });
+    }
+});
+
+
+/**
+ * @swagger
+ * /v1/items/{itemID}:
+ *   put:
+ *     summary: Updates an item by ID
+ *     tags:
+ *       - ItemController
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: itemID
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the item to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             example:
+ *               name: Updated Name
+ *               description: Updated description
+ *               price: 99.99
+ *               imageUrl: https://new.url/image.jpg
+ *               altImgTxt: Updated Alt Text
+ *     responses:
+ *       200:
+ *         description: Item updated successfully
+ *       400:
+ *         description: Invalid input
+ *       404:
+ *         description: Item not found
+ *       500:
+ *         description: Server error
+ */
+ItemRouter.put("/:itemID", AuthMiddleware.checkIfAdmin, async (req, res) => {
+    try {
+        const { itemID } = req.params;
+        const updatedFields = req.body;
+
+        const response = await itemCategoriesController.updateItemByID(itemID, updatedFields);
+
+        return res.status(response.code).json(
+            response.code === 200 ? { msg: response.msg, item: response.item } : { error: response.error }
+        );
+    } 
+    catch (e) {
+        return res.status(500).json({
+            error: "Failed to update item",
+            rawError: `${e}`
+        });
+    }
+});
+
+/**
+ * @swagger
+ * /v1/items/update-category/{categoryID}:
+ *   put:
+ *     summary: Updates a category by ID
+ *     tags:
+ *       - ItemController
+ *     security:
+ *       - bearerAuth: []
+ *     parameters:
+ *       - in: path
+ *         name: categoryID
+ *         required: true
+ *         schema:
+ *           type: string
+ *         description: ID of the category to update
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             example:
+ *               categoryName: Updated Category Name
+ *               imageURL: https://updated.url/image.jpg
+ *               altImgTxt: Updated Alt Text
+ *     responses:
+ *       200:
+ *         description: Category updated successfully
+ *       400:
+ *         description: Invalid input
+ *       404:
+ *         description: Category not found
+ *       500:
+ *         description: Server error
+ */
+ItemRouter.put("/update-category/:categoryID", AuthMiddleware.checkIfAdmin, async (req, res) => {
+    try {
+        const { categoryID } = req.params;
+        const updatedFields = req.body;
+
+        const response = await itemCategoriesController.updateCategoryByID(categoryID, updatedFields);
+
+        return res.status(response.code).json(
+            response.code === 200 ? { msg: response.msg, category: response.category } : { error: response.error }
+        );
+    } 
+    catch (e) {
+        return res.status(500).json({
+            error: "Failed to update category",
+            rawError: `${e}`
+        });
+    }
+});
+
 export default ItemRouter;
