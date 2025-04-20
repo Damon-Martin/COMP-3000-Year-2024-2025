@@ -7,7 +7,7 @@ on:
     branches: [ "main" ]
 
 jobs:
-  integration-tests:
+  auth-related:
     runs-on: ubuntu-latest
 
     steps:
