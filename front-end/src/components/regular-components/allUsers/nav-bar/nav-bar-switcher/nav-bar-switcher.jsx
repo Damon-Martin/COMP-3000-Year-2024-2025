@@ -45,7 +45,7 @@ export default function NavBarSwitcher() {
             
                     const data = await res.json();
                     
-                    if (data.admin == "admin") {
+                    if (data.admin == true) {
                         setLoginStatus("admin")
                     }
                     else if (res.status == 200) {
