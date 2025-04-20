@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "start": "node ./src/app/index.js",
-    "test:unit": "mocha ./src/test/unit/example.test.js"
+    "unit-test": "mocha ./src/test/unit/example.test.js"
   },
   "repository": {
     "type": "git",
