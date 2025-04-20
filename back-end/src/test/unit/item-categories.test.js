@@ -3,7 +3,7 @@ import { assert } from 'chai';
 const BackendURI = "http://localhost:82";
 const AuthURI = "http://localhost:81";
 
-describe("Unit Tests: Item Routes", () => {
+describe("Unit Tests: Item Categories Routes", () => {
     let token;
 
     // Before the tests make an admin token to be re-used (making tests cleaner)
