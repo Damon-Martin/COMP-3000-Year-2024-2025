@@ -12,9 +12,9 @@ export default function SettingsPage() {
   return (
       <div>
         <NavBarSwitcher />
-        <h1 tabIndex={0} className="text-3xl">Settings</h1>
-        <main className="flex flex-col">
-          <SettingButton redirectUrl={"/settings/accessibility"} title={"Accessibility Settings"} description={"Eg Dyslexic Font, Larger Text Options..."}/>
+        <h1 tabIndex={0} className="text-3xl m-3">Settings</h1>
+        <main className="flex flex-col items-center min-w-screen max-w-screen">
+          <SettingButton redirectUrl={"/settings/accessibility"} title={"Accessibility Settings"} description={"Custom Accessibility Features"}/>
         </main>
       </div>
   );

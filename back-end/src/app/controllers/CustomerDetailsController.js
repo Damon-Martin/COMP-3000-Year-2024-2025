@@ -49,28 +49,60 @@ class UserDetailsController {
                 error: "Missing email or update data."
             };
         }
-
+    
         try {
-            // Looking with Mongoose ODM through all items to find a single match of the email
-            // Then updates with the new data
-            const updatedUser = await this.userDetailModel.findOneAndUpdate(
-                { email },
-                { $set: updateData },
-                { new: true }
-            );
-
-            if (!updatedUser) {
+            // Part 1: Confirming that the user exists
+            const user = await this.userDetailModel.findOne({ email });
+            if (!user) {
                 return {
                     code: 404,
-                    error: `User Details with associated email "${email}" is not found.`
+                    error: `User with email "${email}" not found.`
                 };
             }
-
+    
+            // Part 2: Handling optional email change
+            if (updateData.newEmail) {
+                const emailExists = await this.authModel.findOne({ email: updateData.newEmail });
+                if (emailExists) {
+                    return {
+                        code: 409,
+                        error: `Email "${updateData.newEmail}" is already taken. Please choose another one.`
+                    };
+                }
+    
+                // Updating email in Auth model
+                await this.authModel.updateOne({ email }, { $set: { email: updateData.newEmail } });
+            }
+    
+            // Part 3: Preparing update fields
+            const formattedUpdate = {};
+            if (updateData.fName) formattedUpdate.fName = updateData.fName;
+            if (updateData.lName) formattedUpdate.lName = updateData.lName;
+            if (updateData.tel) formattedUpdate.tel = updateData.tel;
+            if (updateData.address) formattedUpdate.address = updateData.address;
+            if (updateData.postcode) formattedUpdate.postcode = updateData.postcode;
+            if (updateData.newEmail) formattedUpdate.email = updateData.newEmail;
+    
+            if (Object.keys(formattedUpdate).length === 0) {
+                return {
+                    code: 400,
+                    error: "No valid fields provided for update."
+                };
+            }
+    
+            // Step 4: Update user details
+            const updatedUser = await this.userDetailModel.findOneAndUpdate(
+                { email },
+                { $set: formattedUpdate },
+                { new: true }
+            );
+    
             return {
                 code: 200,
-                msg: "User Details updated successfully.",
+                msg: "User details updated successfully.",
                 user: updatedUser
             };
+    
         } 
         catch (e) {
             return {
@@ -78,7 +110,7 @@ class UserDetailsController {
                 error: `Server error: ${e.message}`
             };
         }
-    }
+    }    
 
 
     async deleteUserDetailsByEmail(email) {

@@ -4,11 +4,11 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useState } from 'react';
 
-export default function NavBtn({ svgLocation, activeSvgLocation, size, redirectURL, altTxt }) {
+export default function NavBtn({ svgLocation, activeSvgLocation, size, redirectURL, altTxt, ariaLabel}) {
     const [isHovered, setIsHovered] = useState(false);
 
     return (
-        <Link href={redirectURL}>
+        <Link href={redirectURL} aria-label={ariaLabel} title={ariaLabel}>
                 <Image 
                     width={size} 
                     height={size} 

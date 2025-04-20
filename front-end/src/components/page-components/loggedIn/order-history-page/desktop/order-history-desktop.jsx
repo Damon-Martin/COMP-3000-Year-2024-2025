@@ -11,7 +11,7 @@ export default function OrderHistoryDesktop({ orderHistory }) {
             <div>
                 <NavBarSwitcher />
                 <main className="m-3">
-                    <p className="text-3xl" tabIndex={0}>Order History</p>
+                    <p className="text-3xl" tabIndex={0} aria-label="Title: Order History">Order History</p>
                     {orderHistory.map((order, index) => (
                         <OrderButtonDesktop
                             key={index}
@@ -30,7 +30,7 @@ export default function OrderHistoryDesktop({ orderHistory }) {
                 <NavBarSwitcher />
                 <main className="m-3">
                     <p className="text-3xl" tabIndex={0}>Order History</p>
-                    <p tabIndex={0}>Your Order history is Empty</p>
+                    <p tabIndex={0} aria-label="Your Order history is Empty">Your Order history is Empty</p>
                 </main>
                 <SupportButton />
             </div>

@@ -17,22 +17,22 @@ export default function MobileLoggedInNavBar() {
             </div>
             {isOpen && (
                 <div className="mt-2 flex flex-col gap-2">
-                    <Link href="/">
+                    <Link href="/" ariaLabel="link to Home Page">
                         <div className="text-black py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer">
                             Home Page
                         </div>
                     </Link>
-                    <Link href="/basket">
+                    <Link href="/basket" ariaLabel="link to Basket Page">
                         <div className="text-black py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer">
                             Basket
                         </div>
                     </Link>
-                    <Link href="/account">
+                    <Link href="/account" ariaLabel="link to Account Page">
                         <div className="text-black py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer">
                             Account
                         </div>
                     </Link>
-                    <Link href="/settings">
+                    <Link href="/settings" ariaLabel="link to Settings Page">
                         <div className="text-black py-2 px-4 hover:bg-gray-100 rounded-md cursor-pointer">
                             Settings
                         </div>

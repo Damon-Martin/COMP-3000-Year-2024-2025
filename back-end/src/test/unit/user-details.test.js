@@ -73,14 +73,16 @@ describe("Unit Tests: User Details Routes", () => {
 
     it("Should update user details with valid email and data. Expect STATUS 200", async () => {
         assert.isAbove(token.length, 0, "Invalid Admin Token");
-
+    
         const email = "david.smith@gmail.com"; // Existing user email for this test
         const updateData = {
-            firstName: "UpdatedFirstName",
-            lastName: "UpdatedLastName",
-            phone: "1234567890"
+            fName: "UpdatedFirstName",
+            lName: "UpdatedLastName",
+            tel: "1234567890",
+            address: "123 New Street",
+            postcode: "ZX9 8YX"
         };
-
+    
         const res = await fetch(`${BackendURI}/v1/user-details?email=${email}`, {
             method: "PATCH",
             headers: {
@@ -89,10 +91,15 @@ describe("Unit Tests: User Details Routes", () => {
             },
             body: JSON.stringify(updateData)
         });
-
+    
         const data = await res.json();
         assert.equal(res.status, 200, data.error);
+        assert.isObject(data.user, "User object should be returned");
+        assert.equal(data.user.fName, updateData.fName);
+        assert.equal(data.user.lName, updateData.lName);
+        assert.equal(data.user.tel, updateData.tel);
     });
+    
 
     it("Should return STATUS 400 if email or the update data is missing for update req", async () => {
         assert.isAbove(token.length, 0, "Invalid Admin Token");

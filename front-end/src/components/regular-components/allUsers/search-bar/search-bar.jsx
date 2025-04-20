@@ -37,6 +37,7 @@ export default function SearchBar({ widthVW }) {
                 onClick={handleSearch}
                 className="bg-[#FF4D00] hover:bg-[#c21300] px-4 py-2 text-white border border-gray-300 border-l-0 rounded-r-md rounded-l-none focus:bg-[#c21300] focus:outline-none focus:ring-2 focus:ring-orange-600 focus:border-orange-600 transition duration-200"
                 aria-label="Search Button"
+                title="Search Button"
                 onKeyDown={handleKeyDown}
             >
                 Search

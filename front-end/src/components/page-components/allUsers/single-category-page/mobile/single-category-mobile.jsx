@@ -16,12 +16,13 @@ export default function SingleCategoryMobile({ categoryName = "INSERT CATEGORY N
 
                 <Link
                     href="/categories"
+                    aria-label={`Link to Categories Page`}
                     className="bg-[#FF4D00] mt-3 hover:bg-[#c21300] text-white min-h-[15vh] w-[94vw] rounded-lg flex items-center justify-center"
                 >
                     <p>Categories</p>
                 </Link>
 
-                <h1 className="text-2xl font-bold my-4">{categoryName}</h1>
+                <h1 className="text-2xl font-bold my-4" tabIndex={0} aria-label={`${categoryName}`}>{categoryName}</h1>
 
                 <div className="flex flex-col text-black">
                     {itemList.map((item) => (

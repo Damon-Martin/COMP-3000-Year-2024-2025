@@ -264,13 +264,154 @@ class ItemCategoriesController {
                 code: 200,
                 items: items
             };
-        } catch (e) {
+        } 
+        catch (e) {
             return {
                 code: 500,
                 error: `Server error: ${e.message}`
             };
         }
     }
+
+    async updateItemByID(itemID, updatedFields) {
+        if (!itemID || !mongoose.Types.ObjectId.isValid(itemID)) {
+            return {
+                code: 400,
+                error: "Invalid or missing itemID"
+            };
+        }
+    
+        try {
+            const updatedItem = await this.itemsModel.findByIdAndUpdate(
+                itemID,
+                { $set: updatedFields },
+                { new: true }
+            );
+    
+            if (!updatedItem) {
+                return {
+                    code: 404,
+                    error: "Item not found"
+                };
+            }
+    
+            return {
+                code: 200,
+                msg: "Item updated successfully",
+                item: updatedItem
+            };
+        } catch (e) {
+            return {
+                code: 500,
+                error: `Server error while updating item: ${e.message}`
+            };
+        }
+    }
+    
+    async updateCategoryByID(categoryID, updatedFields) {
+        if (!categoryID || !mongoose.Types.ObjectId.isValid(categoryID)) {
+            return {
+                code: 400,
+                error: "Invalid or missing categoryID"
+            };
+        }
+    
+        try {
+            const updatedCategory = await this.categoriesModel.findByIdAndUpdate(
+                categoryID,
+                { $set: updatedFields },
+                { new: true }
+            );
+    
+            if (!updatedCategory) {
+                return {
+                    code: 404,
+                    error: "Category not found"
+                };
+            }
+    
+            return {
+                code: 200,
+                msg: "Category updated successfully",
+                category: updatedCategory
+            };
+        } 
+        catch (e) {
+            return {
+                code: 500,
+                error: `Server error while updating category: ${e.message}`
+            };
+        }
+    }    
+
+    async deleteItemByID(itemID) {
+        if (!itemID || !mongoose.Types.ObjectId.isValid(itemID)) {
+            return {
+                code: 400,
+                error: "Invalid or missing itemID"
+            };
+        }
+    
+        try {
+            // Remove item from all categories
+            await this.categoriesModel.updateMany(
+                { items: itemID },
+                { $pull: { items: itemID } }
+            );
+    
+            // Delete item from the database
+            const deletedItem = await this.itemsModel.findByIdAndDelete(itemID);
+    
+            if (!deletedItem) {
+                return {
+                    code: 404,
+                    error: "Item not found"
+                };
+            }
+    
+            return {
+                code: 200,
+                msg: "Item deleted successfully"
+            };
+        }
+        catch (e) {
+            return {
+                code: 500,
+                error: `Server error while deleting item: ${e.message}`
+            };
+        }
+    }
+    
+    async deleteCategoryByID(categoryID) {
+        if (!categoryID || !mongoose.Types.ObjectId.isValid(categoryID)) {
+            return {
+                code: 400,
+                error: "Invalid or missing categoryID"
+            };
+        }
+    
+        try {
+            const deletedCategory = await this.categoriesModel.findByIdAndDelete(categoryID);
+    
+            if (!deletedCategory) {
+                return {
+                    code: 404,
+                    error: "Category not found"
+                };
+            }
+    
+            return {
+                code: 200,
+                msg: "Category deleted successfully"
+            };
+        }
+        catch (e) {
+            return {
+                code: 500,
+                error: `Server error while deleting category: ${e.message}`
+            };
+        }
+    }    
 
 }
 

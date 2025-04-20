@@ -17,7 +17,7 @@ export default function HomeDesktop({ ItemList }) {
                     {/* Using Tailwind GRIDS for more scalable grids */}
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 p-4">
                         {ItemList.map(item => (
-                            <Link href={`/item/${item._id}`} aria-label={`Link to ${item.name}`} key={item._id} className="bg-[#D9D9D9] hover:bg-gray-100 text-black border rounded-xl overflow-hidden shadow-md">
+                            <Link href={`/item/${item._id}`} title={`Link to ${item.name}`} aria-label={`Link to ${item.name}`} key={item._id} className="bg-[#D9D9D9] hover:bg-gray-100 text-black border rounded-xl overflow-hidden shadow-md">
                                 <img
                                     src={item.imageUrl}
                                     alt={item.altImgTxt}

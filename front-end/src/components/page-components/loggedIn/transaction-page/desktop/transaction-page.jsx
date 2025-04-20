@@ -113,9 +113,9 @@ export default function TransactionPageDesktop({ transactionID }) {
                                 <ul className="list-disc pl-6">
                                     {transactionData.order.items.map((item, index) => (
                                         <li key={index} className="mb-3">
-                                            <p><strong>{item.name}</strong></p>
-                                            <p>Quantity: {item.quantity}</p>
-                                            <p>Price: £{item.unit_amount?.value}</p>
+                                            <p tabIndex={0} aria-label={`${item.name}`}><strong>{item.name}</strong></p>
+                                            <p tabIndex={0} aria-label={`${item.quantity}`}>Quantity: {item.quantity}</p>
+                                            <p tabIndex={0} aria-label={`${item.price}`}>Price: £{item.unit_amount?.value}</p>
                                             {item.description && <p>Description: {item.description}</p>}
                                         </li>
                                     ))}
@@ -130,7 +130,7 @@ export default function TransactionPageDesktop({ transactionID }) {
                             </div>
                         </div>
                     ) : (
-                        <p className="text-center">Loading transaction details...</p>
+                        <p tabIndex={0} aria-label="Loading Transaction. Please wait..." className="text-center">Loading transaction details...</p>
                     )}
                 </div>
             </main>

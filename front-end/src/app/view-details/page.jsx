@@ -4,6 +4,7 @@ import AccountsPageDesktop from "@/components/page-components/loggedIn/accounts-
 import { useState, useEffect } from "react";
 import { useRouter } from 'next/navigation';
 import ViewDetailsDesktop from "@/components/page-components/loggedIn/view-details-page/desktop/view-details-page-desktop";
+import ViewDetailsMobile from "@/components/page-components/loggedIn/view-details-page/mobile/view-details-page-mobile";
 
 
 const isProd = process.env.NEXT_PUBLIC_PRODUCTION === "true";
@@ -73,7 +74,9 @@ export default function ViewDetailsPage() {
     }, []);
 
 
-    return (
-            <ViewDetailsDesktop email={email}/>
-    )
+    if (isMobile) {
+        return <ViewDetailsMobile email={email}/>
+    }
+    
+    return <ViewDetailsDesktop email={email}/>
 }

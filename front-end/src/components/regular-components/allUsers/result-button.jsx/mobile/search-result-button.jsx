@@ -16,6 +16,7 @@ export default function SearchResultButtonMobile({
             key={item._id}
             className="bg-[#D9D9D9] hover:bg-gray-100 text-black mt-3 min-h-[42vh] border rounded-xl shadow-md hover:shadow-xl transition duration-300 overflow-hidden w-full"
             aria-label={`Link to ${name}`}
+            title={`Link to ${name}`}
         >
             <div className="relative w-full h-60">
                 <Image
