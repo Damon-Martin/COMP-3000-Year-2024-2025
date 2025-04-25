@@ -53,6 +53,7 @@ export default function AccessibilitySettingsPage() {
                   checked={!isDyslexicFont}
                   onChange={handleFontChange}
                   className="form-radio text-[#FF4D00]"
+                  aria-label="Turn off Dyslexic Option Button"
                 />
                 <label htmlFor="dyslexicFontOff" className="ml-2">Off</label>
               </div>
@@ -65,6 +66,7 @@ export default function AccessibilitySettingsPage() {
                   checked={isDyslexicFont}
                   onChange={handleFontChange}
                   className="form-radio text-[#FF4D00]"
+                  aria-label="Turn on Dyslexic Option Button"
                 />
                 <label htmlFor="dyslexicFontOn" className="ml-2">On</label>
               </div>
@@ -86,6 +88,7 @@ export default function AccessibilitySettingsPage() {
                   checked={!isScreenReaderOn}
                   onChange={handleScreenReaderChange}
                   className="form-radio text-[#FF4D00]"
+                  aria-label="Turn off built-in screen-reader Button"
                 />
                 <label htmlFor="screenReaderOff" className="ml-2">Off</label>
               </div>
@@ -98,6 +101,7 @@ export default function AccessibilitySettingsPage() {
                   checked={isScreenReaderOn}
                   onChange={handleScreenReaderChange}
                   className="form-radio text-[#FF4D00]"
+                  aria-label="Turn off built-in screen-reader Button"
                 />
                 <label htmlFor="screenReaderOn" className="ml-2">On</label>
               </div>
