@@ -9,7 +9,7 @@ class AuthController {
         this.SessionModel = SessionModel;
         this.AdminDetailsModel = AdminDetailsModel;
         this.UserDetailsModel = UserDetailsModel;
-
+        this.secretCode = String(process.env.HashingKeyAuth);
         this.checker = new CredentialChecker();
     }
 
@@ -39,7 +39,7 @@ class AuthController {
 
             if (isPasswordValid) {
 
-                let token = jwt.sign({ userId: user._id,  timestamp: Date.now() }, 'Example-Secret-Key', {
+                let token = jwt.sign({ userId: user._id,  timestamp: Date.now() }, this.secretCode, {
                     expiresIn: '1h',
                 });
 
@@ -134,7 +134,7 @@ class AuthController {
                 await user.save();
                 await currentDetails.save();
 
-                let token = jwt.sign({ userId: user._id }, 'Example-Secret-Key', {
+                let token = jwt.sign({ userId: user._id }, this.secretCode, {
                     expiresIn: '1h',
                 });
 
@@ -222,7 +222,7 @@ class AuthController {
                 await user.save();
                 await currentDetails.save();
 
-                let token = jwt.sign({ userId: user._id,  timestamp: Date.now() }, 'Example-Secret-Key', {
+                let token = jwt.sign({ userId: user._id,  timestamp: Date.now() }, this.secretCode, {
                     expiresIn: '1h',
                 });
 
